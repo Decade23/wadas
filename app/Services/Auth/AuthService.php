@@ -9,6 +9,8 @@
 namespace App\Services\Auth;
 
 
+use Cartalyst\Sentinel\Checkpoints\NotActivatedException;
+use Cartalyst\Sentinel\Checkpoints\ThrottlingException;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Illuminate\Support\Facades\Session;
 
@@ -28,16 +30,36 @@ class AuthService implements AuthServiceContract
 
         $remember = $request->remember == 'on' ? true : false;
 
-        if ( $userDb = Sentinel::authenticate($credentials, $remember) ) {
+        try {
+            if ( $userDb = Sentinel::authenticate($credentials, $remember) ) {
 
-            if ( Sentinel::getUser()->user_role->role->slug == 'root' || Sentinel::getUser()->user_role->role->slug != 'member' ) {
-                Session::flash('succes', 'Login Successfull');
-                if ( $request->rto != null ) { # if success login and get rto (rto is last page visitor login)
-                     return redirect()->to($request->rto);
-                } else { # if success login
-                    return redirect()->route('main.index');
+                if ( Sentinel::getUser()->user_role->role->slug == 'root' || Sentinel::getUser()->user_role->role->slug != 'member' ) {
+                    Session::flash('success', 'Login Successfull');
+                    if ( $request->rto != null ) { # if success login and get rto (rto is last page visitor login)
+                        return redirect()->to($request->rto);
+                    } else { # if success login
+                        $page_title = 'Dashboard';
+                        return redirect()->route('main.index',$page_title);
+                    }
+                } else {
+                    Sentinel::logout();
+                    Session::flash('failed', 'Login Unsuccessful');
+
+                    return redirect()->route('login.form');
                 }
+            } else {
+                Session::flash('failed', 'Login Unsuccessful');
+
+                return redirect()->route('login.form');
             }
+        } catch (ThrottlingException $throttlingException) {
+
+            Session::flash('failed', 'Login Timeout');
+            return redirect()->route('login.form');
+        } catch (NotActivatedException $notActivatedException) {
+
+            Session::flash('failed', 'Login Fail. Account Not Active');
+            return redirect()->route('login.form');
         }
     }
 

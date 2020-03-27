@@ -7,11 +7,14 @@
         </div>
         <form class="kt-form" action="{{ route('login.process') }}" method="POST">
             {!! csrf_field() !!}
+            @include('flash')
             <div class="input-group">
-                <input class="form-control" type="text" placeholder="Email" name="email" autocomplete="off">
+                <input class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}" type="text" placeholder="Email" name="email" autocomplete="off">
+                {!! $errors->first('email', '<div class="error invalid-feedback">:message</div>') !!}
             </div>
             <div class="input-group">
-                <input class="form-control" type="password" placeholder="Password" name="password">
+                <input class="form-control {{ $errors->has('password') ? 'is-invalid' : '' }}" type="password" placeholder="Password" name="password">
+                {!! $errors->first('password', '<div class="error invalid-feedback">:message</div>') !!}
             </div>
                                         <div class="row kt-login__extra">
                                             <div class="col">

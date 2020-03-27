@@ -1,6 +1,20 @@
 @extends('backend.layouts.app')
 
 @section('body')
+    @include('flash')
+    <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+        <div class="row">
+            <div class="col">
+                <div class="alert alert-light alert-elevate fade show" role="alert">
+                    <div class="alert-icon"><i class="flaticon-laptop kt-font-success"></i></div>
+                    <div class="alert-text">
+                        Welcome, {{ Sentinel::getUser()->name }}. you are login into <b>ECI</b> at <code>{{ Sentinel::getUser()->last_login }}</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 {{--<div class="row">--}}
 {{--    <div class="col-xl-8 col-lg-12 order-lg-3 order-xl-1">--}}
 {{--        <!--begin:: Widgets/Best Sellers-->--}}

@@ -45,7 +45,7 @@
             </a>
 
             <div class="kt-notification__custom kt-space-between">
-                <a href="{{ route('logout') }}" target="_blank" class="btn btn-label btn-label-brand btn-sm btn-bold">Sign Out</a>
+                <a href="{{ route('logout') }}" class="btn btn-label btn-label-brand btn-sm btn-bold">Sign Out</a>
                 {{-- subheader right --}}
                 {{-- <a href="custom/user/login-v2.html" target="_blank" class="btn btn-clean btn-sm btn-bold">Upgrade Plan</a>--}}
                 {{-- end subheader right --}}
