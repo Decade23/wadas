@@ -1,14 +1,17 @@
-<!DOCTYPE html>
+<!doctype html>
 
-<html lang="en" >
+<html lang="{{ app()->getLocale() }}" >
 
-{{--<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->--}}
+<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
 <head>
-    <meta charset="utf-8"/>
+    <meta charset="UTF-8">
 
     <title>{{ config('app.name') }}</title>
-    <meta name="description" content="Login page example">
+    <meta name="keywords" content="Keywords" />
+    <meta name="description" content="description">
+    <meta name="author" content="Ramadhan">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     {{-- Meta --}}
     <meta name="csrf_token" content="{{ csrf_token() }}">
