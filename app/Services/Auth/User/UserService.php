@@ -130,6 +130,26 @@ class UserService implements UserServiceContract
         $query = $this->getData($request);
 
         return DataTables::eloquent($query)
+            ->editColumn('created_at', function($dataDb) {
+                return $dataDb->created_at->format('d M Y H:i:s');
+            })
+            ->editColumn('updated_at', function($dataDb) {
+                return $dataDb->updated_at->format('d M Y H:i:s');
+            })
+            ->addColumn('status', function($dataDb) {
+                if ($dataDb->activations[0]->completed == 1) {
+                    return '<a href="#" data-message="Not Active This User: '.$dataDb->name.'" data-href="'.route('user.status', $dataDb->id).'" data-toggle="kt-tooltip" title="Deactive this user"><span class="kt-badge  kt-badge--success kt-badge--inline kt-badge--pill">Active</span></a>';
+                } else {
+                    return '<a href="#"><span class="kt-badge  kt-badge--danger kt-badge--inline kt-badge--pill">Not Active</span></a>';
+                }
+            })
+            ->addColumn('role', function($dataDb) {
+                if ($dataDb->roles->isNotEmpty()) {
+                    return implode(', ', collect( $dataDb->roles )
+                        ->pluck('name')
+                        ->all() );
+                }
+            })
             ->addColumn(
                 'checkbox',
                 function ($dataDb) {
@@ -159,7 +179,7 @@ class UserService implements UserServiceContract
                                 </span>
                     </a>';
             })
-            ->rawColumns(['checkbox','action'])
+            ->rawColumns(['checkbox','action', 'status'])
             ->make(true);
     }
 

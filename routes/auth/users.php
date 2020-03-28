@@ -16,23 +16,27 @@ Route::group([
     Route::get('create', 'UserController@create')
         ->name('user.create');
 
-    Route::get('store', 'UserController@store')
+    Route::post('store', 'UserController@store')
         ->name('user.store');
 
     Route::get('{id}/show', 'UserController@show')
         ->name('user.show');
 
-    Route::get('{id}/edit', 'UserController@edit')
+    Route::put('{id}/edit', 'UserController@edit')
         ->name('user.edit');
 
     Route::get('{id}/update', 'UserController@update')
         ->name('user.update');
 
-    Route::get('{id}/destroy', 'UserController@destroy')
+    Route::delete('{id}/destroy', 'UserController@destroy')
         ->name('user.destroy');
 
+    #update status
+    Route::put('{id}/status', 'UserController@status')
+        ->name('user.status');
+
     #bulk destroy
-    Route::get('destroy/bulk', 'UserController@destroyBulk')
+    Route::delete('destroy/bulk', 'UserController@destroyBulk')
         ->name('user.destroy.bulk');
 
     # for DataTables
