@@ -1,3 +1,7 @@
 <component name="CopyrightManager">
-  <settings default="Dedi" />
+  <settings default="Dedi">
+    <module2copyright>
+      <element module="All" copyright="Dedi" />
+    </module2copyright>
+  </settings>
 </component>

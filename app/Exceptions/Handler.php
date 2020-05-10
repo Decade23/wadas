@@ -60,12 +60,14 @@ class Handler extends ExceptionHandler
 
                 # page not found
                 case 404:
-                    return redirect()->route('login.form');
+//                    return redirect()->route('login.form');
+                    return redirect()->route('front_main.index');
                     break;
 
                 # internal server error
                 case 500:
-                    return redirect()->route('login.form');
+//                    return redirect()->route('login.form');
+                    return redirect()->route('front_main.index');
                     break;
 
                 # default

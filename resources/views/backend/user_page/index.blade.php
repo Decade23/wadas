@@ -19,7 +19,7 @@
                     </a>
 
                     <a href="{{ route('user.create') }}" class="btn btn-brand btn-icon-sm">
-                        <i class="flaticon2-plus-1 kt-font-hover-brand "></i>
+                        <i class="flaticon2-plus-1 kt-font-hover-brand"></i>
                         Add New
                     </a>
                     &nbsp;

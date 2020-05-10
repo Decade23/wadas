@@ -292,6 +292,15 @@
 <!--begin::Page Scripts(used by this page) -->
 {{--<script src="{{ url('themes/eci/js/pages/dashboard.js') }}" type="text/javascript"></script>--}}
 <!--end::Page Scripts -->
+
+<!-- tooltip -->
+<script>
+    $(function () {
+        $('[data-tooltip-custom="tooltip"]').tooltip({ boundary: 'window' })
+    })
+</script>
+<!-- end tooltip -->
+
 @stack('scripts')
 </body>
 <!-- end::Body -->

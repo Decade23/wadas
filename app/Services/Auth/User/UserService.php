@@ -157,27 +157,29 @@ class UserService implements UserServiceContract
                 }
             )
             ->addColumn('action', function ($dataDb){
-                return '<a href="'.route('user.edit', $dataDb->id).'"
-                            id="tooltip" title="Edit" >
-                            <span class="label label-success label-sm">
-                            <i class="fa fa-file-pdf-o">
-                            </i></span>
-                            </a>
-                            <a href="'.route('user.show', $dataDb->id).'" id="tooltip" title="'.trans('global.show').'">
+                $btnShow = '<a href="'.route('user.show', $dataDb->id).'" id="tooltip" title="'.trans('global.show').'">
                             <span class="label label-primary label-sm">
                                 <i class="fa fa-arrows-alt"></i>
                                 </span>
+                            </a>';
+
+                $btnEdit = '<a href="'.route('user.edit', $dataDb->id).'"
+                            data-tooltip-custom="tooltip" data-placement="left" title="Update It" >
+                            <i class="flaticon-edit kt-font-brand"></i>
                             </a>
-                            <a href="#"
+                            ';
+
+                $btnDelete = '<a href="#"
                                 data-message="'.trans('auth.delete_confirmation', ['name' => $dataDb->name]).'"
                                 data-href="'.route('user.destroy', $dataDb->id).'"
-                                id="tooltip" data-method="DELETE"
+                                data-method="DELETE"
+                                id="tooltip" title="delete" data-toggle="tooltip"
+                                data-original-title="Delete It?"
                                 data-title="'.trans('global.delete').'"
                                 data-toggle="modal" data-target="#delete">
-                                <span class="label label-danger label-sm">
-                                <i class="fa fa-trash-o"></i>
-                                </span>
+                                <i class="flaticon-delete kt-font-danger"></i>
                     </a>';
+                return $btnEdit . $btnDelete;
             })
             ->rawColumns(['checkbox','action', 'status'])
             ->make(true);
