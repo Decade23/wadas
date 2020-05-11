@@ -1,7 +1,7 @@
 <section id="section-work" class="page-section">
     <div class="section topmargin nobottommargin nobottomborder">
         <div class="container clearfix">
-            <div class="heading-block center nomargin">
+            <div class="heading-block center">
                 <h3>Our Latest Works</h3>
             </div>
         </div>

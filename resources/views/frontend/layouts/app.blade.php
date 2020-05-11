@@ -63,9 +63,10 @@
 
                     <ul class="one-page-menu" data-easing="easeInOutExpo" data-speed="1500">
                         <li><a href="#" data-href="#slider"><div>Home</div></a></li>
-                        <li><a href="#" data-href="#section-about"><div>About</div></a></li>
+                        <li><a href="#" data-href="#section-news"><div>News</div></a></li>
+                        <li><a href="#" data-href="#section-about" data-offset="60"><div>About</div></a></li>
                         <li><a href="#" data-href="#section-work" data-offset="60"><div>Work</div></a></li>
-                        <li><a href="#" data-href="#section-blog"><div>Blog</div></a></li>
+                        <li><a href="#" data-href="#section-blog" data-offset="60"><div>Blog</div></a></li>
                         <li><a href="#" data-href="#section-testimonials" data-offset="60"><div>Testimonials</div></a></li>
                         <li><a href="#" data-href="#section-team" data-offset="60"><div>Team</div></a></li>
                         <li><a href="#clients" data-href="#section-clients"><div>Clients</div></a></li>

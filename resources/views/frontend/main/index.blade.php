@@ -1,6 +1,9 @@
 @extends('frontend.layouts.app')
 
 @section('body')
+
+    @include('frontend.section.news')
+
     @include('frontend.section.about')
 
     @include('frontend.section.work')

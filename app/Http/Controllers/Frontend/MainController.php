@@ -9,23 +9,26 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Services\Main\MainServiceContract;
 use Illuminate\Http\Request;
 
 class MainController extends Controller
 {
-    protected $titlePage;
+    protected $titlePage, $service;
     /**
      * MainController constructor.
      */
-    public function __construct()
+    public function __construct(MainServiceContract $mainServiceContract)
     {
         $this->titlePage = 'Expert Club Indonesia';
+        $this->service = $mainServiceContract;
     }
 
     public function index()
     {
         $data['titlePage'] = $this->titlePage;
         $data['tagLine'] = 'Strategic Agility Business Improvement Change Agent';
+        $data['data']   = $this->service->news();
 
         return view('frontend.main.index', $data);
     }

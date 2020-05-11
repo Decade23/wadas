@@ -1,27 +1,24 @@
 <section id="section-about" class="page-section">
-    <div  class="container clearfix">
-        <div class="row clearfix">
+    <div  class="section nobottommargin">
+        <div class="container clearfix">
+            <div class="row clearfix">
 
-            <div class="col-xl-5">
-                <div class="heading-block topmargin">
-                    <h1>Welcome to <br>{{ $titlePage }}</h1>
+                <div class="col-xl-5">
+                    <div class="heading-block topmargin">
+                        <h1>Welcome to <br>{{ $titlePage }}</h1>
+                    </div>
+                    <p class="lead">{{ $tagLine }}</p>
                 </div>
-                <p class="lead">{{ $tagLine }}</p>
-            </div>
 
-            <div class="col-xl-7">
+                <div class="col-xl-7">
 
-                <div style="position: relative; margin-bottom: -60px;" class="ohidden" data-height-xl="426" data-height-lg="567" data-height-md="470" data-height-md="287" data-height-xs="183">
-                    <img src="frontend/images/training/IMG20190803085127.jpg" style="position: absolute; top: 0; left: 0;" data-animate="fadeInUp" data-delay="400" alt="{{ $titlePage }}">
-{{--                    <img src="frontend/images/services/main-fmobile.png" style="position: absolute; top: 0; left: 0;" data-animate="fadeInUp" data-delay="400" alt="iPad">--}}
+                    <div style="position: relative; margin-bottom: -60px;" class="ohidden" data-height-xl="426" data-height-lg="567" data-height-md="470" data-height-md="287" data-height-xs="183">
+                        <img src="frontend/images/training/IMG20190803085127.jpg" style="position: absolute; top: 0; left: 0;" data-animate="fadeInUp" data-delay="400" alt="{{ $titlePage }}">
+                        {{--                    <img src="frontend/images/services/main-fmobile.png" style="position: absolute; top: 0; left: 0;" data-animate="fadeInUp" data-delay="400" alt="iPad">--}}
+                    </div>
                 </div>
+
             </div>
-
-        </div>
-    </div>
-
-    <div class="section nobottommargin">
-        <div class="container clear-bottommargin clearfix">
 
             <div class="row topmargin-sm clearfix">
 
@@ -62,9 +59,9 @@
                 </div>
 
             </div>
-
         </div>
     </div>
+
 
     <div class="clear-bottommargin"></div>
 

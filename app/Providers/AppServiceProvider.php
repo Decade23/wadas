@@ -6,6 +6,8 @@ use App\Services\Auth\AuthService;
 use App\Services\Auth\AuthServiceContract;
 use App\Services\Auth\User\UserService;
 use App\Services\Auth\User\UserServiceContract;
+use App\Services\Main\MainService;
+use App\Services\Main\MainServiceContract;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
@@ -26,6 +28,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             UserServiceContract::class,
             UserService::class
+        );
+
+        $this->app->bind(
+            MainServiceContract::class,
+            MainService::class
         );
     }
 

@@ -22,6 +22,48 @@ class MainService implements MainServiceContract
     {
     }
 
+    public function news()
+    {
+        // TODO: Implement news() method.
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "https://api.covid19api.com/summary",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET",
+        ));
+
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+
+        curl_close($curl);
+
+        if ($err) {
+            $data = collect(['status' => 'error','message' => $err]);
+            return [];
+            //return $data;
+            // return response()->json(['status' => 'error','message' => $err]);
+        } else {
+            if (json_decode($response) != null) {
+                $data = collect(json_decode($response));
+                //$data = collect($data['Countries'])->where('CountryCode','ID')->values();
+                $data = collect(collect($data['Countries'])->where('CountryCode','ID')->values()[0])->toArray();
+                //dd($data);
+                return $data;
+//                return response()->json(['status' => '200','message' => 'success', 'data' => $response]);
+            }
+            $data = collect(['status' => '503','message' => 'result null']);
+            return [];
+            //            return $data->get('status');
+            // return response()->json(['status' => '503','message' => 'result null']);
+        }
+    }
+
     /**
      * @param $request
      */

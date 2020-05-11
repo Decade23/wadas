@@ -40,6 +40,6 @@
         </div>
 
         <a href="#" data-scrollto="#content" data-offset="100" class="dark one-page-arrow"><i class="icon-angle-down infinite animated fadeInDown"></i></a>
-
     </div>
+
 </section>

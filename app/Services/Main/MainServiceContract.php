@@ -13,4 +13,6 @@ interface MainServiceContract
 {
     public function anyData($request);
 
+    public function news();
+
 }
