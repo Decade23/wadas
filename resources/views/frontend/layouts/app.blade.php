@@ -3,6 +3,7 @@
 <head>
 
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta charset=UTF-8">
     <meta name="author" content="DediF" />
     <meta name="keywords" content="eci" />
     <meta name="description" content="Expert Club  Indonesia" />
@@ -14,6 +15,7 @@
     <meta property="og:image" itemprop="image"  content="{{ asset('eci/logo/eci_logo_no_bg.png') }}"/>
     <meta property="og:image:width" content="300">
     <meta property="og:image:height" content="300">
+    <meta name=”robots” content="index, follow">
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -44,8 +46,8 @@
 
     <!-- Document Title
     ============================================= -->
-    <title>{{ config('app.name') }}</title>
-
+    <title>Expert Club Indonesia</title>
+    <meta name="google-site-verification" content="JNAA_jhJoatZjJr4ccO_FTjZSNuLTu_dgUwrVbLZXNA" />
 </head>
 
 <body class="stretched">
