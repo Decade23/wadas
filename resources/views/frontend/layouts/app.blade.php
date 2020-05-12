@@ -162,7 +162,7 @@
         storageBucket: "{!! config('google.firebase.storage_bucket') !!}",
         messagingSenderId:" {!! config('google.firebase.messaging_sender_id') !!}",
         appId: "{!! config('google.firebase.app_id') !!}",
-        measurementId: "{!! config('google.firebase.measurement_id') !!}"}
+        measurementId: "{!! config('google.firebase.measurement_id') !!}"
     };
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
