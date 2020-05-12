@@ -5,7 +5,17 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta name="author" content="DediF" />
     <meta name="keywords" content="eci" />
-    <meta name="description" content="training" />
+    <meta name="description" content="Expert Club  Indonesia" />
+
+    <meta property="og:site_name" content="ECI Bisnis Manajemen">
+    <meta property="og:url" content="{{ request()->fullUrl() }}"/>
+    <meta property="og:title" content="Expert Club Indonesia"/>
+    <meta property="og:description" content="Training & Consultant Center"/>
+    <meta property="og:image" itemprop="image"  content="{{ asset('eci/logo/eci_logo_no_bg.png') }}"/>
+    <meta property="og:image:width" content="300">
+    <meta property="og:image:height" content="300">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -14,26 +24,20 @@
     ============================================= -->
     <link href="https://fonts.googleapis.com/css?family=Lato:300,400,400i,700|Raleway:300,400,500,600,700|Crete+Round:400i" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="frontend/css/bootstrap.css" type="text/css" />
-{{--    <link rel="stylesheet" href="frontend/css/bootstrap-rtl.css" type="text/css" />--}}
 
     <link rel="stylesheet" href="frontend/style.css" type="text/css" />
-{{--    <link rel="stylesheet" href="frontend/style-rtl.css" type="text/css" />--}}
 
     <link rel="stylesheet" href="frontend/css/swiper.css" type="text/css" />
 
     <link rel="stylesheet" href="frontend/css/dark.css" type="text/css" />
-{{--    <link rel="stylesheet" href="frontend/css/dark-rtl.css" type="text/css" />--}}
 
     <link rel="stylesheet" href="frontend/css/font-icons.css" type="text/css" />
-{{--    <link rel="stylesheet" href="frontend/css/font-icons-rtl.css" type="text/css" />--}}
 
     <link rel="stylesheet" href="frontend/css/animate.css" type="text/css" />
     <link rel="stylesheet" href="frontend/css/magnific-popup.css" type="text/css" />
 
     <link rel="stylesheet" href="frontend/css/responsive.css" type="text/css" />
-{{--    <link rel="stylesheet" href="frontend/css/responsive-rtl.css" type="text/css" />--}}
     @stack('css')
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="favicon.ico">
