@@ -145,5 +145,41 @@
 ============================================= -->
 <script src="frontend/js/functions.js"></script>
 
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-app.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-analytics.js"></script>
+
+<script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+        apiKey: {{ config('google.firebase.api_key') }},
+        authDomain: {{ config('google.firebase.auth_domain') }},
+        databaseURL: {{ config('google.firebase.database_url') }},
+        projectId: {{ config('google.firebase.project_id') }},
+        storageBucket: {{ config('google.firebase.storage_bucket') }},
+        messagingSenderId: {{ config('google.firebase.messaging_sender_id') }},
+        appId: {{ config('google.firebase.app_id') }},
+        measurementId: {{ config('google.firebase.measurement_id') }}
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+</script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ config('google.firebase.measurement_id') }}"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', {{ config('google.firebase.measurement_id') }});
+</script>
+
+@stack('scripts')
+
 </body>
 </html>
