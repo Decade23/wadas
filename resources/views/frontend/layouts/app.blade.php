@@ -176,7 +176,7 @@
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
 
-    gtag('config', {{ config('google.firebase.measurement_id') }});
+    gtag('config', '{!! config('google.firebase.measurement_id') !!}');
 </script>
 
 @stack('scripts')
