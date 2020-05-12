@@ -155,14 +155,14 @@
 <script>
     // Your web app's Firebase configuration
     var firebaseConfig = {
-        apiKey: {{ config('google.firebase.api_key') }},
-        authDomain: {{ config('google.firebase.auth_domain') }},
-        databaseURL: {{ config('google.firebase.database_url') }},
-        projectId: {{ config('google.firebase.project_id') }},
-        storageBucket: {{ config('google.firebase.storage_bucket') }},
-        messagingSenderId: {{ config('google.firebase.messaging_sender_id') }},
-        appId: {{ config('google.firebase.app_id') }},
-        measurementId: {{ config('google.firebase.measurement_id') }}
+        apiKey: "{!! config('google.firebase.api_key') !!}",
+        authDomain: "{!! config('google.firebase.auth_domain') !!}",
+        databaseURL: "{!! config('google.firebase.database_url') !!}",
+        projectId: "{!! config('google.firebase.project_id') !!}",
+        storageBucket: "{!! config('google.firebase.storage_bucket') !!}",
+        messagingSenderId:" {!! config('google.firebase.messaging_sender_id') !!}",
+        appId: "{!! config('google.firebase.app_id') !!}",
+        measurementId: "{!! config('google.firebase.measurement_id') !!}"}
     };
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
