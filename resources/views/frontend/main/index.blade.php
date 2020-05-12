@@ -31,9 +31,9 @@
 
     </div>
     -->
-    @include('frontend.section.testimonials')
-
     @include('frontend.section.blog')
+
+    @include('frontend.section.testimonials')
 
     @include('frontend.section.team')
 

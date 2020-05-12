@@ -1,5 +1,5 @@
 <section id="section-blog" class="page-section">
-    <div class="section notopmargin notopborder">
+    <div class="section nobg notopmargin notopborder">
         <div class="container clearfix">
             <div class="heading-block center nomargin">
                 <h3>Latest from the Blog</h3>

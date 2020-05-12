@@ -169,8 +169,7 @@
 <div id="copyrights">
 
     <div class="container clearfix">
-
-        <div class="col_half">
+        <div class="col_full col_last text-center">
             Copyrights &copy; {{ date('Y') }} All Rights Reserved by {{ $titlePage }}.<br>
 {{--            <div class="copyright-links"><a href="#">Terms of Use</a> / <a href="#">Privacy Policy</a></div>--}}
         </div>

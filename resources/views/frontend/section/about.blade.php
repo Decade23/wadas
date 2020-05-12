@@ -1,4 +1,5 @@
 <section id="section-about" class="page-section">
+    <!-- welcome -->
     <div  class="section nobottommargin">
         <div class="container clearfix">
             <div class="row clearfix">
@@ -7,7 +8,7 @@
                     <div class="heading-block topmargin">
                         <h1>Welcome to <br>{{ $titlePage }}</h1>
                     </div>
-                    <p class="lead">{{ $tagLine }}</p>
+                    <blockquote><p>{{ $tagLine }}</p></blockquote>
                 </div>
 
                 <div class="col-xl-7">
@@ -19,8 +20,63 @@
                 </div>
 
             </div>
+        </div>
+    </div>
 
-            <div class="row topmargin-sm clearfix">
+    <!-- about us -->
+    <div class="container nobottommargin clearfix">
+        <div class="page-section section nobg nomargin">
+            <div class="heading-block bottommargin-lg center">
+                <h2>About Us.</h2>
+                <span>Everything you need to know about us.</span>
+            </div>
+
+            <div class="col_one_third">
+
+                <div class="heading-block fancy-title nobottomborder title-bottom-border">
+                    <h4>Our <span>Vision</span></h4>
+                </div>
+
+                <p>Menjadi partner perbaikan, pengembangan dan pertumbuhan bisnis usaha didunia.</p>
+
+            </div>
+
+
+            <div class="col_one_third">
+
+                <div class="heading-block fancy-title nobottomborder title-bottom-border">
+                    <h4>Our <span>Mission</span></h4>
+                </div>
+
+                <p>Memberikan manfaat yang bernilai bagi pelanggan, karyawan, shareholder.</p>
+
+            </div>
+
+            <div class="col_one_third col_last">
+
+                <div class="heading-block fancy-title nobottomborder title-bottom-border">
+                    <h4>Corporate Cultural <span>Values</span></h4>
+                </div>
+                <p>
+                    <code>E-C-I</code> <br />
+                    <b>Extraordinary service</b> <br />
+                    Mempunyai kemampuan dalam mewujudkan harapan customer dengan profesionalitas. <br />
+                    <b>Customer focus</b> <br />
+                    Mempunyai sikap senantiasa menemukan, mengutamakan dan mewujudkan harapan pelanggan internal dan eksternal.<br />
+                    <b>Extraordinary service</b> <br />
+                    Mempunyai sikap kejujuran, keterbukaan dan menjunjung prioritas terwujudnya visi misi dan strategy perusahaan.<br />
+                </p>
+
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- others -->
+    <div class="section nobottommargin">
+        <div class="container clearfix">
+            <div class="row clearfix">
 
                 <div class="col-lg-6 bottommargin">
                     <i class="i-plain color i-large icon-line2-screen-desktop inline-block" style="margin-bottom: 15px;"></i>
@@ -61,6 +117,7 @@
             </div>
         </div>
     </div>
+
 
 
     <div class="clear-bottommargin"></div>

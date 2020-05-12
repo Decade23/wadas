@@ -1,5 +1,5 @@
 <section id="section-team" class="page-section">
-<div class="section">
+<div class="section notopmargin notopborder">
     <div class="container clearfix">
 
         <div class="heading-block topmargin-sm center">

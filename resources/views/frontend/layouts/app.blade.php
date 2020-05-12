@@ -14,14 +14,24 @@
     ============================================= -->
     <link href="https://fonts.googleapis.com/css?family=Lato:300,400,400i,700|Raleway:300,400,500,600,700|Crete+Round:400i" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="frontend/css/bootstrap.css" type="text/css" />
+{{--    <link rel="stylesheet" href="frontend/css/bootstrap-rtl.css" type="text/css" />--}}
+
     <link rel="stylesheet" href="frontend/style.css" type="text/css" />
+{{--    <link rel="stylesheet" href="frontend/style-rtl.css" type="text/css" />--}}
+
     <link rel="stylesheet" href="frontend/css/swiper.css" type="text/css" />
+
     <link rel="stylesheet" href="frontend/css/dark.css" type="text/css" />
+{{--    <link rel="stylesheet" href="frontend/css/dark-rtl.css" type="text/css" />--}}
+
     <link rel="stylesheet" href="frontend/css/font-icons.css" type="text/css" />
+{{--    <link rel="stylesheet" href="frontend/css/font-icons-rtl.css" type="text/css" />--}}
+
     <link rel="stylesheet" href="frontend/css/animate.css" type="text/css" />
     <link rel="stylesheet" href="frontend/css/magnific-popup.css" type="text/css" />
 
     <link rel="stylesheet" href="frontend/css/responsive.css" type="text/css" />
+{{--    <link rel="stylesheet" href="frontend/css/responsive-rtl.css" type="text/css" />--}}
     @stack('css')
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -42,8 +52,8 @@
 
     <!-- Header
     ============================================= -->
-    <header id="header" class="transparent-header full-header" data-sticky-class="not-dark">
-
+    <!-- <header id="header" class="transparent-header full-header" data-sticky-class="not-dark"> before -->
+    <header id="header" class="transparent-header" data-sticky-class="not-dark">
         <div id="header-wrap">
 
             <div class="container clearfix">
@@ -53,8 +63,8 @@
                 <!-- Logo
                 ============================================= -->
                 <div id="logo">
-                    <a href="index.html" class="standard-logo" data-dark-logo="frontend/images/eci_logo_v1.png"><img src="frontend/images/eci_logo_v1.png" alt="ECI Logo"></a>
-                    <a href="index.html" class="retina-logo" data-dark-logo="frontend/images/eci_logo@2x_v1.png"><img src="frontend/images/eci_logo@2x_v1.png" alt="ECI Logo"></a>
+                    <a href="{{ route('front_main.index') }}" class="standard-logo" data-dark-logo="eci/logo/eci_logo_no_bg.png"><img src="eci/logo/eci_logo_no_bg.png" alt="ECI Logo"></a>
+                    <a href="{{ route('front_main.index') }}" class="retina-logo" data-dark-logo="eci/logo/eci_logo_no_bg.png"><img src="eci/logo/eci_logo_no_bg.png" alt="ECI Logo"></a>
                 </div><!-- #logo end -->
 
                 <!-- Primary Navigation
@@ -66,7 +76,7 @@
                         <li><a href="#" data-href="#section-news"><div>News</div></a></li>
                         <li><a href="#" data-href="#section-about" data-offset="60"><div>About</div></a></li>
                         <li><a href="#" data-href="#section-work" data-offset="60"><div>Work</div></a></li>
-                        <li><a href="#" data-href="#section-blog" data-offset="60"><div>Blog</div></a></li>
+                        <li><a href="#" data-href="#section-blog" data-offset="10"><div>Blog</div></a></li>
                         <li><a href="#" data-href="#section-testimonials" data-offset="60"><div>Testimonials</div></a></li>
                         <li><a href="#" data-href="#section-team" data-offset="60"><div>Team</div></a></li>
                         <li><a href="#clients" data-href="#section-clients"><div>Clients</div></a></li>
@@ -118,7 +128,7 @@
 
 <!-- Go To Top
 ============================================= -->
-<div id="gotoTop" class="icon-angle-up"></div>
+<div id="gotoTop" class="icon-angle-up" data-mobile="true"></div>
 
 <!-- External JavaScripts
 ============================================= -->

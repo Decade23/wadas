@@ -1,5 +1,5 @@
 <section id="section-work" class="page-section">
-    <div class="section topmargin nobottommargin nobottomborder">
+    <div class="section nobg topmargin nobottommargin nobottomborder">
         <div class="container clearfix">
             <div class="heading-block center">
                 <h3>Our Latest Works</h3>
@@ -108,8 +108,64 @@
 
     </div>
 
+    <!-- Our Business -->
+    <div class="section nobottommargin nobottomborder">
+        <div class="container nobottommargin clearfix">
+            <div class="heading-block center">
+                <h2>Services</h2>
+                <span>Everything you need to know about our services.</span>
+            </div>
+            <div class="row pricing clearfix">
+                <div class="col-md-6">
+                    <div class="pricing-box best-price">
+                        <div class="pricing-title">
+                            <h3>Training</h3>
+                        </div>
+                        <div class="pricing-features">
+                            <ul>
+                                <li>BALANCED SCORE CARD</li>
+                                <li>TOTAL QUALITY MANAGEMENT</li>
+                                <li>LEAN SIXSIGMA</li>
+                                <li>HUMAN RESOURCESS MANAGEMENT</li>
+                            </ul>
+                        </div>
+                        <div class="pricing-action">
+                            <a href="https://api.whatsapp.com/send?phone=+628112231147&text=Hello%2C%20Mau%20Tanya%20Training%20Dan%20Consultant?" target="_blank" class="btn btn-danger btn-block btn-lg">Send Messages</a>
+                        </div>
+                    </div>
+                </div>
 
-    <div class="clear"></div>
+                <div class="col-md-6">
+                    <div class="pricing-box">
+                        <div class="pricing-title">
+                            <h3>Consultant</h3>
+                        </div>
+                        <div class="pricing-features">
+                            <ul>
+                                <li>BALANCED SCORE CARD</li>
+                                <li>TOTAL QUALITY MANAGEMENT</li>
+                                <li>LEAN SIXSIGMA</li>
+                                <li>HUMAN RESOURCESS MANAGEMENT</li>
+                            </ul>
+                        </div>
+                        <div class="pricing-action">
+                            <a href="https://api.whatsapp.com/send?phone=+628112231147&text=Hello%2C%20Mau%20Tanya%20Training%20Dan%20Consultant?" target="_blank" class="btn btn-danger btn-block btn-lg">Send Messages</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <p><code>*</code>for a while training and consultant needs through whatsapp or call.<br />
+                    <b>Contact Person: +62 811-2231-147 (Muzzakir)</b>
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="clear-bottommargin"></div>
 
     <!-- see more our work
     <a href="portfolio.html" class="button button-full button-dark center tright bottommargin-lg">

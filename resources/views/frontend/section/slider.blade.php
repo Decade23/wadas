@@ -1,4 +1,4 @@
-<section id="slider" class="page-section slider-element slider-parallax swiper_wrapper full-screen clearfix">
+<section id="slider" class="page-section slider-element slider-parallax swiper_wrapper full-screen clearfix" data-speed="600" data-effect="cube"data-loop="true">
     <div class="slider-parallax-inner">
 
         <div class="swiper-container swiper-parent">
