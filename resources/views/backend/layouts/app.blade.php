@@ -67,7 +67,7 @@
     <div class="kt-header-mobile__logo">
         <a href="#">
 {{--            <img alt="Logo" src="{{ asset('themes/eci/media/logos/logo-light.png') }}">--}}
-            <span style="color: #9de0f6;">ECI</span>
+            <span style="color: #9de0f6;">ECI Console</span>
 {{--        {{ url('themes/eci/media/logos/logo-light.png') }}    --}}
         </a>
     </div>
@@ -95,7 +95,7 @@
                 <div class="kt-aside__brand-logo">
                     <a href="#">
 {{--                        <img alt="Logo" src="{{url('themes/eci/media/logos/logo-light.png')}}" >--}}
-                        <span style="color: #9de0f6;">ECI</span>
+                        <span style="color: #9de0f6;">ECI Console</span>
 {{--                     {{url('themes/eci/media/logos/logo-light.png')}}   --}}
                     </a>
                 </div>
@@ -218,8 +218,56 @@
 </div>
 <!-- end:: Page -->
 
+<!--begin::RemoveModal-->
+<div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"><i class="flaticon-warning"></i> Attention</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <form action="" method="post" id="remove-form">
+                {!! csrf_field() !!}
 
+                <input name="_method" type="hidden" id="method" value="DELETE">
 
+                <div class="remove-form-list"></div>
+                <div class="modal-body">
+                    <div class="alert alert-solid-danger alert-bold" role="alert">
+                        <div class="alert-icon"><i class="flaticon-warning"></i></div>
+                        <div class="alert-text"><span id="message"></span></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                    <button type="submit" class="btn btn-primary">Yes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--end::RemoveModal-->
+
+<!--begin::AlertModal-->
+<div class="modal fade" id="alertModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"><i class="flaticon-warning"></i> Attention</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="modal-text"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--end::AlertModal-->
 
 
 <!-- begin::Quick Panel -->
@@ -295,9 +343,45 @@
 
 <!-- tooltip -->
 <script>
+
+    (function () {
+        window.alert = function () {
+            $('#alertModal #modal-text').text(arguments[0]);
+            $('#alertModal').modal('show');
+        };
+    })();
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
     $(function () {
         $('[data-tooltip-custom="tooltip"]').tooltip({ boundary: 'window' })
     })
+
+    $(document).keypress(function(event){
+        if (event.which == '13') {
+            event.preventDefault();
+        }
+    });
+
+    $('#delete').on('show.bs.modal', function (e) {
+        var removedLinkFull = $(e.relatedTarget).data('href');
+        var message         = $(e.relatedTarget).data('message');
+        var title           = $(e.relatedTarget).data('title');
+        var method          = $(e.relatedTarget).data('method');
+
+        $('#title').text(title);
+        $('#message').text(message);
+
+        if(typeof method != 'undefined'){
+            $('#method').val(method);
+        }
+
+        $('#remove-form').attr('action', removedLinkFull);
+    });
 </script>
 <!-- end tooltip -->
 

@@ -1,6 +1,7 @@
 @extends('backend.layouts.app')
 
 @section('body')
+    @include('flash')
     <div class="kt-portlet kt-portlet--mobile">
         <div class="kt-portlet__head kt-portlet__head--lg">
             <div class="kt-portlet__head-label">
@@ -62,7 +63,7 @@
                 <thead>
                 <tr>
                     <th>#</th>
-                    <th></th>
+{{--                    <th></th>--}}
                     <th>Email</th>
                     <th>Name</th>
                     <th>Phone</th>
@@ -111,13 +112,13 @@
                 // scrollCollapse: !0,
                 // scroller: !0,
                 //select: !0, // select by 1
-                select: {
-                    style: "multi",
-                    selector: "td:first-child .kt-checkable"
-                },
-                headerCallback: function(e, t, a, s, n) {
-                    e.getElementsByTagName("th")[0].innerHTML = '<label class="kt-checkbox kt-checkbox--single kt-checkbox--solid kt-checkbox--brand"><input type="checkbox" value="" class="kt-group-checkable"><span></span></label>';
-                },
+                // select: {
+                //     style: "multi",
+                //     selector: "td:first-child .kt-checkable"
+                // },
+                // headerCallback: function(e, t, a, s, n) {
+                //     e.getElementsByTagName("th")[0].innerHTML = '<label class="kt-checkbox kt-checkbox--single kt-checkbox--solid kt-checkbox--brand"><input type="checkbox" value="" class="kt-group-checkable"><span></span></label>';
+                // },
                 dom: "<'dt-panelmenu clearfix'<'row'<'col-sm-2'B><'col-sm-4'l><'col-sm-6'f>>>" +
                     "<'row'<'col-sm-12'tr>>" +
                     "<'dt-panelfooter clearfix'<'row'<'col-sm-5'i><'col-sm-7'p>>>",
@@ -130,11 +131,11 @@
                     }
                 },
                 columns: [
-                    {data: 'id', name: 'id', visible: false},
-                    {
-                        data: 'checkbox', name: 'checkbox', orderable: false, searchable: false,
-                        checkboxes: true
-                    },
+                    {data: 'id', name: 'id'},
+                    // {
+                    //     data: 'checkbox', name: 'checkbox', orderable: false, searchable: false,
+                    //     checkboxes: true
+                    // },
                     {data: 'email', name: 'email'},
                     {data: 'name', name: 'name'},
                     {data: 'phone', name: 'phone'},
@@ -205,7 +206,7 @@
                          }
                      },
                      columns: [
-                         {data: 'id', name: 'id', visible: false},
+                         {data: 'id', name: 'id', visible: true},
                          {
                              data: 'checkbox', name: 'checkbox', orderable: false, searchable: false,
                              checkboxes: true

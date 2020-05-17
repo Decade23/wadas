@@ -3,7 +3,7 @@
  * Created By Dedi Fardiyanto
  * Copyright (c) 2020, Inc - All Rights Reserved
  * @Filename UserServiceContract.php
- * @LastModified 26/03/2020, 00:24
+ * @LastModified 18/05/2020, 00:51
  */
 
 namespace App\Services\Auth\User;
@@ -44,7 +44,7 @@ interface UserServiceContract
      * @param int $id
      * @return mixed
      */
-    public function destroy(int $id);
+    public function destroy($user);
 
     /**
      * @param array $id
@@ -57,5 +57,11 @@ interface UserServiceContract
      * @return mixed
      */
     public function datatable($request);
+
+    /**
+     * @param int $id
+     * @return mixed
+     */
+    public function status(int $id);
 
 }

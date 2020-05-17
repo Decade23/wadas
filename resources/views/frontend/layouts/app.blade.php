@@ -3,9 +3,8 @@
 <head>
 
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <meta charset=UTF-8">
     <meta name="author" content="DediF" />
-    <meta name="keywords" content="eci" />
+    <meta name="keywords" content="eci, eci bisnis manajemen, expert club indonesia, expert, club, indoensia, consulting, bisnis" />
     <meta name="description" content="Expert Club  Indonesia" />
 
     <meta property="og:site_name" content="ECI Bisnis Manajemen">

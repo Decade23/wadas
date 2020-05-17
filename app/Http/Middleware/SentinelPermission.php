@@ -35,7 +35,7 @@ class SentinelPermission
             return redirect()->guest('console/login');
         }
 
-        if ( isset($user->roles[0]) && $user->roles[0] == 'root' ) {
+        if ( isset($user->roles[0]) && $user->roles[0]->slug == 'root' ) {
             return $next( $request );
         }
 

@@ -9,6 +9,8 @@
 namespace App\Services\Auth\User;
 
 use App\Models\Auth\User;
+use Cartalyst\Sentinel\Laravel\Facades\Activation;
+use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 use function foo\func;
@@ -73,13 +75,32 @@ class UserService implements UserServiceContract
         DB::beginTransaction();
         try {
             # logic to insert to DB
+            $userDb = Sentinel::getUser();
+            $email = $request->email;
+
+            #inserto into DB
+            $data = [
+                'name'       => $request->name,
+                'phone'      => $request->phone,
+                'email'      => strtolower( $email ),
+                'password'   => $request->password,
+                'created_by' => $userDb->name,
+                'updated_by' => $userDb->name
+            ];
+
+            #create new user
+            $user = Sentinel::registerAndActivate( $data );
+
+            # attach user into role
+            $role = Sentinel::findRoleById( $request->role );
+            $role->users()->attach( $user );
 
             # commit to insert to DB
             DB::commit();
 
             # return to controller
-            return '';
-        } catch (\Exception $e) {
+            return $user;
+        } catch (\Exception $exception) {
             #rollback to begin (not insert to DB)
             DB::rollBack();
 
@@ -99,15 +120,61 @@ class UserService implements UserServiceContract
     public function update(int $id, $request)
     {
         // TODO: Implement update() method.
+        $user = Sentinel::findById( $id );
+
+        DB::beginTransaction();
+        try {
+
+            $oldRole = Sentinel::findRoleById( $user->roles[0]->id ?? null );
+
+            $credentials = [
+                'name'       => $request->name,
+                'phone'      => $request->phone,
+                'updated_by' => $user->name
+            ];
+
+            #If User Input Password
+            if ( $request->password ) {
+                $credentials['password'] = $request->password;
+            }
+
+            #Valid User For Update
+            $role = Sentinel::findRoleById( $request->role );
+
+            if ( $oldRole ) {
+                #Remove a user from a role.
+                $oldRole->users()
+                    ->detach( $user );
+            }
+
+            #Assign a user to a role.
+            $role->users()
+                ->attach( $user );
+
+            #Update User
+            $updateIntoDb = Sentinel::update( $user, $credentials );
+            DB::commit();
+
+            return $updateIntoDb;
+
+        } catch ( \Exception $exception ) {
+
+            DB::rollBack();
+
+            dd('Message: '.$exception->getMessage() . ' Line: ' . $exception->getLine()  . ' Code: ' . $exception->getCode());
+
+            return $exception->getCode();
+        }
     }
 
     /**
      * @param int $id
      * @return mixed|void
      */
-    public function destroy(int $id)
+    public function destroy($user)
     {
         // TODO: Implement destroy() method.
+        return $user->delete();
     }
 
     /**
@@ -137,11 +204,27 @@ class UserService implements UserServiceContract
                 return $dataDb->updated_at->format('d M Y H:i:s');
             })
             ->addColumn('status', function($dataDb) {
-                if ($dataDb->activations[0]->completed == 1) {
-                    return '<a href="#" data-message="Not Active This User: '.$dataDb->name.'" data-href="'.route('user.status', $dataDb->id).'" data-toggle="kt-tooltip" title="Deactive this user"><span class="kt-badge  kt-badge--success kt-badge--inline kt-badge--pill">Active</span></a>';
-                } else {
-                    return '<a href="#"><span class="kt-badge  kt-badge--danger kt-badge--inline kt-badge--pill">Not Active</span></a>';
+                if ($dataDb->activations->isNotEmpty()) {
+                    if ($dataDb->activations[0]->completed == 1) {
+                        return '<a href="#" data-message="Are you sure you want to deactivate the user \''.$dataDb->name.'\' ?"
+                    data-href="'.route('user.status', $dataDb->id).'"
+                    data-title="Deactive This User"
+                    data-title-modal="Deactive This User"
+                    data-method="PUT"
+                    data-toggle="modal"
+                    data-target="#delete"
+                    title="Deactive this user"><span class="kt-badge  kt-badge--success kt-badge--inline kt-badge--pill">Active</span></a>';
+                    }
                 }
+                    return '<a href="#" data-message="Are you sure you want to activate the user \''.$dataDb->name.'\' ?"
+                    data-href="'.route('user.status', $dataDb->id).'"
+                    data-title="Activate This User"
+                    data-title-modal="Activate This User"
+                    data-method="PUT"
+                    data-toggle="modal"
+                    data-target="#delete"
+                    title="Activated this user"><span class="kt-badge  kt-badge--danger kt-badge--inline kt-badge--pill">Inactive</span></a>';
+
             })
             ->addColumn('role', function($dataDb) {
                 if ($dataDb->roles->isNotEmpty()) {
@@ -150,12 +233,12 @@ class UserService implements UserServiceContract
                         ->all() );
                 }
             })
-            ->addColumn(
-                'checkbox',
-                function ($dataDb) {
-                    return '<label class="kt-checkbox kt-checkbox--single kt-checkbox--solid kt-checkbox--brand"><input type="checkbox" value="'.$dataDb->id.'" class="kt-checkable"><span></span></label>'; //$dataDb->id;
-                }
-            )
+//            ->addColumn(
+//                'checkbox',
+//                function ($dataDb) {
+//                    return '<label class="kt-checkbox kt-checkbox--single kt-checkbox--solid kt-checkbox--brand"><input type="checkbox" value="'.$dataDb->id.'" class="kt-checkable"><span></span></label>'; //$dataDb->id;
+//                }
+//            )
             ->addColumn('action', function ($dataDb){
                 $btnShow = '<a href="'.route('user.show', $dataDb->id).'" id="tooltip" title="'.trans('global.show').'">
                             <span class="label label-primary label-sm">
@@ -170,19 +253,54 @@ class UserService implements UserServiceContract
                             ';
 
                 $btnDelete = '<a href="#"
-                                data-message="'.trans('auth.delete_confirmation', ['name' => $dataDb->name]).'"
+                                data-message="Are u sure for delete this? '.$dataDb->name.'"
                                 data-href="'.route('user.destroy', $dataDb->id).'"
                                 data-method="DELETE"
-                                id="tooltip" title="delete" data-toggle="tooltip"
+                                title="delete"
                                 data-original-title="Delete It?"
-                                data-title="'.trans('global.delete').'"
-                                data-toggle="modal" data-target="#delete">
+                                data-title="Delte It?"
+                                data-title-modal="Are u sure for delete this?"
+                                data-toggle="modal"
+                                data-target="#delete">
                                 <i class="flaticon-delete kt-font-danger"></i>
                     </a>';
                 return $btnEdit . $btnDelete;
             })
-            ->rawColumns(['checkbox','action', 'status'])
+            ->rawColumns(['action', 'status'])
             ->make(true);
+    }
+
+    public function status(int $id)
+    {
+        // TODO: Implement status() method.
+        $user = Sentinel::findById( $id );
+
+        $activation = Activation::completed( $user );
+
+        if ( $activation !== false ) {
+            #Deactivated This Activation
+            if ( $user->id === Sentinel::getUser()->id ) {
+                return false;
+            }
+
+            #Remove this account
+            Activation::remove( $user );
+            return true;
+        }
+
+        #Deactivated This Activation
+        if ( $user->id === Sentinel::getUser()->id ) {
+
+            return false;
+        }
+
+        #Get Activation Code
+        $activationCreate = Activation::create( $user );
+
+        #Activate this account
+        Activation::complete( $user, $activationCreate->code );
+
+        return true;
     }
 
 
