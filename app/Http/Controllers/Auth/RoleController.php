@@ -1,10 +1,4 @@
 <?php
-/**
- * Created By Dedi Fardiyanto
- * Copyright (c) 2020, Inc - All Rights Reserved
- * @Filename UserController.php
- * @LastModified 26/03/2020, 01:00
- */
 
 namespace App\Http\Controllers\Auth;
 
@@ -12,20 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\User\createRequest;
 use App\Http\Requests\Auth\User\deleteRequest;
 use App\Http\Requests\Auth\User\updateRequest;
-use App\Models\Auth\Role;
 use App\Services\Auth\Role\RoleServiceContract;
 use App\Services\Auth\User\UserServiceContract;
 use App\Traits\redirectTo;
-use Cartalyst\Sentinel\Laravel\Facades\Activation;
-use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
 
-/**
- * Class UserController
- * @package App\Http\Controllers\Auth
- */
-class UserController extends Controller
+class RoleController extends Controller
 {
     use redirectTo;
 

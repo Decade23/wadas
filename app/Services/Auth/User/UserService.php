@@ -11,6 +11,7 @@ namespace App\Services\Auth\User;
 use App\Models\Auth\User;
 use Cartalyst\Sentinel\Laravel\Facades\Activation;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 use function foo\func;
@@ -270,6 +271,10 @@ class UserService implements UserServiceContract
             ->make(true);
     }
 
+    /**
+     * @param int $id
+     * @return bool|mixed
+     */
     public function status(int $id)
     {
         // TODO: Implement status() method.
@@ -301,6 +306,25 @@ class UserService implements UserServiceContract
         Activation::complete( $user, $activationCreate->code );
 
         return true;
+    }
+
+    /**
+     * @param $request
+     * @return mixed
+     */
+    public function select2($request)
+    {
+        // TODO: Implement select2() method.
+        $perPage    = 10;
+        $page       = $request->page ?? 1;
+
+        Paginator::currentPageResolver(function() use($page) {
+            return $page;
+        });
+
+        $dataDb = User::select(['id', 'name as text', 'phone'])->where('name', 'LIKE', '%' . $request->term . '%')->where('type', 'user')->orderBy('name')->paginate($perPage);
+
+        return $dataDb;
     }
 
 

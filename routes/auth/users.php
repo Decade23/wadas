@@ -7,7 +7,7 @@
  */
 Route::group([
     'prefix' => 'users',
-//    'middleware' => 'prevent.default.history'
+'middleware' => 'prevent.back.history'
 ], function () {
 
     Route::get('', 'UserController@index')
@@ -42,6 +42,10 @@ Route::group([
     # for DataTables
     Route::get('ajax/data', 'UserController@datatable')
         ->name('user.ajax.data')->middleware('sentinel.permission:user.show');
+
+    # for select2
+    Route::get('ajax/select2', 'UserController@select2')
+        ->name('user.ajax.select2')->middleware('sentinel.permission:user.show');
 
 });
 

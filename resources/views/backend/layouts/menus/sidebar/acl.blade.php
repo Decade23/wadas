@@ -32,8 +32,9 @@
                     {{-- <i class="kt-menu__ver-arrow la la-angle-right"></i>--}}
                 </a>
             </li>
-            <li class="kt-menu__item " aria-haspopup="true" >
-                <a  href="#" class="kt-menu__link @if(request()->is('console/roles*')) {{ 'kt-menu__item--active' }} @endif"><i class="kt-menu__link-bullet kt-menu__link-bullet--line">
+            <li class="kt-menu__item @if(request()->is('console/roles*')) {{ 'kt-menu__item--active' }} @endif " aria-haspopup="true" >
+                <a  href="{{ route('roles.index') }}" class="kt-menu__link">
+                    <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
                         <span></span>
                     </i>
                     <span class="kt-menu__link-text">Roles</span>

@@ -64,4 +64,10 @@ interface UserServiceContract
      */
     public function status(int $id);
 
+    /**
+     * @param $request
+     * @return mixed
+     */
+    public function select2($request);
+
 }
