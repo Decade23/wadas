@@ -101,15 +101,16 @@
                 aaSorting: [[0, 'desc']],
                 iDisplayLength: 25,
                 //stateSave: true,
-                // responsive: true,
-                // scrollX: !0,
+                //responsive: true,
+
                 fixedHeader: true,
                 deferRender: !0,
-                responsive: !0,
+                //responsive: !0,
                 processing: true,
                 serverSide: true,
                 // scrollY: "500px",
-                // scrollCollapse: !0,
+                scrollX: !0,
+                scrollCollapse: !0,
                 // scroller: !0,
                 //select: !0, // select by 1
                 // select: {

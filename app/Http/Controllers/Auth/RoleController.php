@@ -3,30 +3,29 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\User\createRequest;
-use App\Http\Requests\Auth\User\deleteRequest;
-use App\Http\Requests\Auth\User\updateRequest;
+use App\Http\Requests\Auth\Role\createRequest;
+use App\Http\Requests\Auth\Role\updateRequest;
+use App\Models\Auth\Role;
 use App\Services\Auth\Role\RoleServiceContract;
-use App\Services\Auth\User\UserServiceContract;
 use App\Traits\redirectTo;
+use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class RoleController extends Controller
 {
     use redirectTo;
 
-    private $service, $roleService;
+    private $service;
 
     /**
      * UserController constructor.
      */
     public function __construct(
-        UserServiceContract $userServiceContract,
         RoleServiceContract $roleServiceContract
     )
     {
-        $this->service = $userServiceContract;
-        $this->roleService = $roleServiceContract;
+        $this->service = $roleServiceContract;
     }
 
     /**
@@ -34,91 +33,85 @@ class RoleController extends Controller
      */
     public function index()
     {
-        return view('backend.user_page.index');
+        return view('auth.roles.index');
     }
 
     public function create()
     {
-        $roleDb = $this->roleService->getRole();
+        $permissions = [];
 
-        return view('backend.user_page.create', compact('roleDb'));
+        return view('auth.roles.create', compact('permissions'));
     }
 
     public function store(createRequest $request)
     {
         #if success insert into DB
         if  (is_object($this->service->store($request))) {
-            return $this->redirectSuccessCreate(route('user.index'),'Success Created.');
+            return $this->redirectSuccessCreate(route('roles.index'),'Success Created.');
         }
 
         #if fails insert into DB
-        return $this->redirectFailed(route('user.index'),'Error! Unsuccessfully. Fail to created.');
+        return $this->redirectFailed(route('roles.index'),'Error! Unsuccessfully. Fail to created.');
     }
 
     public function edit($id)
     {
-        $user = Sentinel::findUserById( $id );
+        $dataDb = Role::find( $id );
 
-        #if user not found redirect back
-        if ( empty( $user ) ) {
-            Session::flash( 'failed', 'User Not Found' );
-            return redirect()->route('user.index');
+        if ( empty( $dataDb ) || Sentinel::getUser()->roles[0]->slug !== 'root' && $this->restricted($dataDb->slug) ) {
+            Session::flash( 'failed', 'Access Denied' );
+
+            return redirect()->route('roles.index');
         }
-        $roleDb = $this->roleService->getRole();
-        $userRole = $user->roles[0]->id ?? null;
 
-        return view('backend.user_page.update', array(
-            'data'     => $user,
-            'roleDb'   => $roleDb,
-            'userRole' => $userRole
-        ));
+        $permission = json_decode( json_encode( $dataDb->permissions ), true );
+
+        return view( 'auth.roles.update', array(
+            'dataDb'      => $dataDb,
+            'permissions' => $permission
+        ) );
     }
 
     public function update(updateRequest $request, $id)
     {
         #if success update into DB
         if  (is_object($this->service->update($id,$request))) {
-            return $this->redirectSuccessUpdate(route('user.index'),'Success Updated.');
+            return $this->redirectSuccessUpdate(route('roles.index'),'Success Updated.');
         }
 
         #if fails update into DB
-        return $this->redirectFailed(route('user.index'),'Error! Unsuccessfully. Fail to updated.');
+        return $this->redirectFailed(route('roles.index'),'Error! Unsuccessfully. Fail to updated.');
     }
 
-    public function destroy(deleteRequest $request, $id)
+    public function destroy($id)
     {
-        #retrieve user
-        $user = Sentinel::findById( $id );
-
-        #if user root can't delete
-        if (Sentinel::inRole( 'root' ) === true) {
-            return $this->redirectFailed(route('user.index'),'Error! Unsuccessfully. Something Went Wrong.');
-        }
-
         #if success delete user
-        if ($this->service->destroy($user)) {
-            return $this->redirectSuccessDelete(route('user.index'), 'Success Deleted.');
+        if ($this->service->destroy($id)) {
+            return $this->redirectSuccessDelete(route('roles.index'), 'Success Deleted.');
         }
 
         #if fails delete user
-        return $this->redirectFailed(route('user.index'),'Error! Unsuccessfully. Fail to deleted.');
+        return $this->redirectFailed(route('roles.index'),'Error! Unsuccessfully. Fail to deleted.');
     }
 
     public function status($id)
     {
         #if success updated status
         if ($this->service->status($id)) {
-            return $this->redirectSuccessUpdate(route('user.index'),'Success Updated Status.');
+            return $this->redirectSuccessUpdate(route('roles.index'),'Success Updated Status.');
         }
 
         #can't deactivated user itself
         #if fails updated status
-        return $this->redirectFailed(route('user.index'),'Error! Unsuccessfully. Fail to updated status.');
+        return $this->redirectFailed(route('roles.index'),'Error! Unsuccessfully. Fail to updated status.');
     }
 
     public function datatable(Request $request)
     {
-        return $this->service->datatable($request);
+        if ($request->ajax()) {
+            return $this->service->datatable($request);
+        }
+        return abort('404', 'Uups');
     }
 
     public function select2(Request $request)

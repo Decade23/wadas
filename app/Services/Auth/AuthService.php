@@ -38,8 +38,8 @@ class AuthService implements AuthServiceContract
                     if ( $request->rto != null ) { # if success login and get rto (rto is last page visitor login)
                         return redirect()->to($request->rto);
                     } else { # if success login
-                        $page_title = 'Dashboard';
-                        return redirect()->route('main.index',$page_title);
+
+                        return redirect()->route('main.index');
                     }
                 } else {
                     Sentinel::logout();

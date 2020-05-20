@@ -65,12 +65,6 @@ interface RoleServiceContract
     public function datatable($request);
 
     /**
-     * @param int $id
-     * @return mixed
-     */
-    public function status(int $id);
-
-    /**
      * @param $request
      * @return mixed
      */

@@ -23,7 +23,7 @@ class MainController extends Controller
      */
     public function index()
     {
-//        dd(asset('public/themes/eci/plugins/global/plugins.bundle.js'));
+        #dd(asset('public/themes/eci/plugins/global/plugins.bundle.js'));
         return view('backend.main_page.index');
     }
 }

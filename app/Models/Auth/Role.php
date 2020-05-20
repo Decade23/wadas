@@ -17,6 +17,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Role extends EloquentRole
 {
+    #protected $dateFormat = 'Y-m-d';
+
     /**
      * @var array
      */
@@ -37,4 +39,5 @@ class Role extends EloquentRole
     public function user() {
         return $this->belongsTo('App\Models\SentinelModel\User');
     }
+
 }

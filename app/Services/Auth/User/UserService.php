@@ -14,7 +14,6 @@ use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
-use function foo\func;
 
 /**
  * Class UserService
@@ -199,10 +198,10 @@ class UserService implements UserServiceContract
 
         return DataTables::eloquent($query)
             ->editColumn('created_at', function($dataDb) {
-                return $dataDb->created_at->format('d M Y H:i:s');
+                return $dataDb->created_at->format('Y-m-d H:i:s');
             })
             ->editColumn('updated_at', function($dataDb) {
-                return $dataDb->updated_at->format('d M Y H:i:s');
+                return $dataDb->updated_at->format('Y-m-d H:i:s');
             })
             ->addColumn('status', function($dataDb) {
                 if ($dataDb->activations->isNotEmpty()) {
@@ -241,19 +240,28 @@ class UserService implements UserServiceContract
 //                }
 //            )
             ->addColumn('action', function ($dataDb){
-                $btnShow = '<a href="'.route('user.show', $dataDb->id).'" id="tooltip" title="'.trans('global.show').'">
+                $btnShow = '';
+                $btnEdit = '';
+                $btnDelete = '';
+
+                if (Sentinel::inRole('root') || Sentinel::hasAccess(['user.show'])) {
+                    $btnShow = '<a href="'.route('user.show', $dataDb->id).'" id="tooltip" title="'.trans('global.show').'">
                             <span class="label label-primary label-sm">
                                 <i class="fa fa-arrows-alt"></i>
                                 </span>
                             </a>';
+                }
 
-                $btnEdit = '<a href="'.route('user.edit', $dataDb->id).'"
+                if (Sentinel::inRole('root') || Sentinel::hasAccess(['user.edit'])) {
+                    $btnEdit = '<a href="'.route('user.edit', $dataDb->id).'"
                             data-tooltip-custom="tooltip" data-placement="left" title="Update It" >
                             <i class="flaticon-edit kt-font-brand"></i>
                             </a>
                             ';
+                }
 
-                $btnDelete = '<a href="#"
+                if (Sentinel::inRole('root') || Sentinel::hasAccess(['user.destroy'])) {
+                    $btnDelete = '<a href="#"
                                 data-message="Are u sure for delete this? '.$dataDb->name.'"
                                 data-href="'.route('user.destroy', $dataDb->id).'"
                                 data-method="DELETE"
@@ -265,6 +273,7 @@ class UserService implements UserServiceContract
                                 data-target="#delete">
                                 <i class="flaticon-delete kt-font-danger"></i>
                     </a>';
+                }
                 return $btnEdit . $btnDelete;
             })
             ->rawColumns(['action', 'status'])
