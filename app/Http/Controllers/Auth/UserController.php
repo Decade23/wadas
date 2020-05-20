@@ -48,14 +48,14 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('backend.user_page.index');
+        return view('auth.users.index');
     }
 
     public function create()
     {
         $roleDb = $this->roleService->getRole();
 
-        return view('backend.user_page.create', compact('roleDb'));
+        return view('auth.users.create', compact('roleDb'));
     }
 
     public function store(createRequest $request)
@@ -81,7 +81,7 @@ class UserController extends Controller
         $roleDb = $this->roleService->getRole();
         $userRole = $user->roles[0]->id ?? null;
 
-        return view('backend.user_page.update', array(
+        return view('auth.users.update', array(
             'data'     => $user,
             'roleDb'   => $roleDb,
             'userRole' => $userRole

@@ -280,6 +280,32 @@ class UserService implements UserServiceContract
             ->make(true);
     }
 
+    public function changePassword($request)
+    {
+        // TODO: Implement changePassword() method.
+        $user = Sentinel::getUser();
+
+        $credentials = [
+            'email'    => $user->email,
+            'password' => $request->old_password,
+        ];
+
+        #Passwird Is Valid For This User
+        if(Sentinel::validateCredentials($user, $credentials)) {
+            $credentials['password'] = $request->password;
+
+            Sentinel::update($user, $credentials);
+
+            Sentinel::logout();
+
+            return true;
+        } else {
+
+            return false;
+
+        }
+    }
+
     /**
      * @param int $id
      * @return bool|mixed

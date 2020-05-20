@@ -51,7 +51,7 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-6 kt-align-right">
-                                    <button type="submit" class="btn btn-primary">Save</button>
+                                    <button type="submit" class="btn btn-primary submit">Save</button>
                                 </div>
                             </div>
                         </div>

@@ -52,7 +52,7 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-6 kt-align-right">
-                                    <button type="submit" class="btn btn-primary">Update</button>
+                                    <button type="submit" class="btn btn-primary submit">Update</button>
                                 </div>
                             </div>
                         </div>

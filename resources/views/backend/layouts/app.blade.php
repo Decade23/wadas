@@ -140,6 +140,7 @@
                     <ul class="kt-menu__nav ">
                         {{-- sidebar --}}
                         @include('backend.layouts.menus.sidebar.dashboard')
+                        @include('backend.layouts.menus.sidebar.fulfillments')
 {{--                        @include('backend.layouts.menus.sidebar.others')--}}
                         @include('backend.layouts.menus.sidebar.acl')
                         {{-- end sidebar --}}
@@ -343,6 +344,12 @@
 
 <!-- tooltip -->
 <script>
+
+    $(document).ready(function(){
+        $("form").submit(function(){
+            $('.submit').addClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light');
+        });
+    });
 
     (function () {
         window.alert = function () {

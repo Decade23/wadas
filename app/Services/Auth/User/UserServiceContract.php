@@ -70,4 +70,6 @@ interface UserServiceContract
      */
     public function select2($request);
 
+    public function changePassword($request);
+
 }

@@ -33,7 +33,7 @@ Route::group([
 
     #update status
     Route::put('{id}/status', 'UserController@status')
-        ->name('user.status')->middleware('sentinel.permission:user.status');
+        ->name('user.status')->middleware('sentinel.permission:user.destroy');
 
     #bulk destroy
     Route::delete('destroy/bulk', 'UserController@destroyBulk')

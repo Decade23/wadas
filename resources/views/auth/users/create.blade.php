@@ -9,7 +9,7 @@
         <div class="kt-portlet__head">
             <div class="kt-portlet__head-label">
                                 <span class="kt-portlet__head-icon">
-                                    <i class="kt-font-brand flaticon2-line-chart"></i>
+                                    <i class="kt-font-brand flaticon2-avatar"></i>
                                 </span>
                 <h3 class="kt-portlet__head-title">
                     Create User
@@ -92,7 +92,7 @@
                                 </div>
                             </div>
                             <div class="col-lg-6 kt-align-right">
-                                <button type="submit" class="btn btn-primary">Save</button>
+                                <button type="submit" class="btn btn-primary submit">Save</button>
                             </div>
                         </div>
                     </div>

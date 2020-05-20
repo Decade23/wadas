@@ -1,3 +1,4 @@
+@if(Sentinel::inRole('root') || Sentinel::hasAnyAccess(['user.show', 'role.show']))
 <li class="kt-menu__item  kt-menu__item--submenu @if( request()->is('console/users*') || request()->is('console/roles*') ) {{ 'kt-menu__item--open' }} @endif" aria-haspopup="true"  data-ktmenu-submenu-toggle="hover">
     <a  href="javascript:;" class="kt-menu__link kt-menu__toggle">
         <span class="kt-menu__link-icon">
@@ -18,6 +19,7 @@
                     <span class="kt-menu__link-text">Applications</span>
                 </span>
             </li>
+            @if(Sentinel::inRole('root') || Sentinel::hasAccess(['user.show']))
             <li class="kt-menu__item @if(request()->is('console/users*')) {{ 'kt-menu__item--active' }} @endif" aria-haspopup="true" >
                 <a  href="{{ route('user.index') }}" class="kt-menu__link ">
                     <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
@@ -32,6 +34,9 @@
                     {{-- <i class="kt-menu__ver-arrow la la-angle-right"></i>--}}
                 </a>
             </li>
+            @endif
+
+            @if(Sentinel::inRole('root') || Sentinel::hasAccess(['role.show']))
             <li class="kt-menu__item @if(request()->is('console/roles*')) {{ 'kt-menu__item--active' }} @endif " aria-haspopup="true" >
                 <a  href="{{ route('roles.index') }}" class="kt-menu__link">
                     <i class="kt-menu__link-bullet kt-menu__link-bullet--line">
@@ -40,6 +45,8 @@
                     <span class="kt-menu__link-text">Roles</span>
                 </a>
             </li>
+            @endif
         </ul>
     </div>
 </li>
+@endif
