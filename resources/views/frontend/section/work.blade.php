@@ -156,7 +156,7 @@
 
                 <div class="col-md-12">
                     <p><code>*</code>for a while training and consultant needs through whatsapp or call.<br />
-                    <b>Contact Person: +62 811-2231-147 (Muzzakir)</b>
+                    <b>Contact Person: +62 811-2231-147 (Muzakkir)</b>
                     </p>
                 </div>
 
