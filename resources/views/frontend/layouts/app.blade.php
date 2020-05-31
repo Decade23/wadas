@@ -75,17 +75,22 @@
                 <!-- Primary Navigation
                 ============================================= -->
                 <nav id="primary-menu" class="dark">
-
-                    <ul class="one-page-menu" data-easing="easeInOutExpo" data-speed="1500">
-                        <li><a href="#" data-href="#slider"><div>Home</div></a></li>
-                        <li><a href="#" data-href="#section-news"><div>News</div></a></li>
-                        <li><a href="#" data-href="#section-about" data-offset="60"><div>About</div></a></li>
-                        <li><a href="#" data-href="#section-work" data-offset="60"><div>Work</div></a></li>
-                        <li><a href="#" data-href="#section-blog" data-offset="10"><div>Blog</div></a></li>
-                        <li><a href="#" data-href="#section-testimonials" data-offset="60"><div>Testimonials</div></a></li>
-                        <li><a href="#" data-href="#section-team" data-offset="60"><div>Team</div></a></li>
-                        <li><a href="#clients" data-href="#section-clients"><div>Clients</div></a></li>
-                    </ul>
+                    @if(request()->is('/') || request()->is('#'))
+                        <ul class="one-page-menu" data-easing="easeInOutExpo" data-speed="1500">
+                            <li><a href="#" data-href="#slider"><div>Home</div></a></li>
+                            <li><a href="#" data-href="#section-news"><div>News</div></a></li>
+                            <li><a href="#" data-href="#section-about" data-offset="60"><div>About</div></a></li>
+                            <li><a href="#" data-href="#section-work" data-offset="60"><div>Work</div></a></li>
+                            <li><a href="#" data-href="#section-blog" data-offset="10"><div>Blog</div></a></li>
+                            <li><a href="#" data-href="#section-testimonials" data-offset="60"><div>Testimonials</div></a></li>
+                            <li><a href="#" data-href="#section-team" data-offset="60"><div>Team</div></a></li>
+                            <li><a href="#clients" data-href="#section-clients"><div>Clients</div></a></li>
+                        </ul>
+                    @else
+                        <ul class="" data-easing="easeInOutExpo" data-speed="1500">
+                            <li><a href="{{ route('front_main.index') }}" data-href=""><div>Home</div></a></li>
+                        </ul>
+                    @endif
 
                     <!-- Top Cart
                     ============================================= -->
@@ -106,7 +111,7 @@
     </header><!-- #header end -->
 
     <!-- slider -->
-    @include('frontend.section.slider')
+    @stack('slider')
     <!-- end slider -->
 
     <!-- Content

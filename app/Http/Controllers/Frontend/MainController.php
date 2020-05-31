@@ -32,4 +32,12 @@ class MainController extends Controller
 
         return view('frontend.main.index', $data);
     }
+
+    public function disclaimer()
+    {
+        $data['titlePage'] = $this->titlePage;
+        $data['tagLine'] = 'Disclaimer';
+
+        return view('frontend.pages.disclaimer', $data);
+    }
 }

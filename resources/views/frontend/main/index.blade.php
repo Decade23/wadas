@@ -40,6 +40,10 @@
     @include('frontend.section.clients')
 @stop
 
+@push('slider')
+    @include('frontend.section.slider')
+@endpush
+
 @push('css')
 @endpush
 

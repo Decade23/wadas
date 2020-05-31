@@ -172,6 +172,7 @@
         <div class="col_full col_last text-center">
             Copyrights &copy; {{ date('Y') }} All Rights Reserved by {{ $titlePage }}.<br>
 {{--            <div class="copyright-links"><a href="#">Terms of Use</a> / <a href="#">Privacy Policy</a></div>--}}
+            <div class="copyright-links"><a href="{{ route('front_main.disclaimer') }}">Disclaimer</a> <span class="middot">&middot;</span> <i class="icon-envelope2"></i> ecibisnismanajemen@gmail.com <span class="middot">&middot;</span> <i class="icon-headphones"></i> Contact Us: +62 811-2231-147 (Muzakkir)</div>
         </div>
         <!-- sosmed copyright
         <div class="col_half col_last tright">

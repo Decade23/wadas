@@ -15,4 +15,7 @@ Route::group([
     Route::get('', 'MainController@index')
         ->name('front_main.index');
 
+    Route::get('disclaimer', 'MainController@disclaimer')
+        ->name('front_main.disclaimer');
+
 });
