@@ -17,4 +17,9 @@ class ProductGroups extends Model
     protected $fillable = [
         'product_id', 'group_id', 'created_at', 'updated_at'
     ];
+
+    public function hasProducts()
+    {
+        return $this->hasOne(Product::class, 'product_id','id');
+    }
 }

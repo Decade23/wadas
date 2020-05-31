@@ -56,4 +56,10 @@ interface ProductServicesContract
      * @return mixed
      */
     public function select2($request);
+
+    /**
+     * @param $request
+     * @return mixed
+     */
+    public function queryProducts($request);
 }

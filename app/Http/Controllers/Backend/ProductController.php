@@ -9,6 +9,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Services\Backend\Product\ProductServicesContract;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -17,10 +18,10 @@ class ProductController extends Controller
     /**
      * PostsController constructor.
      */
-    public function __construct(PostsServiceContract $postsServiceContract)
+    public function __construct(ProductServicesContract $productServicesContract)
     {
-        $this->service = $postsServiceContract;
-        $this->module = 'backend.fulfillments.posts.';
+        $this->service = $productServicesContract;
+        $this->module = 'backend.products.';
     }
 
     public function index()

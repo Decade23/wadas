@@ -10,6 +10,8 @@ use App\Services\Auth\User\UserService;
 use App\Services\Auth\User\UserServiceContract;
 use App\Services\Backend\Fulfillments\Posts\PostsService;
 use App\Services\Backend\Fulfillments\Posts\PostsServiceContract;
+use App\Services\Backend\Product\ProductServices;
+use App\Services\Backend\Product\ProductServicesContract;
 use App\Services\Main\MainService;
 use App\Services\Main\MainServiceContract;
 use Illuminate\Support\Facades\Schema;
@@ -47,6 +49,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             PostsServiceContract::class,
             PostsService::class
+        );
+
+        $this->app->bind(
+            ProductServicesContract::class,
+            ProductServices::class
         );
     }
 

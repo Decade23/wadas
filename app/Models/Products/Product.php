@@ -19,4 +19,9 @@ class Product extends Model
         'created_at', 'updated_at', 'created_by', 'updated_by'
     ];
 
+    public function hasManyGroups()
+    {
+        return $this->hasMany(ProductGroups::class,'id','product_id');
+    }
+
 }
