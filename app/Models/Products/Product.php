@@ -8,6 +8,8 @@
 
 namespace App\Models\Products;
 
+use App\Models\Groups;
+use App\Models\Media;
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
@@ -19,9 +21,22 @@ class Product extends Model
         'created_at', 'updated_at', 'created_by', 'updated_by'
     ];
 
+    public function setPriceAttribute($value){
+        $this->attributes['price'] = preg_replace('/[^0-9-.]+/', '', $value);
+    }
+
     public function hasManyGroups()
     {
         return $this->hasMany(ProductGroups::class,'id','product_id');
+    }
+
+    public function groups()
+    {
+        return $this->belongsToMany(Groups::class,'product_groups','product_id','group_id')->withTimestamps();
+    }
+
+    public function media(){
+        return $this->hasMany(Media::class, 'item_id', 'id')->where('model', 'Product');
     }
 
 }

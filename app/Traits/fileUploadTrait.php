@@ -103,7 +103,7 @@ trait fileUploadTrait
     private function putFile($file)
     {
         $fileName = preg_replace('/\s+/', '_', time() . ' ' . $file->getClientOriginalName());
-        $path     = $this->uploadPath . '/' . $this->folderName;
+        $path     = $this->uploadPath . '/' . $this->folderName . '/';
 
         if (Storage::disk('s3')->putFileAs('public/' . $path, $file, $fileName)) {
             return $path . $fileName;
@@ -144,5 +144,10 @@ trait fileUploadTrait
         }
 
         return $data;
+    }
+
+    public function renameFile($file)
+    {
+        return $fileName = preg_replace('/\s+/', '_', time() . ' ' . $file->getClientOriginalName());
     }
 }

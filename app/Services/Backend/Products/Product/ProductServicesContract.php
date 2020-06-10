@@ -3,10 +3,10 @@
  * Created By Dedi Fardiyanto
  * Copyright (c) 2020, Inc - All Rights Reserved
  * @Filename ProductServicesContract.php
- * @LastModified 31/05/2020, 02:28
+ * @LastModified 01/06/2020, 03:29
  */
 
-namespace App\Services\Backend\Product;
+namespace App\Services\Backend\Products\Product;
 
 
 /**
@@ -19,6 +19,12 @@ interface ProductServicesContract
      * @return mixed
      */
     public function get();
+
+    /**
+     * @param int $int
+     * @return mixed
+     */
+    public function getById(int $int);
 
     /**
      * @param $request

@@ -9,7 +9,7 @@
                                     <i class="kt-font-brand flaticon2-line-chart"></i>
                                 </span>
                 <h3 class="kt-portlet__head-title">
-                    Data Products
+                    Data Product Groups
                 </h3>
             </div>
             <div class="kt-portlet__head-toolbar">
@@ -19,7 +19,7 @@
                         Back
                     </a>
 
-                    <a href="{{ route('product.create') }}" class="btn btn-brand btn-icon-sm">
+                    <a href="{{ route('product_group.create') }}" class="btn btn-brand btn-icon-sm">
                         <i class="flaticon2-plus-1 kt-font-hover-brand"></i>
                         Add New
                     </a>
@@ -35,6 +35,9 @@
                     <div class="col-xl-8 order-2 order-xl-1">
                         <div class="row align-items-center">
 
+                            <div class="col-md-4 kt-margin-b-20-tablet-and-mobile">
+
+                            </div>
                         </div>
                     </div>
 
@@ -44,17 +47,12 @@
         </div>
         <div class="kt-portlet__body">
             <!--begin: Datatable -->
-            <table class="table table-striped- table-bordered table-hover table-checkable" id="user_table">
+            <table class="table table-striped- table-bordered table-hover table-checkable" id="user_table" width="100">
                 <thead>
                 <tr>
                     <th>#</th>
-                    <th>Visibility</th>
-                    <th>Product Name</th>
-                    <th>Short Content</th>
                     <th>Group Name</th>
-                    <th>Price</th>
                     <th>@lang('auth.index_created_by')</th>
-                    <th>@lang('auth.index_updated_by')</th>
                     <th>@lang('auth.index_created_at')</th>
                     <th>@lang('auth.index_updated_at')</th>
                     <th width="100">@lang('global.action')</th>
@@ -75,7 +73,6 @@
     {{--    <script src="{{ url('themes/eci/js/pages/crud/metronic-datatable/base/data-local.js') }}" type="text/javascript"></script>--}}
     <script src="{{ url('themes/eci/plugins/custom/datatables/datatables.bundle.js') }}" type="text/javascript"></script>
 
-    <script src="{{ url('plugins/jquery-number/jquery.number.min.js') }}"></script>
     <script>
         $(function () {
             let table;
@@ -87,13 +84,12 @@
 
                 fixedHeader: true,
                 deferRender: !0,
-                responsive: !0,
+                //responsive: !0,
                 processing: true,
                 serverSide: true,
                 // scrollY: "500px",
                 scrollX: !0,
                 scrollCollapse: !0,
-                width:"100%",
                 // scroller: !0,
                 //select: !0, // select by 1
                 // select: {
@@ -103,13 +99,12 @@
                 // headerCallback: function(e, t, a, s, n) {
                 //     e.getElementsByTagName("th")[0].innerHTML = '<label class="kt-checkbox kt-checkbox--single kt-checkbox--solid kt-checkbox--brand"><input type="checkbox" value="" class="kt-group-checkable"><span></span></label>';
                 // },
-                // dom: "<'dt-panelmenu clearfix'<'row'<'col-sm-2'B><'col-sm-4'l><'col-sm-6'f>>>" +
-                //     "<'row'<'col-sm-12'tr>>" +
-                //     "<'dt-panelfooter clearfix'<'row'<'col-sm-5'i><'col-sm-7'p>>>",
-                // pagingType: "full_numbers",
-                dom: "<'row'<'col-sm-12'tr>><'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 dataTables_pager'lp>>",
+                dom: "<'dt-panelmenu clearfix'<'row'<'col-sm-2'B><'col-sm-4'l><'col-sm-6'f>>>" +
+                    "<'row'<'col-sm-12'tr>>" +
+                    "<'dt-panelfooter clearfix'<'row'<'col-sm-5'i><'col-sm-7'p>>>",
+                pagingType: "full_numbers",
                 ajax: {
-                    url: '{!! route('product.ajax.data') !!}',
+                    url: '{!! route('product_group.ajax.data') !!}',
                     dataType: 'json',
                     data: function (d) {
                         d.param = 1;
@@ -121,17 +116,9 @@
                     //     data: 'checkbox', name: 'checkbox', orderable: false, searchable: false,
                     //     checkboxes: true
                     // },
-                    {data: 'visibility', name: 'visibility'},
-                    {data: 'name', name: 'name'},
-                    {data: 'short_desc', name: 'short_desc', defaultContent: '-', orderable: false},
-                    {data: 'group_name', name: 'group_name', defaultContent: '-', orderable: false},
-                    {data: 'price', name: 'price', render: function (data, type, oObj) {
-                            return 'Rp. ' + $.number(data);
-                        }
-                    },
+                    {data: 'name', name: 'name', defaultContent: '-', orderable: false},
 
                     {data: 'created_by', name: 'created_by', visible: true},
-                    {data: 'updated_by', name: 'updated_by', visible: true},
 
                     {data: 'created_at', name: 'created_at', visible: true},
                     {data: 'updated_at', name: 'updated_at', visible: true},
@@ -147,7 +134,7 @@
                     {
                         extend: 'colvis',
                         text: '<i class="fa fa-columns"></i> Columns',
-                        columns: '0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10'
+                        columns: '0, 1, 2, 3, 4, 5'
                     }
                 ],
                 select: {

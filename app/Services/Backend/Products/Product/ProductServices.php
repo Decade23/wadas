@@ -3,25 +3,34 @@
  * Created By Dedi Fardiyanto
  * Copyright (c) 2020, Inc - All Rights Reserved
  * @Filename ProductServices.php
- * @LastModified 31/05/2020, 02:28
+ * @LastModified 01/06/2020, 03:59
  */
 
-namespace App\Services\Backend\Product;
+namespace App\Services\Backend\Products\Product;
 
 
+use App\Models\Media;
 use App\Models\Products\Product;
+use App\Services\Backend\Media\MediaServicesContract;
+use App\Traits\fileUploadTrait;
+use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
 
 class ProductServices implements ProductServicesContract
 {
-    private $model;
+    private $model, $media;
+    use fileUploadTrait;
 
     /**
      * ProductServices constructor.
      */
-    public function __construct(Product $product)
+    public function __construct(Product $product, MediaServicesContract $mediaServicesContract)
     {
         $this->model = $product;
+        $this->media = $mediaServicesContract;
     }
 
     public function get()
@@ -29,9 +38,63 @@ class ProductServices implements ProductServicesContract
         // TODO: Implement get() method.
     }
 
+    public function getById($id)
+    {
+        // TODO: Implement getById() method.
+        return $this->model::find($id);
+    }
+
     public function store($request)
     {
         // TODO: Implement store() method.
+        # retrieve
+        $userDb = Sentinel::getUser()->email;
+
+        DB::beginTransaction();
+        try {
+            # insert to product groups
+            $insert = new Product();
+            $insert->fill($request->all());
+            $insert->slug = Str::slug($request->name, '-');
+            $insert->created_by = $userDb;
+            $insert->updated_by = $userDb;
+            $insert->save();
+
+            #attach to groups
+            $insert->groups()->attach($request->group);
+
+            #insert media (image)
+            if (is_array($request->document)) {
+                foreach ($request->document as $file_name) {
+                    $path   = 'public/'. $this->uploadPath .'/'. 'media'. '/'. $file_name;
+                    $url    = Storage::disk('s3')->url($path);
+                    $files[] = [
+                        'type'  => 'image',
+                        'model' => 'Product',
+                        'url'   => $url,
+                        'path'  => $path,
+                        'file_name' => $file_name
+                    ];
+                }
+                $this->saveProductImages($files, $insert->id);
+            }
+
+            # commit to insert to DB
+            DB::commit();
+
+            # return to controller
+            return $insert;
+
+        } catch (\Exception $exception) {
+            #rollback to begin (not insert to DB)
+            DB::rollBack();
+            #Dump
+            dd($exception);
+            //dd('Message: '.$exception->getMessage() . ' Line: ' . $exception->getLine()  . ' Code: ' . $exception->getCode());
+
+            #return getCode Error
+            return $exception->getCode();
+        }
     }
 
     public function update(int $id, $request)
@@ -42,6 +105,9 @@ class ProductServices implements ProductServicesContract
     public function destroy(int $id)
     {
         // TODO: Implement destroy() method.
+        $product = Product::find($id);
+        $this->media->deleteMediaByItemId($id);
+        return $product->delete();
     }
 
     public function destroyBulk(array $id)
@@ -68,7 +134,13 @@ class ProductServices implements ProductServicesContract
 //                }
 //            )
             ->addColumn('group_name', function ($dataDb){
-                return '';
+                $grup = '';
+                $arr = Array();
+                foreach($dataDb->groups as $group){
+                    $arr[] = $group->name;
+                    $grup = implode(', ', $arr);
+                }
+                return $grup;
             })
             ->addColumn('action', function ($dataDb){
                 $btnShow = '';
@@ -85,7 +157,7 @@ class ProductServices implements ProductServicesContract
 
                 if (Sentinel::inRole('root') || Sentinel::hasAccess(['product.edit'])) {
                     $btnEdit = '<a href="'.route('product.edit', $dataDb->id).'"
-                            data-tooltip-custom="tooltip" title="'.trans('global.update').'" >
+                             title="'.trans('global.update').'" >
                             <i class="flaticon-edit kt-font-brand"></i>
                             </a>
                             ';
@@ -97,9 +169,6 @@ class ProductServices implements ProductServicesContract
                                 data-href="'.route('product.destroy', $dataDb->id).'"
                                 data-method="DELETE"
                                 title="'.trans('global.delete').'"
-                                data-original-title="'.trans('global.delete').'"
-                                data-title="'.trans('global.delete').'"
-                                data-title-modal="Are u sure for delete this?"
                                 data-toggle="modal"
                                 data-target="#delete">
                                 <i class="flaticon-delete kt-font-danger"></i>
@@ -124,9 +193,39 @@ class ProductServices implements ProductServicesContract
             'products.created_at', 'products.updated_at', 'products.created_by', 'products.updated_by'
         ];
 
-        $dataDb = $this->model::select($select);
+        $dataDb = $this->model::select($select)->with('groups');
 
         return $dataDb;
+    }
+
+    private function saveProductImages($request, $productId)
+    {
+        #delete existing file
+        $this->destroyImages($productId);
+
+        $imagesDb = [];
+        #insert new media into db
+        foreach ($request as $image) {
+            $imagesDb[] = Media::create([
+                'type'      => $image['type'],
+                'item_id'   => $productId,
+                'url'       => $image['url'],
+                'model'     => $image['model'],
+                'path'      => $image['path'],
+                'file_name'  => $image['file_name'],
+                'created_by'  => Sentinel::getUser()->email,
+                'updated_by'  => Sentinel::getUser()->email
+            ]);
+        }
+
+        return $imagesDb;
+    }
+
+    private function destroyImages($productId)
+    {
+        //Media::where('item_id', $productId)->delete();
+        return $this->media->deleteMediaByItemId($productId);
+
     }
 
 }

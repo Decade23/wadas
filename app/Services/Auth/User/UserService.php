@@ -84,8 +84,8 @@ class UserService implements UserServiceContract
                 'phone'      => $request->phone,
                 'email'      => strtolower( $email ),
                 'password'   => $request->password,
-                'created_by' => $userDb->name,
-                'updated_by' => $userDb->name
+                'created_by' => $userDb->email,
+                'updated_by' => $userDb->email
             ];
 
             #create new user
@@ -130,7 +130,7 @@ class UserService implements UserServiceContract
             $credentials = [
                 'name'       => $request->name,
                 'phone'      => $request->phone,
-                'updated_by' => $user->name
+                'updated_by' => $user->email
             ];
 
             #If User Input Password

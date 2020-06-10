@@ -82,7 +82,7 @@ class RoleService implements RoleServiceContract
     {
         // TODO: Implement store() method.
         # retrieve
-        $userDb = Sentinel::getUser()->name;
+        $userDb = Sentinel::getUser()->email;
 
         DB::beginTransaction();
         try {
@@ -137,7 +137,7 @@ class RoleService implements RoleServiceContract
                 return true;
             }
 
-            $userDb             = Sentinel::getUser()->name;
+            $userDb             = Sentinel::getUser()->email;
             $dataDb->name       = $request->name;
             #many function use slug as identifier, not recommend for change it
             #$dataDb->slug       = Str::slug( $request->name );

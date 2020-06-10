@@ -8,6 +8,7 @@
 
 namespace App\Models\Products;
 
+use App\Models\Groups;
 use Illuminate\Database\Eloquent\Model;
 
 class ProductGroups extends Model
@@ -21,5 +22,10 @@ class ProductGroups extends Model
     public function hasProducts()
     {
         return $this->hasOne(Product::class, 'product_id','id');
+    }
+
+    public function hasGroup()
+    {
+        return $this->hasOne(Groups::class,'group_id','id')->where('groups.name','product');
     }
 }

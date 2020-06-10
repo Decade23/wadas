@@ -9,6 +9,6 @@ class Groups extends Model
     protected $table = 'groups';
 
     protected $fillable = [
-        'name','created_by'
+        'name', 'type', 'created_by', 'updated_by'
     ];
 }

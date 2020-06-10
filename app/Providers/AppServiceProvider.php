@@ -10,8 +10,14 @@ use App\Services\Auth\User\UserService;
 use App\Services\Auth\User\UserServiceContract;
 use App\Services\Backend\Fulfillments\Posts\PostsService;
 use App\Services\Backend\Fulfillments\Posts\PostsServiceContract;
-use App\Services\Backend\Product\ProductServices;
-use App\Services\Backend\Product\ProductServicesContract;
+use App\Services\Backend\Groups\GroupServices;
+use App\Services\Backend\Groups\GroupServicesContract;
+use App\Services\Backend\Media\MediaServices;
+use App\Services\Backend\Media\MediaServicesContract;
+use App\Services\Backend\Products\Product\ProductServices;
+use App\Services\Backend\Products\Product\ProductServicesContract;
+use App\Services\Backend\Products\ProductGroup\ProductGroupServices;
+use App\Services\Backend\Products\ProductGroup\ProductGroupServicesContract;
 use App\Services\Main\MainService;
 use App\Services\Main\MainServiceContract;
 use Illuminate\Support\Facades\Schema;
@@ -54,6 +60,21 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             ProductServicesContract::class,
             ProductServices::class
+        );
+
+        $this->app->bind(
+            ProductGroupServicesContract::class,
+            ProductGroupServices::class
+        );
+
+        $this->app->bind(
+            GroupServicesContract::class,
+            GroupServices::class
+        );
+
+        $this->app->bind(
+            MediaServicesContract::class,
+            MediaServices::class
         );
     }
 
