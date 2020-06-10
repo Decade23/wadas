@@ -131,7 +131,8 @@ class MediaServices implements MediaServicesContract
             return 'there\'s no file';
         }
         #if doesn't have data
-        return 'not array';
+        return 'there\'s no file';
+        //return 'not array '. $request->fileNames;
     }
 
     public function deleteMediaFromProvider($file, $folder)
