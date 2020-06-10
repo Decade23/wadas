@@ -111,7 +111,7 @@
             <!-- Product -->
             <!-- Products -->
             <tr>
-                <th scope="row">Product Groups</th>
+                <th scope="row">Products</th>
                 <td class="text-center"">
                 <label class="kt-checkbox kt-checkbox--tick kt-checkbox--success">
                     <input type="checkbox" class="acl" value="ok" name="product_create" {{ old('product_create') || array_key_exists('product.create', $permissions) ? 'checked' : ''}}>&nbsp;
