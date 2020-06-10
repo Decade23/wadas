@@ -120,7 +120,7 @@ class MediaServices implements MediaServicesContract
                                     <a class=\"dz-remove remove_image\" id=\"" . $file . "\" href=\"javascript:undefined;\" data-dz-remove=\"\">Remove file</a>
                                 </div>";
                     } else { #if file doesn't exist
-                        return '';
+                        return 'no files existing';
                     }
 
                 }
@@ -128,10 +128,10 @@ class MediaServices implements MediaServicesContract
                 return $html;
             }
             #if doesn't have data
-            return '';
+            return 'there\'s no file';
         }
         #if doesn't have data
-        return '';
+        return 'not array';
     }
 
     public function deleteMediaFromProvider($file, $folder)
