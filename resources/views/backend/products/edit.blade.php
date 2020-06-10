@@ -38,8 +38,8 @@
                                     <label @if($errors->has('group')) class="text-danger" @endif>Group<span style="color: red">*</span></label>
                                     <select name="group" id="group" class="form-control @if($errors->has('group')) is-invalid @endif kt-select2">
                                         <option></option>
-                                        @if(isset($dataDb->groups) || count($dataDb->groups) > 0)
-                                            <option value="{{ $dataDb->groups[0]->id }}">{{ $dataDb->groups[0]->name }}</option>
+                                        @if($dataDb->groups->isNotEmpty())
+                                            <option value="{{ $dataDb->groups[0]->id }}" selected>{{ $dataDb->groups[0]->name }}</option>
                                         @endif
                                     </select>
                                     {!! $errors->first('group', '<div class="invalid-feedback">:message</div>') !!}
@@ -48,21 +48,21 @@
                             <div class="col-lg-4">
                                 <div class="form-group @if($errors->has('name')) validated @endif">
                                     <label @if($errors->has('name')) class="text-danger" @endif>Name<span style="color: red">*</span></label>
-                                    <input type="text" name="name" id="name" class="form-control @if($errors->has('name')) is-invalid @endif" placeholder="Enter Name" value="{{ $dataDb->name }}">
+                                    <input type="text" name="name" id="name" class="form-control @if($errors->has('name')) is-invalid @endif" placeholder="Enter Name" value="{{ old('name',$dataDb->name) }}">
                                     {!! $errors->first('name', '<div class="invalid-feedback">:message</div>') !!}
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 <div class="form-group @if($errors->has('short_desc')) validated @endif">
                                     <label @if($errors->has('short_desc')) class="text-danger" @endif>Short Description<span style="color: red">*</span></label>
-                                    <input type="text" name="short_desc" id="short_desc" class="form-control @if($errors->has('short_desc')) is-invalid @endif" placeholder="Enter Short Desc" value="{{ $dataDb->short_desc }}">
+                                    <input type="text" name="short_desc" id="short_desc" class="form-control @if($errors->has('short_desc')) is-invalid @endif" placeholder="Enter Short Desc" value="{{ old('short_desc',$dataDb->short_desc) }}">
                                     {!! $errors->first('short_desc', '<div class="invalid-feedback">:message</div>') !!}
                                 </div>
                             </div>
                             <div class="col-lg-12">
                                 <div class="form-group @if($errors->has('description')) validated @endif">
                                     <label @if($errors->has('description')) class="text-danger" @endif>Description<span style="color: red">*</span></label>
-                                    <textarea name="description" id="description" cols="24" rows="10" class="form-control @if($errors->has('description')) is-invalid @endif">{!! $dataDb->description !!}</textarea>
+                                    <textarea name="description" id="description" cols="24" rows="10" class="form-control @if($errors->has('description')) is-invalid @endif">{!! old('description',$dataDb->description) !!}</textarea>
                                     {!! $errors->first('description', '<div class="invalid-feedback">:message</div>') !!}
                                 </div>
                             </div>
@@ -70,8 +70,8 @@
                                 <div class="form-group @if($errors->has('visibility')) validated @endif">
                                     <label @if($errors->has('visibility')) class="text-danger" @endif>Visibility<span style="color: red">*</span></label>
                                     <select name="visibility" id="visibility" class="form-control @if($errors->has('visibility')) is-invalid @endif kt-select2">
-                                        <option value="publish" @if($dataDb->visibility == 'publish') selected="selected" @endif >Publish</option>
-                                        <option value="private" @if($dataDb->visibility == 'private') selected="selected" @endif >Private</option>
+                                        <option value="publish" @if(old('visibility',$dataDb->visibility) == 'publish') selected="selected" @endif >Publish</option>
+                                        <option value="private" @if(old('visibility',$dataDb->visibility) == 'private') selected="selected" @endif >Private</option>
                                     </select>
                                     {!! $errors->first('visibility', '<div class="invalid-feedback">:message</div>') !!}
                                 </div>
@@ -79,7 +79,7 @@
                             <div class="col-lg-4">
                                 <div class="form-group @if($errors->has('price')) validated @endif">
                                     <label @if($errors->has('price')) class="text-danger" @endif>Price<span style="color: red">*</span></label>
-                                    <input type="text" name="price" id="price" class="form-control @if($errors->has('price')) is-invalid @endif" placeholder="Enter Price" value="{{ str_replace(',', '', $dataDb->price) }}">
+                                    <input type="text" name="price" id="price" class="form-control @if($errors->has('price')) is-invalid @endif" placeholder="Enter Price" value="{{ str_replace(',', '', old('price',$dataDb->price)) }}">
                                     {!! $errors->first('price', '<div class="invalid-feedback">:message</div>') !!}
                                 </div>
                             </div>
@@ -118,7 +118,7 @@
                                 </div>
                             </div>
                             <div class="col-lg-6 kt-align-right">
-                                <button type="submit" class="btn btn-primary submit">@lang('global.save')</button>
+                                <button type="submit" class="btn btn-primary submit">@lang('global.update')</button>
                             </div>
                         </div>
                     </div>
@@ -271,17 +271,6 @@
             function load_images_old()
             {
                 let data;
-{{--                @if($dataDb->media && count($dataDb->media) > 0 )--}}
-{{--                    uploadedDocumentMap = new Array();--}}
-{{--                    @foreach($dataDb->media as $fileName )--}}
-{{--                        //append to input document and data array--}}
-{{--                        $('form').append('<input type="hidden" name="document[]" value="' + {{ $fileName->file_name }} + '">');--}}
-{{--                        uploadedDocumentMap.push( '{!! $fileName->file_name !!}' );--}}
-{{--                    @endforeach--}}
-
-{{--                        data = {--}}
-{{--                        'fileNames': uploadedDocumentMap--}}
-{{--                    }--}}
                 @if(old('document') && count(old('document')))
                     uploadedDocumentMap = new Array();
                     @foreach(old('document') as $fileName )
@@ -290,8 +279,19 @@
 
 
                     data = {
-                    'fileNames': uploadedDocumentMap
-                }
+                        'fileNames': uploadedDocumentMap
+                    }
+                @elseif($dataDb->media->isNotEmpty())
+                    uploadedDocumentMap = new Array();
+                    @foreach($dataDb->media as $fileName )
+                    //append to input document and data array
+                    $('form').append('<input type="hidden" name="document[]" value="' + '{{ $fileName->file_name }}' + '">');
+                    uploadedDocumentMap.push( '{!! $fileName->file_name !!}' );
+                    @endforeach
+
+                    data = {
+                        'fileNames': uploadedDocumentMap
+                    }
                 @endif
 
                 $.ajax({

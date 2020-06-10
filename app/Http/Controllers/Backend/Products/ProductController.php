@@ -10,6 +10,7 @@ namespace App\Http\Controllers\Backend\Products;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Backend\Products\productCreateRequest;
+use App\Http\Requests\Backend\Products\productUpdateRequest;
 use App\Services\Backend\Media\MediaServicesContract;
 use App\Services\Backend\Products\Product\ProductServicesContract;
 use App\Traits\redirectTo;
@@ -75,6 +76,17 @@ class ProductController extends Controller
         $data['dataDb'] = $this->service->getById($id);
 
         return view($this->module. 'edit', $data);
+    }
+
+    public function update(productUpdateRequest $request, $id)
+    {
+        #if success update into DB
+        if  (is_object($this->service->update($id,$request))) {
+            return $this->redirectSuccessUpdate(route('product.index'),'Success Updated.');
+        }
+
+        #if fails update into DB
+        return $this->redirectFailed(route('product.index'),'Error! Unsuccessfully. Fail to updated.');
     }
 
     /**

@@ -100,6 +100,53 @@ class ProductServices implements ProductServicesContract
     public function update(int $id, $request)
     {
         // TODO: Implement update() method.
+        # retrieve
+        $userDb = Sentinel::getUser()->email;
+
+        DB::beginTransaction();
+        try {
+            # insert to product groups
+            $insert = $this->model::find($id);
+            $insert->fill($request->all());
+            $insert->slug = Str::slug($request->name, '-');
+            $insert->updated_by = $userDb;
+            $insert->save();
+
+            #attach to groups
+            $insert->groups()->sync($request->group);
+
+            #insert media (image)
+            if (is_array($request->document)) {
+                foreach ($request->document as $file_name) {
+                    $path   = 'public/'. $this->uploadPath .'/'. 'media'. '/'. $file_name;
+                    $url    = Storage::disk('s3')->url($path);
+                    $files[] = [
+                        'type'  => 'image',
+                        'model' => 'Product',
+                        'url'   => $url,
+                        'path'  => $path,
+                        'file_name' => $file_name
+                    ];
+                }
+                $this->saveProductImages($files, $insert->id);
+            }
+
+            # commit to insert to DB
+            DB::commit();
+
+            # return to controller
+            return $insert;
+
+        } catch (\Exception $exception) {
+            #rollback to begin (not insert to DB)
+            DB::rollBack();
+            #Dump
+            dd($exception);
+            //dd('Message: '.$exception->getMessage() . ' Line: ' . $exception->getLine()  . ' Code: ' . $exception->getCode());
+
+            #return getCode Error
+            return $exception->getCode();
+        }
     }
 
     public function destroy(int $id)

@@ -16,12 +16,14 @@ use Illuminate\Support\Facades\Storage;
 class MediaServices implements MediaServicesContract
 {
     use fileUploadTrait;
+    protected $model;
 
     /**
      * MediaServices constructor.
      */
-    public function __construct()
+    public function __construct(Media $media)
     {
+        $this->model = $media;
     }
 
     public function storeMedia($request, $folderName = 'media', $deleteUrl = '')
@@ -60,7 +62,9 @@ class MediaServices implements MediaServicesContract
 
         #delete file
         foreach ($media->get() as $file) {
+            #check if file exist
             if (Storage::disk('s3')->exists($file->path)) {
+                #then delete the file
                 Storage::disk('s3')->delete($file->path);
             }
         }
@@ -133,7 +137,17 @@ class MediaServices implements MediaServicesContract
     public function deleteMediaFromProvider($file, $folder)
     {
         // TODO: Implement deleteMediaFromProvider() method.
+        #retrieve file from db
+        $getFile = $this->model::where('file_name', $file);
+
+        #if there exist file
+        if ($getFile->count() > 0) {
+            #then delete it
+            $getFile->delete();
+        }
+
         $path = 'public/'. $this->uploadPath. '/' .$folder. '/'. $file;
+
         return Storage::disk('s3')->delete($path);
     }
 
