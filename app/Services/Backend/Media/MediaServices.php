@@ -81,11 +81,11 @@ class MediaServices implements MediaServicesContract
         #if data is array
         if  (is_array($request->fileNames)) {
             #if have data exist
+            //return count($request->fileNames);
             if (count($request->fileNames) > 0) {
                 $path = 'public/'. $this->uploadPath. '/' .$folder. '/';
                 $html = '<label>Uploaded<span style="color: red">*</span></label><div class="dropzone dropzone-default dropzone-brand" id="doc">';
                 foreach ($request->fileNames as $file) {
-
                     #if file exist
                     if (Storage::disk('s3')->exists($path . $file)) {
                         $img_url = Storage::disk('s3')->url($path . $file);
@@ -119,10 +119,10 @@ class MediaServices implements MediaServicesContract
                                     </div>
                                     <a class=\"dz-remove remove_image\" id=\"" . $file . "\" href=\"javascript:undefined;\" data-dz-remove=\"\">Remove file</a>
                                 </div>";
-                    } else { #if file doesn't exist
-                        return 'no files existing';
                     }
-
+                    else { #if file doesn't exist
+                        //$html .= '<p>no files existing <b>'.$file.'</b>'."<a class=\"dz-remove remove_image\" id=\"" . $file . "\" href=\"javascript:undefined;\" data-dz-remove=\"\"> Remove file</a>".'</p>';
+                    }
                 }
                 $html .= '</div>';
                 return $html;
