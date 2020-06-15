@@ -253,7 +253,7 @@
                 }
 
                 $.ajax({
-                    url:"{{ route('product.retrieve.image') }}",
+                    url:"{{ route('product.retrieve_create.image') }}",
                     method: 'POST',
                     data: data,
                     //cache: false,
@@ -280,7 +280,7 @@
                 @endif
 
                 $.ajax({
-                    url:"{{ route('product.retrieve.image') }}",
+                    url:"{{ route('product.retrieve_create.image') }}",
                     method: 'POST',
                     data: data,
                     //cache: false,
@@ -304,6 +304,11 @@
                     success:function(data){
                         $('.submit').attr('disabled', false); // enable submit
                         uploadedDocumentMap = removeArr(uploadedDocumentMap, name);
+                        removeInputDocArray(name);
+                        $.each(uploadedDocumentMap, function(i, e) {
+                            $('form').append('<input type="hidden" name="document[]" value="' + e + '">');
+                        })
+
                         load_images();
 
                     },
@@ -323,6 +328,12 @@
                 arr.splice(index, 1);
                 return arr;
             }
+        }
+
+        function removeInputDocArray(remove)
+        {
+            const index = $("input[name='document[]']").attr('value', remove);
+            index.remove();
         }
 
     </script>

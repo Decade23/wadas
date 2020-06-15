@@ -43,6 +43,8 @@ interface MediaServicesContract
      */
     public function retrieveUploadFiles($request, $folder);
 
+    public function retrieveUploadCreateFiles($request, $folder);
+
     /**
      * @param $bytes
      * @return mixed

@@ -56,6 +56,10 @@ Route::group([
         Route::post('upload/image/retrieve', 'ProductController@retrieveImageUpload')
                 ->name('product.retrieve.image')->middleware('sentinel.permission:product.show');
 
+        # retrieve image create upload
+        Route::post('upload/image/create/retrieve', 'ProductController@retrieveImageCreateUpload')
+            ->name('product.retrieve_create.image')->middleware('sentinel.permission:product.show');
+
         # delete image upload
         Route::delete('upload/image/delete', 'ProductController@deleteImageUpload')
             ->name('product.delete.image')->middleware('sentinel.permission:product.destroy');

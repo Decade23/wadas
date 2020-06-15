@@ -320,7 +320,10 @@
                         $('.submit').attr('disabled', false); // enable submit
                         uploadedDocumentMap = removeArr(uploadedDocumentMap, name);
                         removeInputDocArray(name);
-
+                        $.each(uploadedDocumentMap, function(i, e) {
+                            $('form').append('<input type="hidden" name="document[]" value="' + e + '">');
+                        })
+                        console.log(uploadedDocumentMap)
                         load_images();
 
                     },

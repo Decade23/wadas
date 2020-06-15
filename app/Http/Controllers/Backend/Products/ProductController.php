@@ -142,6 +142,12 @@ class ProductController extends Controller
         return $mediaServicesContract->retrieveUploadFiles($request, $this->productFolder);
     }
 
+    public function retrieveImageCreateUpload(Request $request, MediaServicesContract $mediaServicesContract)
+    {
+        # retrieve image
+        return $mediaServicesContract->retrieveUploadCreateFiles($request, $this->productFolder);
+    }
+
     /**
      * @param Request $request
      * @param MediaServicesContract $mediaServicesContract
