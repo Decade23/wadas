@@ -21,7 +21,7 @@ use Yajra\DataTables\Facades\DataTables;
 
 class ProductServices implements ProductServicesContract
 {
-    private $model, $media;
+    private $model, $media, $productFolder;
     use fileUploadTrait;
 
     /**
@@ -31,6 +31,7 @@ class ProductServices implements ProductServicesContract
     {
         $this->model = $product;
         $this->media = $mediaServicesContract;
+        $this->productFolder = 'media';
     }
 
     public function get()
@@ -100,6 +101,7 @@ class ProductServices implements ProductServicesContract
     public function update(int $id, $request)
     {
         // TODO: Implement update() method.
+        //dd($request->all());
         # retrieve
         $userDb = Sentinel::getUser()->email;
 
@@ -128,7 +130,7 @@ class ProductServices implements ProductServicesContract
                         'file_name' => $file_name
                     ];
                 }
-                $this->saveProductImages($files, $insert->id);
+                $this->updateProductImages($files, $insert->id);
             }
 
             # commit to insert to DB
@@ -273,6 +275,41 @@ class ProductServices implements ProductServicesContract
         //Media::where('item_id', $productId)->delete();
         return $this->media->deleteMediaByItemId($productId);
 
+    }
+
+    private function updateProductImages($request, $productId)
+    {
+
+        #check if file is same
+        $imagesDb = [];
+        #insert new media into db
+        foreach ($request as $image) {
+            #if file not same with the old one
+            if (count($this->media->getMediaByFileName($image['file_name'])) < 1)
+            {
+                #delete existing file
+                $this->destroyImages($productId);
+
+                #then create the one
+                $imagesDb[] = Media::create([
+                    'type'      => $image['type'],
+                    'item_id'   => $productId,
+                    'url'       => $image['url'],
+                    'model'     => $image['model'],
+                    'path'      => $image['path'],
+                    'file_name'  => $image['file_name'],
+                    'created_by'  => Sentinel::getUser()->email,
+                    'updated_by'  => Sentinel::getUser()->email
+                ]);
+            }
+            #if file on db didn't find
+            #but still have file on db
+            #then delete it
+            $this->media->deleteMediaFromProvider($image['file_name'], $this->productFolder);
+
+        }
+
+        return $imagesDb;
     }
 
 }

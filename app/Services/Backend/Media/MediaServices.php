@@ -26,6 +26,12 @@ class MediaServices implements MediaServicesContract
         $this->model = $media;
     }
 
+    public function getMediaByFileName($fileName)
+    {
+        // TODO: Implement getMediaByFileName() method.
+        return $this->model::where('file_name', $fileName)->get();
+    }
+
     public function storeMedia($request, $folderName = 'media', $deleteUrl = '')
     {
         // TODO: Implement storeMedia() method.
@@ -82,17 +88,20 @@ class MediaServices implements MediaServicesContract
         if  (is_array($request->fileNames)) {
             #if have data exist
             //return count($request->fileNames);
+
             if (count($request->fileNames) > 0) {
                 $path = 'public/'. $this->uploadPath. '/' .$folder. '/';
                 $html = '<label>Uploaded<span style="color: red">*</span></label><div class="dropzone dropzone-default dropzone-brand" id="doc">';
                 foreach ($request->fileNames as $file) {
                     #if file exist
                     if (Storage::disk('s3')->exists($path . $file)) {
-                        $img_url = Storage::disk('s3')->url($path . $file);
-                        $size = Self::bytesToHuman(Storage::disk('s3')->size($path . $file));
+                            #check if file existing in db
+                        //if ( count($this->getMediaByFileName($file)) > 0 ) {
+                            $img_url = Storage::disk('s3')->url($path . $file);
+                            $size = Self::bytesToHuman(Storage::disk('s3')->size($path . $file));
 
-                        $html .= "<div class=\"dz-preview dz-processing dz-image-preview dz-complete\">
-                                    <div class=\"dz-image\"><img data-dz-thumbnail=\"\" alt=\"" . $file . "\" src=\"".$img_url."\"></div>
+                            $html .= "<div class=\"dz-preview dz-processing dz-image-preview dz-complete\">
+                                    <div class=\"dz-image\"><img data-dz-thumbnail=\"\" alt=\"" . $file . "\" src=\"" . $img_url . "\"></div>
                                     <div class=\"dz-details\">
                                         <div class=\"dz-size\"><span data-dz-size=\"\"><strong>$size</strong></span></div>
                                         <div class=\"dz-filename\"><span data-dz-name=\"\">" . $file . "</span></div>
@@ -119,8 +128,11 @@ class MediaServices implements MediaServicesContract
                                     </div>
                                     <a class=\"dz-remove remove_image\" id=\"" . $file . "\" href=\"javascript:undefined;\" data-dz-remove=\"\">Remove file</a>
                                 </div>";
+                        //}
                     }
                     else { #if file doesn't exist
+                        #then delete the file on db if file on s3 didn't find
+                        $this->deleteMediaByFileName($file);
                         //$html .= '<p>no files existing <b>'.$file.'</b>'."<a class=\"dz-remove remove_image\" id=\"" . $file . "\" href=\"javascript:undefined;\" data-dz-remove=\"\"> Remove file</a>".'</p>';
                     }
                 }
@@ -163,5 +175,19 @@ class MediaServices implements MediaServicesContract
 
         return round($bytes, 2) . ' ' . $units[$i];
 
+    }
+
+    public function deleteMediaByFileName($fileName)
+    {
+        // TODO: Implement deleteMediaByFileName() method.
+        #check if file exist on db
+        $dataDb = $this->model->where('file_name', $fileName);
+        if (count($dataDb->get()) > 0)
+        {
+            #then delete it
+            return $dataDb->delete();
+        }
+        // if file name didn't find it
+        return false;
     }
 }

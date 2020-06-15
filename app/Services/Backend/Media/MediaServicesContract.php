@@ -54,6 +54,10 @@ interface MediaServicesContract
      * @param $folder
      * @return mixed
      */
-    public function deleteMediaFromProvider($file, $folder);
+    public function deleteMediaFromProvider($fileName, $folder);
+
+    public function getMediaByFileName($fileName);
+
+    public function deleteMediaByFileName($fileName);
 
 }

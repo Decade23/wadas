@@ -244,8 +244,8 @@
             // array conversion
             function getFileName(path)
             {
-                let arr = path.split("/");
-                let val = arr.slice(-1);
+                let arr = path.split("/"); // make to array
+                let val = arr.slice(-1); //get last array
                 return val[0];
             }
 
@@ -277,7 +277,6 @@
                         uploadedDocumentMap.push( '{!! $fileName !!}' );
                     @endforeach
 
-
                     data = {
                         'fileNames': uploadedDocumentMap
                     }
@@ -292,6 +291,7 @@
                     data = {
                         'fileNames': uploadedDocumentMap
                     }
+
                 @endif
 
                 $.ajax({

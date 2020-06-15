@@ -30,7 +30,7 @@ class ProductController extends Controller
     /**
      * @var ProductServicesContract|string
      */
-    private $service, $module;
+    private $service, $module, $productFolder;
     /**
      * PostsController constructor.
      */
@@ -38,6 +38,7 @@ class ProductController extends Controller
     {
         $this->service = $productServicesContract;
         $this->module = 'backend.products.';
+        $this->productFolder = 'media';
     }
 
     /**
@@ -81,7 +82,8 @@ class ProductController extends Controller
     public function update(productUpdateRequest $request, $id)
     {
         #if success update into DB
-        if  (is_object($this->service->update($id,$request))) {
+        if  (is_object($tes = $this->service->update($id,$request))) {
+
             return $this->redirectSuccessUpdate(route('product.index'),'Success Updated.');
         }
 
@@ -125,7 +127,7 @@ class ProductController extends Controller
     public function imageUpload(Request $request, MediaServicesContract $mediaServicesContract)
     {
 
-        return $mediaServicesContract->storeMedia($request, 'media','');
+        return $mediaServicesContract->storeMedia($request, $this->productFolder,'');
     }
 
     /**
@@ -136,7 +138,7 @@ class ProductController extends Controller
     public function retrieveImageUpload(Request $request, MediaServicesContract $mediaServicesContract)
     {
         # retrieve image
-        return $mediaServicesContract->retrieveUploadFiles($request, 'media');
+        return $mediaServicesContract->retrieveUploadFiles($request, $this->productFolder);
     }
 
     /**
@@ -146,6 +148,6 @@ class ProductController extends Controller
      */
     public function deleteImageUpload(Request $request, MediaServicesContract $mediaServicesContract)
     {
-        return $mediaServicesContract->deleteMediaFromProvider($request->name,'media');
+        return $mediaServicesContract->deleteMediaFromProvider($request->name,$this->productFolder);
     }
 }
