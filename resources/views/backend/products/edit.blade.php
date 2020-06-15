@@ -323,7 +323,7 @@
                         $.each(uploadedDocumentMap, function(i, e) {
                             $('form').append('<input type="hidden" name="document[]" value="' + e + '">');
                         })
-                        console.log(uploadedDocumentMap)
+                        //console.log(uploadedDocumentMap)
                         load_images();
 
                     },
