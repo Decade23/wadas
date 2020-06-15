@@ -29,7 +29,7 @@ class MediaServices implements MediaServicesContract
     public function getMediaByFileName($fileName)
     {
         // TODO: Implement getMediaByFileName() method.
-        return $this->model::where('file_name', $fileName)->get();
+        return $this->model::where('file_name', $fileName)->first();
     }
 
     public function storeMedia($request, $folderName = 'media', $deleteUrl = '')
@@ -132,7 +132,8 @@ class MediaServices implements MediaServicesContract
                     }
                     else { #if file doesn't exist
                         #then delete the file on db if file on s3 didn't find
-                        $this->deleteMediaByFileName($file);
+                        $this->deleteMediaOnlyDB($file);
+                        //$html = '<div class="dropzone dropzone-default dropzone-brand" id="doc"><h3 class="dropzone-msg-title">there\'s no file.</h3>';
                         //$html .= '<p>no files existing <b>'.$file.'</b>'."<a class=\"dz-remove remove_image\" id=\"" . $file . "\" href=\"javascript:undefined;\" data-dz-remove=\"\"> Remove file</a>".'</p>';
                     }
                 }
@@ -184,10 +185,23 @@ class MediaServices implements MediaServicesContract
         $dataDb = $this->model->where('file_name', $fileName);
         if (count($dataDb->get()) > 0)
         {
-            #then delete it
-            return $dataDb->delete();
+            if (isset($dataDb->path)) {
+                #check if file exist
+                if (Storage::disk('s3')->exists($dataDb->path)) {
+                    #then delete the file
+                    Storage::disk('s3')->delete($dataDb->path);
+                }
+            }
         }
         // if file name didn't find it
-        return false;
+        #then delete it
+        return $dataDb->delete();
+    }
+
+    public function deleteMediaOnlyDB($fileName)
+    {
+        // TODO: Implement deleteMediaOnlyDB() method.
+        $dataDb = $this->getMediaByFileName($fileName);
+        return $dataDb->delete();
     }
 }

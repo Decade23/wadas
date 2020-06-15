@@ -283,14 +283,11 @@ class ProductServices implements ProductServicesContract
         #check if file is same
         $imagesDb = [];
         #insert new media into db
+
         foreach ($request as $image) {
             #if file not same with the old one
-            if (count($this->media->getMediaByFileName($image['file_name'])) < 1)
-            {
-                #delete existing file
-                $this->destroyImages($productId);
-
-                #then create the one
+            $fileDb = $this->media->getMediaByFileName($image['file_name']);
+            if ( !isset($fileDb->file_name) ) {
                 $imagesDb[] = Media::create([
                     'type'      => $image['type'],
                     'item_id'   => $productId,
@@ -301,12 +298,10 @@ class ProductServices implements ProductServicesContract
                     'created_by'  => Sentinel::getUser()->email,
                     'updated_by'  => Sentinel::getUser()->email
                 ]);
+            } else if ($fileDb->file_name != $image['file_name']) {
+                # if file exist in db then delete it
+                $this->media->deleteMediaByFileName($fileDb->file_name);
             }
-            #if file on db didn't find
-            #but still have file on db
-            #then delete it
-            $this->media->deleteMediaFromProvider($image['file_name'], $this->productFolder);
-
         }
 
         return $imagesDb;

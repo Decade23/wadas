@@ -60,4 +60,6 @@ interface MediaServicesContract
 
     public function deleteMediaByFileName($fileName);
 
+    public function deleteMediaOnlyDB($fileName);
+
 }

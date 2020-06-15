@@ -287,7 +287,7 @@
                     $('form').append('<input type="hidden" name="document[]" value="' + '{{ $fileName->file_name }}' + '">');
                     uploadedDocumentMap.push( '{!! $fileName->file_name !!}' );
                     @endforeach
-
+                    console.log(uploadedDocumentMap)
                     data = {
                         'fileNames': uploadedDocumentMap
                     }
@@ -319,6 +319,8 @@
                     success:function(data){
                         $('.submit').attr('disabled', false); // enable submit
                         uploadedDocumentMap = removeArr(uploadedDocumentMap, name);
+                        removeInputDocArray(name);
+
                         load_images();
 
                     },
@@ -338,6 +340,12 @@
                 arr.splice(index, 1);
                 return arr;
             }
+        }
+
+        function removeInputDocArray(remove)
+        {
+            const index = $("input[name='document[]']").attr('value', remove);
+            index.remove();
         }
 
     </script>

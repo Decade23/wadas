@@ -82,6 +82,7 @@ class ProductController extends Controller
     public function update(productUpdateRequest $request, $id)
     {
         #if success update into DB
+
         if  (is_object($tes = $this->service->update($id,$request))) {
 
             return $this->redirectSuccessUpdate(route('product.index'),'Success Updated.');
