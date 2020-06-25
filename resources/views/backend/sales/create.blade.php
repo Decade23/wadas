@@ -606,7 +606,7 @@
                             }
                         };
                     },
-                    cache: true,
+                    //cache: true,
                 }
             });
         }
@@ -628,13 +628,13 @@
             productHtml += data.name;
             productHtml += '<input type="hidden" name="products[' + data.id + '][product_id]" value="'+data.id+'">';
             productHtml += '<input type="hidden" name="products[' + data.id + '][product_name]" value="'+data.name+'">';
-            productHtml += '<input type="hidden" class="typeTotal" name="products[' + data.id + '][product_group]" value="'+data.type+'">';
+            productHtml += '<input type="hidden" class="typeTotal" name="products[' + data.id + '][product_group]" value="'+data.groups[0].name+'">';
             productHtml += '<input type="hidden" name="products[' + data.id + '][product_time_period]" value="'+data.time_period+'">';
             productHtml += '<input type="hidden" id="unitPrice'+ data.id +'" name="products[' + data.id + '][product_unit_price]" value="'+data.price+'">';
             productHtml += '</td>';
 
             productHtml += '<td>';
-            productHtml += data.type;
+            productHtml += data.groups[0].name;
             productHtml += '</td>';
 
             productHtml += '<td><input onchange="qty('+ data.id +')" type="text" name="products[' + data.id + '][qty]" value="1" class="form-control input-sm" id="quantity'+data.id+'"></td>';
