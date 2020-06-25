@@ -157,4 +157,13 @@ class ProductController extends Controller
     {
         return $mediaServicesContract->deleteMediaFromProvider($request->name,$this->productFolder);
     }
+
+    public function select2(Request $request)
+    {
+        if ($request->ajax())
+        {
+            return $this->service->select2($request);
+        }
+        abort('404', 'Uups');
+    }
 }

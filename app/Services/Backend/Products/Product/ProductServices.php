@@ -14,6 +14,7 @@ use App\Models\Products\Product;
 use App\Services\Backend\Media\MediaServicesContract;
 use App\Traits\fileUploadTrait;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -232,6 +233,16 @@ class ProductServices implements ProductServicesContract
     public function select2($request)
     {
         // TODO: Implement select2() method.
+        $perPage    = 10;
+        $page       = $request->page ?? 1;
+
+        Paginator::currentPageResolver(function() use($page) {
+            return $page;
+        });
+
+        $dataDb = $this->model::select(['id', 'name as text', 'name', 'type','time_period', 'price'])->where('name', 'LIKE', '%' . $request->term . '%')->orderBy('created_at', 'DESC')->orderBy('name')->paginate($perPage);
+
+        return $dataDb;
     }
 
     public function queryProducts($request)

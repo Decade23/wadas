@@ -12,12 +12,18 @@ use App\Services\Backend\Fulfillments\Posts\PostsService;
 use App\Services\Backend\Fulfillments\Posts\PostsServiceContract;
 use App\Services\Backend\Groups\GroupServices;
 use App\Services\Backend\Groups\GroupServicesContract;
+use App\Services\Backend\Map\MapServices;
+use App\Services\Backend\Map\MapServicesContract;
 use App\Services\Backend\Media\MediaServices;
 use App\Services\Backend\Media\MediaServicesContract;
+use App\Services\Backend\Member\MemberServices;
+use App\Services\Backend\Member\MemberServicesContract;
 use App\Services\Backend\Products\Product\ProductServices;
 use App\Services\Backend\Products\Product\ProductServicesContract;
 use App\Services\Backend\Products\ProductGroup\ProductGroupServices;
 use App\Services\Backend\Products\ProductGroup\ProductGroupServicesContract;
+use App\Services\Backend\Sales\SalesService;
+use App\Services\Backend\Sales\SalesServiceContract;
 use App\Services\Main\MainService;
 use App\Services\Main\MainServiceContract;
 use Illuminate\Support\Facades\Schema;
@@ -75,6 +81,21 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             MediaServicesContract::class,
             MediaServices::class
+        );
+
+        $this->app->bind(
+            SalesServiceContract::class,
+            SalesService::class
+        );
+
+        $this->app->bind(
+            MapServicesContract::class,
+            MapServices::class
+        );
+
+        $this->app->bind(
+            MemberServicesContract::class,
+            MemberServices::class
         );
     }
 

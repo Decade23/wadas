@@ -12,6 +12,7 @@ use Cartalyst\Sentinel\Users\EloquentUser;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 /**
  * Class User
@@ -40,5 +41,20 @@ class User extends EloquentUser implements AuthenticatableContract
      */
     public function user_role() {
         return $this->hasOne(UserRole::class, 'user_id', 'id');
+    }
+
+    public function address(){
+        return $this->hasOne(UserAddress::class)->withDefault(function($user) {
+            // $userDb = new UserAddress();
+            $user->id = 0;
+            $user->user_id = 0;
+            $user->address = '';
+            $user->subdistrict_id = 0;
+            $user->province = '';
+            $user->postal_code = '';
+            $user->created_at = Carbon::now();
+            $user->updated_at = Carbon::now();
+
+        });
     }
 }
