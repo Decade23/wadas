@@ -9,6 +9,7 @@
 namespace App\Services\Backend\Products\Product;
 
 
+use App\Models\Groups;
 use App\Models\Media;
 use App\Models\Products\Product;
 use App\Services\Backend\Media\MediaServicesContract;
@@ -112,6 +113,7 @@ class ProductServices implements ProductServicesContract
             $insert = $this->model::find($id);
             $insert->fill($request->all());
             $insert->slug = Str::slug($request->name, '-');
+            $insert->type = Groups::find($request->group)->name;
             $insert->updated_by = $userDb;
             $insert->save();
 
