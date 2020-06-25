@@ -18,7 +18,6 @@ use App\Models\Product;
 use App\Models\Sales;
 use App\Services\Backend\Media\MediaServicesContract;
 use App\Traits\fileUploadTrait;
-use App\Traits\Users\AttachRoleTrait;
 use App\Traits\Users\MemberTrait;
 use App\Traits\Users\UserProductTrait;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
@@ -31,7 +30,7 @@ use Illuminate\Support\Facades\Storage;
 
 class SalesService implements SalesServiceContract
 {
-    use MemberTrait, UserProductTrait, AttachRoleTrait, fileUploadTrait;
+    use MemberTrait, UserProductTrait, fileUploadTrait;
     private $model, $productFolder, $media;
     /**
      * SalesService constructor.
