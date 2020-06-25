@@ -11,6 +11,7 @@ namespace App\Models\Products;
 use App\Models\Groups;
 use App\Models\Media;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Product extends Model
 {
@@ -28,16 +29,6 @@ class Product extends Model
         static::created(function ($product) {
             $product->update(['slug' => $product->name]);
         });
-    }
-
-    public function setSlugAttribute($value)
-    {
-
-        if (static::whereSlug($slug = str_slug($value))->exists()) {
-            $slug = "{$slug}";
-        }
-
-        $this->attributes['slug'] = $slug;
     }
 
     public function setPriceAttribute($value)
