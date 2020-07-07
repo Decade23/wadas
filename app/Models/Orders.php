@@ -175,11 +175,45 @@ class Orders extends Model
 
     public function getDueDateOrderAttribute()
     {
-        return Carbon::parse($this->due_date)->format('d M Y, h:i:s');
+        //return Carbon::parse($this->due_date)->format('d M Y, h:i:s');
+        return date('d M Y, h:i:s', strtotime($this->due_date));
     }
 
     public function getCreatedAtOrderAttribute()
     {
-        return Carbon::parse($this->created_at)->format('d M Y, h:i:s');
+        //return Carbon::parse($this->created_at)->format('d M Y, h:i:s');
+        return date('d M Y, h:i:s', strtotime($this->created_at));
+    }
+
+    public function getCreatedAtAttribute($value){
+        return date('Y-m-d H:i:s', strtotime($value));
+    }
+
+    public function getUpdatedAtAttribute($value){
+        return date('Y-m-d H:i:s', strtotime($value));
+    }
+
+    public function GetPaymentStatusViewAttribute() {
+        $baseValue = strtolower($this->payment_status);
+        $res = '';
+
+        switch ($baseValue) {
+            case 'paid':
+                $res = sprintf('<span class="kt-badge kt-badge--inline kt-badge--success">%s</span>', strtoupper($this->payment_status));
+            break;
+
+            case 'unpaid':
+                $res = sprintf('<span class="kt-badge kt-badge--inline kt-badge--warning">%s</span>', strtoupper($this->payment_status));
+                break;
+
+            case 'cancel':
+                $res = sprintf('<span class="kt-badge kt-badge--inline kt-badge--danger">%s</span>', strtoupper($this->payment_status));
+                break;
+
+            default:
+                $res;
+        }
+
+        return $res;
     }
 }

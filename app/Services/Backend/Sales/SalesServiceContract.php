@@ -28,4 +28,6 @@ interface SalesServiceContract
     public function destroy(int $id);
 
     public function pdf($id);
+
+    public function invoice($id);
 }

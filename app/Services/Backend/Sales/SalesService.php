@@ -24,9 +24,11 @@ use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Storage;
+use Dompdf\Dompdf;
 
 class SalesService implements SalesServiceContract
 {
@@ -195,23 +197,13 @@ class SalesService implements SalesServiceContract
 
             $order->type           = $request->type;
             $order->bank_id        = $request->bank_id;
-            $order->payment_status = $request->payment_status;
+            $order->payment_status = $request->paymentStatus;
 
             #Change the payment status to paid when old data is unpaid
             $membership = 0;
             if($oldPaymentStatus == 'unpaid' && $request->payment_status == 'paid'){
                 $order->paid_at   = now();
                 $order->due_date  = null;
-
-                foreach ($order->details as $detail){
-                    $this->storeUserProduct($detail);
-                    if($detail->product_type == 'Membership' || $detail->product_type == 'membership'){
-                        $product = Product::where('id',$detail['product_id'])->first();
-                        if($product->slug == 'super-trader-signal-id'){
-                            $membership = 1;
-                        }
-                    }
-                }
             }
             else if($request->payment_status == 'cancel'){
                 $order->paid_at   = null;
@@ -220,20 +212,27 @@ class SalesService implements SalesServiceContract
 
             $order->save();
 
-            if($membership == 1){
-                if($request->payment_status == 'paid'){
-                    // $this->send_email_paid_1($order);
-                    // $this->send_email_paid_2($order);
-                    // $this->send_email_paid_3($order->customer);
-                    $this->send_email_welcome($order->customer);
-                }
+            if($request->payment_status == 'paid'){
+                // $this->send_email_paid_1($order);
+                // $this->send_email_paid_2($order);
+                // $this->send_email_paid_3($order->customer);
+                //$this->send_email_welcome($order->customer);
             }
 
-            if ($request->qtyBookHidden != 0) {
-                # code...
-                #Save Delivery Data To Shipping Table
-                $userDb = User::find($request->member['id']);
-                $this->storeShippingBySales($request, $order, $userDb);
+            #insert media (image)
+            if (is_array($request->document)) {
+                foreach ($request->document as $file_name) {
+                    $path   = 'public/'. $this->uploadPath .'/'. $this->productFolder . '/'. $file_name;
+                    $url    = Storage::disk('s3')->url($path);
+                    $files[] = [
+                        'type'  => 'image',
+                        'model' => 'Order',
+                        'url'   => $url,
+                        'path'  => $path,
+                        'file_name' => $file_name
+                    ];
+                }
+                $this->updateProductImages($files, $order->id);
             }
 
             DB::commit();
@@ -301,7 +300,7 @@ class SalesService implements SalesServiceContract
                     }
                     else{
                         //return '<a href="'.route('sales.pdf', $dataDb->id).'" id="tooltip" title="PDF" target="_blank"><span class="label label-success label-sm"><i class="fa fa-file-pdf-o"></i></span></a> <a href="'.route('sales.show', $dataDb->id).'" id="tooltip" title="'.trans('global.show').'"><span class="label label-primary label-sm"><i class="fa fa-arrows-alt"></i></span></a>';
-                        return '<a href="'.route('sales.pdf', $dataDb->id).'" id="tooltip" data-tooltip-custom="tooltip" title="'.trans('global.show').'">
+                        return '<a href="'.route('front_sales.index', $dataDb->id).'" id="tooltip" data-tooltip-custom="tooltip" title="'.trans('global.show').'" target="_blank">
                             <span class="label label-primary label-sm">
                                 <i class="fa fa-arrows-alt"></i>
                                 </span>
@@ -315,6 +314,10 @@ class SalesService implements SalesServiceContract
                     return $dataDb->id;
                 }
             )
+            ->editColumn('payment_status', function($dataDb){
+                return $dataDb->payment_status_view;
+            })
+            ->rawColumns(['payment_status', 'action'])
             ->make(true);
     }
 
@@ -493,6 +496,27 @@ class SalesService implements SalesServiceContract
     }
 
     public function pdf($id){
+//        $pdf = new Dompdf();
+//        $pdf->loadHtml('<h1>. $id .</h1>');
+//        $pdf->setPaper('A4', 'landscape');
+//        $pdf->render();
+//        return $pdf->stream();
+
+//        $temp = App::make('dompdf.wrapper');
+//        $temp->load
+        $data['dataDb'] = $this->get($id);
+        //dd($data['dataDb']->created_at_order);
+
+        return view('backend.sales.pdf', $data);
+        $pdf = new Dompdf();
+        $view = \View::make('backend.sales.pdf_view', $data);
+        $pdf->loadHtml($view);
+        $pdf->setPaper('A4', 'landscape');
+        $pdf->render();
+        return $pdf->stream($data['dataDb']->order_code);
+
+
+
         $sale = Orders::with(['details', 'customer' => function ($query) {
             $query->with('address');
         }, 'agent', 'bank','shipping'])->where('id', $id)->first();
@@ -573,5 +597,49 @@ class SalesService implements SalesServiceContract
         //Media::where('item_id', $productId)->delete();
         return $this->media->deleteMediaByItemId($productId);
 
+    }
+
+    private function updateProductImages($request, $productId)
+    {
+
+        #check if file is same
+        $imagesDb = [];
+        #insert new media into db
+
+        foreach ($request as $image) {
+            #if file not same with the old one
+            $fileDb = $this->media->getMediaByFileName($image['file_name']);
+            if ( !isset($fileDb->file_name) ) {
+                $imagesDb[] = Media::create([
+                    'type'      => $image['type'],
+                    'item_id'   => $productId,
+                    'url'       => $image['url'],
+                    'model'     => $image['model'],
+                    'path'      => $image['path'],
+                    'file_name'  => $image['file_name'],
+                    'created_by'  => Sentinel::getUser()->email,
+                    'updated_by'  => Sentinel::getUser()->email
+                ]);
+            } else if ($fileDb->file_name != $image['file_name']) {
+                # if file exist in db then delete it
+                $this->media->deleteMediaByFileName($fileDb->file_name);
+            }
+        }
+
+        return $imagesDb;
+    }
+
+    public function invoice($id)
+    {
+        $data['dataDb'] = $this->get($id);
+        //dd($data['dataDb']->created_at_order);
+
+        return view('backend.sales.invoice', $data);
+//        $pdf = new Dompdf();
+//        $view = \View::make('backend.sales.pdf_view', $data);
+//        $pdf->loadHtml($view);
+//        $pdf->setPaper('A4', 'landscape');
+//        $pdf->render();
+//        return $pdf->stream($data['dataDb']->order_code);
     }
 }

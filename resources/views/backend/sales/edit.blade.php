@@ -17,8 +17,9 @@
             </div>
         </div>
 
-        <form class="kt-form kt-form--label-right" method="POST" action="{{ route('sales.store') }}" enctype="multipart/form-data">
+        <form class="kt-form kt-form--label-right" method="POST" action="{{ route('sales.update', $dataDb->id) }}" enctype="multipart/form-data">
             {!! csrf_field() !!}
+            {{ method_field('PUT') }}
 
             <div class="kt-portlet__body">
                 <ul class="nav nav-tabs nav-tabs-line" role="tablist">
@@ -36,7 +37,7 @@
                                 <div class="form-group @if($errors->has('orderDate')) validated @endif">
                                     <label @if($errors->has('orderDate')) class="text-danger" @endif>Order Date<span style="color: red">*</span></label>
                                     <div class="kt-input-icon kt-input-icon--right">
-                                        <input type="text" name="orderDate" id="orderDate" class="form-control @if($errors->has('orderDate')) is-invalid @endif" placeholder="Order Date" value="{{ old('orderDate', date('Y-m-d')) }}" readonly>
+                                        <input type="text" name="orderDate" id="orderDate" class="form-control @if($errors->has('orderDate')) is-invalid @endif" placeholder="Order Date" value="{{ old('orderDate', $dataDb->order_date) }}" readonly>
                                         <span class="kt-input-icon__icon kt-input-icon__icon--right">
                                             <span><i class="la la-calendar"></i></span>
                                         </span>
@@ -50,8 +51,8 @@
                                     <select name="type" id="type" class="form-control @if($errors->has('type')) is-invalid @endif kt-select2">
                                         <option></option>
 
-                                        <option value="wa">Whatsapp</option>
-                                        <option value="web">Website</option>
+                                        <option value="wa" @if(old('type', $dataDb->type) === 'wa') selected @endif>Whatsapp</option>
+                                        <option value="web" @if(old('type', $dataDb->type) === 'web') selected @endif>Website</option>
                                     </select>
                                     {!! $errors->first('type', '<div class="invalid-feedback">:message</div>') !!}
                                 </div>
@@ -62,8 +63,9 @@
                                     <select name="paymentStatus" id="paymentStatus" class="form-control @if($errors->has('paymentStatus')) is-invalid @endif kt-select2">
                                         <option></option>
 
-                                        <option value="unpaid">Unpaid</option>
-                                        <option value="paid">Paid</option>
+                                        <option value="unpaid" @if(old('paymentStatus', $dataDb->payment_status) === 'unpaid') selected @endif>Unpaid</option>
+                                        <option value="cancel" @if(old('paymentStatus', $dataDb->payment_status) === 'cancel') selected @endif>Cancel</option>
+                                        <option value="paid" @if(old('paymentStatus', $dataDb->payment_status) === 'paid') selected @endif>Paid</option>
                                     </select>
                                     {!! $errors->first('paymentStatus', '<div class="invalid-feedback">:message</div>') !!}
                                 </div>
@@ -81,27 +83,25 @@
                                 <hr class="divider-short">
                             </div>
                             <div class="col-lg-4">
-                                <div class="form-group @if($errors->has('member.email')) validated @endif">
-                                    <label @if($errors->has('member.email')) class="text-danger" @endif>Member Search By Email<span style="color: red">*</span></label>
-                                    <select name="member[memberSearch]" id="memberSearch" class="form-control @if($errors->has('member.email')) is-invalid @endif kt-select2">
-                                        <option></option>
-                                    </select>
-                                    {!! $errors->first('member.email', '<div class="invalid-feedback">:message</div>') !!}
-                                </div>
-                            </div>
-                            <input type="hidden" name="member[email]" id="email" value="">
-                            <div class="col-lg-4">
-                                <input type="hidden" name="member[id]" id="memberId" value="0">
+                                <input type="hidden" name="member[id]" id="memberId" value="{{$dataDb->customer->id}}">
                                 <div class="form-group @if($errors->has('member.name')) validated @endif">
                                     <label @if($errors->has('member.name')) class="text-danger" @endif>Member Name<span style="color: red">*</span></label>
-                                    <input type="text" name="member[name]" id="name" class="form-control @if($errors->has('member.name')) is-invalid @endif" placeholder="Enter Member Name ...*" value="{{ old('member.name') }}">
+                                    <input type="text" name="member[name]" id="name" class="form-control @if($errors->has('member.name')) is-invalid @endif" placeholder="Enter Member Name ...*" value="{{ old('member.name', $dataDb->customer->name) }}" readonly>
                                     {!! $errors->first('member.name', '<div class="invalid-feedback">:message</div>') !!}
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <input type="hidden" name="member[id]" id="memberId" value="{{$dataDb->customer->id}}">
+                                <div class="form-group @if($errors->has('member.email')) validated @endif">
+                                    <label @if($errors->has('member.email')) class="text-danger" @endif>Member Email<span style="color: red">*</span></label>
+                                    <input type="text" name="member[email]" id="name" class="form-control @if($errors->has('member.email')) is-invalid @endif" placeholder="Enter Member Email ...*" value="{{ old('member.email', $dataDb->customer->email) }}" readonly>
+                                    {!! $errors->first('member.email', '<div class="invalid-feedback">:message</div>') !!}
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 <div class="form-group @if($errors->has('member.phone')) validated @endif">
                                     <label @if($errors->has('member.phone')) class="text-danger" @endif>Member Phone<span style="color: red">*</span></label>
-                                    <input type="text" name="member[phone]" id="phone" class="form-control @if($errors->has('member.phone')) is-invalid @endif" placeholder="Enter Member Phone ...*" value="{{ old('member.phone') }}">
+                                    <input type="text" name="member[phone]" id="phone" class="form-control @if($errors->has('member.phone')) is-invalid @endif" placeholder="Enter Member Phone ...*" value="{{ old('member.phone', $dataDb->customer->phone) }}" readonly>
                                     {!! $errors->first('member.phone', '<div class="invalid-feedback">:message</div>') !!}
                                 </div>
                             </div>
@@ -109,7 +109,7 @@
                             <div class="col-lg-12">
                                 <div class="form-group @if($errors->has('member.address.address')) validated @endif">
                                     <label @if($errors->has('member.address.address')) class="text-danger" @endif>Address</label>
-                                    <textarea name="member[address][address]" id="address" cols="24" rows="2" class="form-control @if($errors->has('member.address.address')) is-invalid @endif" placeholder="Enter Member Address ...*">{!! old('member.address.address') !!}</textarea>
+                                    <textarea name="member[address][address]" id="address" cols="24" rows="2" class="form-control @if($errors->has('member.address.address')) is-invalid @endif" placeholder="Enter Member Address ...*" readonly>{!! old('member.address.address', $dataDb->customer->address !== null ? $dataDb->customer->address->address : '') !!}</textarea>
                                     {!! $errors->first('member.address.address', '<div class="invalid-feedback">:message</div>') !!}
                                 </div>
                             </div>
@@ -127,7 +127,7 @@
                             <div class="col-lg-4">
                                 <div class="form-group @if($errors->has('member.address.province')) validated @endif">
                                     <label @if($errors->has('member.address.province')) class="text-danger" @endif>Province</label>
-                                    <input type="text" name="member[address][province]" id="province" class="form-control @if($errors->has('member.address.province')) is-invalid @endif" placeholder="Province" value="" readonly>
+                                    <input type="text" name="member[address][province]" id="province" class="form-control @if($errors->has('member.address.province')) is-invalid @endif" placeholder="Province" value="{{$dataDb->customer->address !== null ? $dataDb->customer->address->province : ''}}" readonly>
                                     {!! $errors->first('member.address.province', '<div class="invalid-feedback">:message</div>') !!}
                                 </div>
                             </div>
@@ -135,22 +135,12 @@
                             <div class="col-lg-4">
                                 <div class="form-group @if($errors->has('member.address.postal_code')) validated @endif">
                                     <label @if($errors->has('member.address.postal_code')) class="text-danger" @endif>Postal Code</label>
-                                    <input type="text" name="member[address][postal_code]" id="postalCode" class="form-control @if($errors->has('member.address.postal_code')) is-invalid @endif" placeholder="Postal Code" value="" readonly>
+                                    <input type="text" name="member[address][postal_code]" id="postalCode" class="form-control @if($errors->has('member.address.postal_code')) is-invalid @endif" placeholder="Postal Code" value="{{$dataDb->customer->address !== null ? $dataDb->customer->address->postal_code : ''}}" readonly>
                                     {!! $errors->first('member.address.postal_code', '<div class="invalid-feedback">:message</div>') !!}
                                 </div>
                             </div>
 
                             <div class="col-lg-12">
-                                <hr class="divider-short">
-
-                                <div class="form-group @if($errors->has('product')) validated @endif">
-                                    <label @if($errors->has('product')) class="text-danger" @endif>Select Product<span style="color: red">*</span></label>
-                                    <select name="product" id="product" class="form-control @if($errors->has('product')) is-invalid @endif kt-select2">
-                                        <option></option>
-                                    </select>
-                                    {!! $errors->first('product', '<div class="invalid-feedback">:message</div>') !!}
-                                </div>
-
                                 <hr class="divider-short">
 
                                 <table class="table table-hover table-striped" id="product-container">
@@ -161,9 +151,6 @@
                                         <th width="100">Qty</th>
                                         <th width="150" class="text-right">Unit Price</th>
                                         <th width="150" class="text-right">Price</th>
-                                        <th width="50" class="text-center">
-                                            <i class="fa fa-trash"></i>
-                                        </th>
                                     </tr>
                                     </thead>
 
@@ -172,16 +159,27 @@
                                         <th colspan="4" class="text-right">
                                             Total :
                                         </th>
-                                        <th colspan="1" class="text-right"><span id="totalPrice"><strong></strong></span></th>
-                                        <th>&nbsp;</th>
+                                        <th colspan="1" class="text-right"><span><strong>Rp. {{number_format($dataDb->total_price)}}</strong></span></th>
                                     </tr>
                                     </tfoot>
                                     <tbody>
-                                    <tr class="info" id="hidden-tr-po">
-                                        <td colspan="6">
-                                            Please select the product
+                                    @foreach($dataDb->details as $detail)
+                                    <tr>
+                                        <td>
+                                            {{$detail->product_name}}
+                                            <input type="hidden" name="products[{{$detail->id}}][qty]" value="{{$detail->qty}}">
+                                            <input type="hidden" name="products[{{$detail->id}}][product_id]" value="{{$detail->product_id}}">
+                                            <input type="hidden" name="products[{{$detail->id}}][product_time_period]" value="{{$detail->product_time_period}}">
                                         </td>
+                                        <td>
+                                            <input type="hidden" name="products[{{$detail->id}}][product_group]" value="{{$detail->product_group}}">
+                                            {{$detail->product_group}}
+                                        </td>
+                                        <td>{{$detail->qty}}</td>
+                                        <td class="text-right">Rp. {{number_format($detail->product_unit_price)}}</td>
+                                        <td class="text-right">Rp. {{number_format($detail->product_price)}}</td>
                                     </tr>
+                                    @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -217,7 +215,7 @@
                                 </div>
                             </div>
                             <div class="col-lg-6 kt-align-right">
-                                <button type="submit" class="btn btn-primary submit">@lang('global.save')</button>
+                                <button type="submit" class="btn btn-primary submit">@lang('global.update')</button>
                             </div>
                         </div>
                     </div>
@@ -234,15 +232,6 @@
     <script src="{{ url('plugins/autonumeric/autoNumeric.js') }}"></script>
     <script>
         $(function () {
-            $('#orderDate').datepicker({
-                format : 'yyyy-mm-dd',
-                changeMonth: true,
-                changeYear : true,
-                autoclose: true,
-                todayHighlight: true,
-                todayBtn: true,
-                yearRange  : "-100:+0"
-            });
 
             //$('#description').summernote();
 
@@ -256,6 +245,7 @@
             $('#subdistrict').select2({
                 placeholder: "Search City Or Subdistrict",
                 width: '100%',
+                disabled:true,
                 //tags: true,
                 ajax: {
                     url: '{{route('subdistrict.ajax.select2')}}',
@@ -296,118 +286,9 @@
                 }
             });
 
-            // member search
-            $('#memberSearch').select2({
-                placeholder: "Search Member By Email",
-                width: '100%',
-                tags: true,
-                ajax: {
-                    url: '{{route('member.email.ajax.select2')}}',
-                    dataType: 'json',
-                    delay: 250,
-                    data: function (params) {
-                        return {
-                            term: params.term,
-                            page: params.page,
-                        };
-                    },
-                    processResults: function (data, params) {
-
-                        params.page = params.page || 1;
-
-                        return {
-                            results: data.data,
-                            pagination: {
-                                more: (params.page * data.per_page) < data.total
-                            }
-                        };
-                    },
-                    cache: true,
-                }
-            });
-
-            //Add The Member Data And Clear Member Search Data
-            $('#memberSearch').on("select2:select", function () {
-
-                //Set Membership Data
-                const select2Data = $(this).select2("data");
-                // console.log(select2Data[0].text);
-                if(typeof select2Data[0].name !== "undefined"){
-                    $('#memberId').val(select2Data[0].id);
-                } else {
-                    $('#memberId').val(0);
-                }
-
-                if(typeof select2Data[0].text !== "undefined"){
-                    $('#email').val(select2Data[0].text);
-                    $('#name').val(select2Data[0].name);
-                    $('#phone').val(select2Data[0].phone);
-                } else {
-                    $('#email').val('');
-                }
-
-                // console.log(select2Data[0]);
-                if (typeof select2Data[0].address.subdistrict !== 'undefined' && select2Data[0].address.subdistrict !== null) {
-                    if (typeof select2Data[0].address.subdistrict.rajaongkir_city_id !== 'undefined') {
-                        $('#destinationCity').val(select2Data[0].address.subdistrict.rajaongkir_city_id);
-                    }
-                }
-
-
-
-                if(typeof select2Data[0].address !== "undefined"){
-                    //$('#name').val(select2Data[0].name);
-                    //$('#phone').val(select2Data[0].phone);
-                    $('#address').val(select2Data[0].address.address);
-                    if(select2Data[0].address.subdistrict_id !== null && select2Data[0].address.subdistrict_id !== 0){
-                        $('#subdistrict').append('<option value="'+select2Data[0].address.subdistrict_id+'" selected="selected">'+ select2Data[0].address.subdistrict.urban +', '+ select2Data[0].address.subdistrict.sub_district +', '+ select2Data[0].address.subdistrict.city +'</option>');
-                    } else {
-                        $('#subdistrict').val(null).trigger('change');
-                    }
-                    $('#province').val(select2Data[0].address.province);
-                    $('#postalCode').val(select2Data[0].address.postal_code);
-
-                } else {
-
-                    // $('#name').val('');
-                    // $('#email').val('');
-                    $('#address').val('');
-                    $('#subdistrict').val(null).trigger('change');
-                    $('#province').val('');
-                    $('#postalCode').val('');
-                }
-
-                // $('#memberSearch').val(null).trigger("change");
-            });
-
-            //Add The Member Data And Clear Member Search Data
-            $('#product').on("select2:select", function () {
-
-                //Set Membership Data
-                const select2Data = $(this).select2("data");
-                //console.log(select2Data[0])
-                if ($.inArray(select2Data[0].id, productData) == -1) {
-
-                    //Add Item Id To Array
-                    productData.push(select2Data[0].id);
-
-                    //Remove Hidden Tr SO
-                    $('#hidden-tr-po').remove();
-
-                    //Appent Item Html
-                    htmlProduct(select2Data[0]);
-
-                    //Calculate Price
-                    qty(select2Data[0].id);
-
-                    loadCurrency();
-                }
-
-                //Remove Hidden Tr SO
-                $('#hidden-tr-po').remove();
-
-                $('#product').val(null).trigger("change");
-            });
+            @if(isset($dataDb->customer->address->subdistrict_id) && $dataDb->customer->address->subdistrict_id != null )
+            $('#subdistrict').append('<option value="{{$dataDb->customer->address->subdistrict_id}}" selected="selected">{{$dataDb->customer->address->subdistrict->urban . ', ' . $dataDb->customer->address->subdistrict->sub_district . ', ' . $dataDb->customer->address->subdistrict->city}}</option>');
+            @endif
 
             var uploadedDocumentMap = new Array();
             $("#file").dropzone({
@@ -513,10 +394,21 @@
                 uploadedDocumentMap.push( '{!! $fileName !!}' );
                 @endforeach
 
-
                     data = {
                     'fileNames': uploadedDocumentMap
                 }
+                @elseif($dataDb->media->isNotEmpty())
+                    uploadedDocumentMap = new Array();
+                @foreach($dataDb->media as $fileName )
+                //append to input document and data array
+                $('form').append('<input type="hidden" name="document[]" value="' + '{{ $fileName->file_name }}' + '">');
+                uploadedDocumentMap.push( '{!! $fileName->file_name !!}' );
+                @endforeach
+                console.log(uploadedDocumentMap)
+                data = {
+                    'fileNames': uploadedDocumentMap
+                }
+
                 @endif
 
                 $.ajax({
@@ -580,92 +472,10 @@
             $("#totalPrice").autoNumeric('init', {aPad: false, aSep: ',', mDec: '0.00'});
         }
 
-        function initializeProduct(){
-            $('#product').select2({
-                placeholder: "Search Product",
-                width: '100%',
-                ajax: {
-                    url: '{{route('product.ajax.select2')}}',
-                    dataType: 'json',
-                    delay: 250,
-                    data: function (params) {
-
-                        return {
-                            term: params.term,
-                            page: params.page
-                        };
-                    },
-                    processResults: function (data, params) {
-
-                        params.page = params.page || 1;
-
-                        return {
-                            results: data.data,
-                            pagination: {
-                                more: (params.page * data.per_page) < data.total
-                            }
-                        };
-                    },
-                    //cache: true,
-                }
-            });
-        }
-
         // initialize
         $(document).ready(function () {
-            initializeProduct()
             loadCurrency();
         })
-
-        //For Place To Check Item Same Or Not
-        let productData = [];
-
-        //Ready For Append Html Form
-        function htmlProduct(data) {
-
-            let productHtml = '<tr id="product-row-' + data.id + '">';
-            productHtml += '<td>';
-            productHtml += data.name;
-            productHtml += '<input type="hidden" name="products[' + data.id + '][product_id]" value="'+data.id+'">';
-            productHtml += '<input type="hidden" name="products[' + data.id + '][product_name]" value="'+data.name+'">';
-            productHtml += '<input type="hidden" class="typeTotal" name="products[' + data.id + '][product_group]" value="'+data.groups[0].name+'">';
-            productHtml += '<input type="hidden" name="products[' + data.id + '][product_time_period]" value="'+data.time_period+'">';
-            productHtml += '<input type="hidden" id="unitPrice'+ data.id +'" name="products[' + data.id + '][product_unit_price]" value="'+data.price+'">';
-            productHtml += '</td>';
-
-            productHtml += '<td>';
-            productHtml += data.groups[0].name;
-            productHtml += '</td>';
-
-            productHtml += '<td><input onchange="qty('+ data.id +')" type="text" name="products[' + data.id + '][qty]" value="1" class="form-control input-sm" id="quantity'+data.id+'"></td>';
-
-            productHtml += '<td class="text-right"> Rp. '+ addCommas(data.price.replace('.00', '')) +'</td>';
-
-            productHtml += '<td class="text-right">';
-            productHtml += '<span id="priceText'+data.id+'">Rp. '+ addCommas(data.price.replace('.00', '')) +'</span>'
-            productHtml += '<input type="hidden" name="products[' + data.id + '][product_price]" id="price'+ data.id +'" value="'+data.price.replace('.00', '')+'" class="price">';
-            productHtml += '</td>';
-
-            productHtml += '<td class="text-center">';
-            productHtml += '<i class="fa fa-times" style="color: red;" onclick="removeProductList(' + data.id + ')"></i>';
-            productHtml += '</td>';
-            productHtml += '</tr>';
-
-            $('#product-container tbody').append(productHtml);
-        }
-
-        //To Remove Product Row
-        function removeProductList(productId) {
-
-            //console.log(productId);
-            $('#product-row-' + productId).remove();
-
-            qty(productId);
-
-            //Remove item in jquery array data
-            productData.splice(productData.indexOf(productId.toString()), 1);
-
-        }
 
         function addCommas(nStr)
         {
@@ -678,28 +488,6 @@
                 x1 = x1.replace(rgx, '$1' + ',' + '$2');
             }
             return x1 + x2;
-        }
-
-        function addTotalPrice(price) {
-            $('#totalPriceHidden').val(price);
-            $('#totalPrice').text('Rp. ' + addCommas(price));
-        }
-
-        function qty(rowIndex) {
-            let unitPrice = $('#unitPrice' + rowIndex).val();
-            let qty = $('#quantity' + rowIndex).val();
-
-            let price = parseFloat(unitPrice) * parseFloat(qty);
-
-            $('#priceText' + rowIndex).text('Rp. ' + addCommas(price));
-            $('#price' + rowIndex).val(price);
-
-            let totalPrice = 0;
-            $('.price').each(function () {
-                totalPrice += parseInt($(this).val());
-            });
-
-            addTotalPrice(totalPrice);
         }
 
     </script>

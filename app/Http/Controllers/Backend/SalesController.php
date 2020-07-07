@@ -10,6 +10,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Backend\Sales\salesRequest;
+use App\Http\Requests\Backend\Sales\salesUpdateRequest;
 use App\Services\Backend\Media\MediaServicesContract;
 use App\Services\Backend\Sales\SalesServiceContract;
 use App\Traits\redirectTo;
@@ -34,6 +35,7 @@ class SalesController extends Controller
 
     public function index()
     {
+        //return now()->format('Y-m-d H:i:s');
         $data['pageTitle'] = $this->pageTitle;
         return view($this->module. 'index', $data);
     }
@@ -96,21 +98,14 @@ class SalesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function edit($id, SalesServiceContract $salesServiceContract)
+    public function edit($id)
     {
-        $sale = $salesServiceContract->get($id);
-        if($sale->payment_status == 'unpaid'){
-            // dd($sale->details);
-            $sumBook = 0;
-            $sumPrice = 0;
-            foreach ($sale->details as $el) {
-                if ($el->product_type == 'book') {
-                    # code...
-                    $sumBook = $sumBook + $el->qty;
-                }
-                $sumPrice = $sumPrice + $el->product_price;
-            }
-            return view($this->module. 'update', ['sale' => $sale, 'sumBook' => $sumBook, 'sumPrice' => $sumPrice]);
+        $data['pageTitle'] = $this->pageTitle;
+        $data['dataDb'] = $this->service->get($id);
+
+        if($data['dataDb']->payment_status == 'unpaid'){
+            //dd($data['dataDb']->media);
+            return view($this->module. 'edit', $data);
         }
         else{
             return redirect()->route('sales.index');
@@ -127,7 +122,7 @@ class SalesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(salesRequest $request, $id, SalesServiceContract $salesServiceContract)
+    public function update(salesUpdateRequest $request, $id, SalesServiceContract $salesServiceContract)
     {
         #Save Product Data
         if (is_object($salesServiceContract->update($id, $request))) {

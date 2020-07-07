@@ -92,9 +92,9 @@
                                                         <tbody>
                                                         @foreach($dataDb->details as $details)
                                                         <tr>
-                                                            <td class="text-center">{{ucwords($details->product_group)}}</td>
-                                                            <td class="text-center">{{ucwords($details->product_name)}}</td>
-                                                            <td class="text-center">{{ $details->qty }}</td>
+                                                            <td>{{ucwords($details->product_group)}}</td>
+                                                            <td>{{ucwords($details->product_name)}}</td>
+                                                            <td>{{ $details->qty }}</td>
                                                             <td>Rp. {{number_format($details->product_unit_price)}}</td>
                                                             <td class="kt-font-brand kt-font-lg">Rp. {{number_format($details->product_price)}}</td>
                                                         </tr>
@@ -159,6 +159,8 @@
                                             </div>
                                         </div>
                                     @endforeach
+                                @else
+                                    <p>there is no file.</p>
                                 @endif
                             </div>
                         </div>
