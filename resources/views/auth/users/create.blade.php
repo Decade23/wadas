@@ -78,6 +78,47 @@
                             </div>
                         </div>
 
+                        <hr class="divider-short" />
+
+                        <div class="col-lg-3">
+                            <div class="form-group @if($errors->has('gender')) validated @endif">
+                                <label @if($errors->has('gender')) class="text-danger" @endif>Gender</label>
+                                <select class="form-control @if($errors->has('gender')) is-invalid @endif kt-select2" id="gender" name="gender">
+                                    <option value="" {{ old('gender')  == '' ? 'selected="selected"' : ''}}></option>
+                                    <option value="M" {{ old('gender') == 'M' ? 'selected="selected"' : ''}}>Male</option>
+                                    <option value="F" {{ old('gender') == 'F' ? 'selected="selected"' : ''}}>Female</option>
+                                </select>
+                                {!! $errors->first('gender', '<div class="invalid-feedback">:message</div>') !!}
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group @if($errors->has('dob')) validated @endif">
+                                <label @if($errors->has('dob')) class="text-danger" @endif>Date Of Birth</label>
+                                <div class="kt-input-icon kt-input-icon--right">
+                                    <input type="text" name="dob" id="dob" class="form-control @if($errors->has('dob')) is-invalid @endif" placeholder="Date Of Birth" value="{{ old('dob') }}" readonly>
+                                    <span class="kt-input-icon__icon kt-input-icon__icon--right">
+                                            <span><i class="la la-calendar"></i></span>
+                                        </span>
+                                </div>
+                                {!! $errors->first('dob', '<div class="invalid-feedback">:message</div>') !!}
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group @if($errors->has('recentCompany')) validated @endif">
+                                <label @if($errors->has('recentCompany')) class="text-danger" @endif>Recent Company</label>
+                                <input type="text" name="recentCompany" id="recentCompany" class="form-control @if($errors->has('recentCompany')) is-invalid @endif" placeholder="Enter Recent Company" value="{{ old('recentCompany') }}">
+                                {!! $errors->first('recentCompany', '<div class="invalid-feedback">:message</div>') !!}
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3">
+                            <div class="form-group @if($errors->has('industry')) validated @endif">
+                                <label @if($errors->has('industry')) class="text-danger" @endif>Industry</label>
+                                <input type="text" name="industry" id="industry" class="form-control @if($errors->has('industry')) is-invalid @endif" placeholder="Enter Industry" value="{{ old('industry') }}">
+                                {!! $errors->first('industry', '<div class="invalid-feedback">:message</div>') !!}
+                            </div>
+                        </div>
+
                     </div>
                 </div>
                 <div class="kt-portlet__foot">
@@ -111,9 +152,25 @@
 @push('scripts')
     <script>
         $(function () {
+
            $('#role').select2({
                placeholder      : "Select"
            });
+
+            $('#gender').select2({
+                placeholder      : "Select"
+            });
+
+            $('#dob').datepicker({
+                format : 'yyyy-mm-dd',
+                changeMonth: true,
+                changeYear : true,
+                autoclose: true,
+                todayHighlight: true,
+                todayBtn: true,
+                yearRange  : "-100:+0",
+                clearBtn: true
+            });
         });
     </script>
 @endpush

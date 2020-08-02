@@ -85,7 +85,11 @@ class UserService implements UserServiceContract
                 'email'      => strtolower( $email ),
                 'password'   => $request->password,
                 'created_by' => $userDb->email,
-                'updated_by' => $userDb->email
+                'updated_by' => $userDb->email,
+                'gender'     => $request->gender,
+                'dob'     => $request->dob,
+                'recent_company'     => $request->recentCompany,
+                'industry'     => $request->industry,
             ];
 
             #create new user
@@ -130,7 +134,11 @@ class UserService implements UserServiceContract
             $credentials = [
                 'name'       => $request->name,
                 'phone'      => $request->phone,
-                'updated_by' => $user->email
+                'updated_by' => $user->email,
+                'gender'     => $request->gender,
+                'dob'     => $request->dob,
+                'recent_company'     => $request->recentCompany,
+                'industry'     => $request->industry
             ];
 
             #If User Input Password
@@ -174,6 +182,12 @@ class UserService implements UserServiceContract
     public function destroy($user)
     {
         // TODO: Implement destroy() method.
+        #if delete root can't
+        if($user->roles[0]->slug == 'root') {
+            return false;
+        }
+
+        #if only delete user beside root
         return $user->delete();
     }
 

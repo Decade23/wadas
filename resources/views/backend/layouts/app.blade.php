@@ -24,6 +24,7 @@
 
 
     <!--begin::Global Theme Styles(used by all pages) -->
+
     <link href="{{ url('themes/eci/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ url('themes/eci/css/style.bundle.css') }}" rel="stylesheet" type="text/css" />
     <!--end::Global Theme Styles -->
@@ -147,7 +148,9 @@
                         @include('backend.layouts.menus.sidebar.sales')
                         @include('backend.layouts.menus.sidebar.fulfillments')
 {{--                        @include('backend.layouts.menus.sidebar.others')--}}
+                        @include('backend.layouts.menus.sidebar.apl')
                         @include('backend.layouts.menus.sidebar.acl')
+                        @include('backend.layouts.menus.sidebar.config')
                         {{-- end sidebar --}}
                     </ul>
                 </div>

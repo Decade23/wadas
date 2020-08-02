@@ -26,7 +26,7 @@ class User extends EloquentUser implements AuthenticatableContract
      * @var array
      */
     protected $fillable = [
-        'email', 'password', 'permissions', 'last_login', 'name', 'phone', 'type', 'gender', 'created_by', 'updated_by'
+        'email', 'password', 'permissions', 'last_login', 'name', 'phone', 'type', 'gender', 'dob', 'recent_company', 'industry', 'created_by', 'updated_by'
     ];
 
     /**
@@ -56,5 +56,15 @@ class User extends EloquentUser implements AuthenticatableContract
             $user->updated_at = Carbon::now();
 
         });
+    }
+
+    public function scopeType($query, $param)
+    {
+        return $query->where('type', $param);
+    }
+
+    public function scopeActivation($query, $param)
+    {
+        //return $query->where('type', $param);
     }
 }

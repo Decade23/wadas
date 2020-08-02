@@ -105,9 +105,9 @@ class UserController extends Controller
         $user = Sentinel::findById( $id );
 
         #if user root can't delete
-        if (Sentinel::inRole( 'root' ) === true) {
-            return $this->redirectFailed(route('user.index'),'Error! Unsuccessfully. Something Went Wrong.');
-        }
+//        if (Sentinel::inRole( 'root' ) === true) {
+//            return $this->redirectFailed(route('user.index'),'Error! Unsuccessfully. Something Went Wrong.');
+//        }
 
         #if success delete user
         if ($this->service->destroy($user)) {

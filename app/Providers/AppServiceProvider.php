@@ -8,6 +8,10 @@ use App\Services\Auth\Role\RoleService;
 use App\Services\Auth\Role\RoleServiceContract;
 use App\Services\Auth\User\UserService;
 use App\Services\Auth\User\UserServiceContract;
+use App\Services\Backend\Apl\Email\AplEmailService;
+use App\Services\Backend\Apl\Email\AplEmailServiceContract;
+use App\Services\Backend\Config\Email\EmailService;
+use App\Services\Backend\Config\Email\EmailServiceContract;
 use App\Services\Backend\Fulfillments\Posts\PostsService;
 use App\Services\Backend\Fulfillments\Posts\PostsServiceContract;
 use App\Services\Backend\Groups\GroupServices;
@@ -96,6 +100,16 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             MemberServicesContract::class,
             MemberServices::class
+        );
+
+        $this->app->bind(
+            EmailServiceContract::class,
+            EmailService::class
+        );
+
+        $this->app->bind(
+            AplEmailServiceContract::class,
+            AplEmailService::class
         );
     }
 
