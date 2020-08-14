@@ -35,7 +35,7 @@ class MediaServices implements MediaServicesContract
     public function storeMedia($request, $folderName = 'media', $deleteUrl = '')
     {
         // TODO: Implement storeMedia() method.
-        $this->rule = 'image|max:10000';
+        $this->rule = 'image|max:10000';  #10 mb
         $this->folderName = $folderName;
         $this->deleteUrl = $deleteUrl;
 

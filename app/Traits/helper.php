@@ -8,6 +8,7 @@
 
 namespace App\Traits;
 use Carbon\Carbon;
+use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 
 trait helper
 {
@@ -49,6 +50,32 @@ trait helper
         return $ret;
     }
 
+    public function getUserByRole(array $role)
+    {
+        if ( is_array( $role ) ) {
+            # retrieve user
+            $userDB = Sentinel::getUserRepository()->with('roles')->get();
+            $tempUser = [];
 
+            #loop group
+            foreach ($role as $to) {
+                #loop user
+                foreach ($userDB as $user) {
+                    #loop role
+                    foreach ($user->roles as $role) {
+                        #save user by group into array/object
+                        if ($role->slug == $to)
+
+                            #insert into array/object
+                            $tempUser[] = [
+                                'email' => $user->email,
+                                'role' => $role->slug
+                            ];
+                    }
+                }
+            }
+            return json_decode(json_encode($tempUser));
+        }
+    }
 
 }

@@ -2,7 +2,9 @@
 
 namespace App\Models\Apl;
 
+use App\Models\Media;
 use Illuminate\Database\Eloquent\Model;
+use App\Services\Backend\Media\MediaServicesContract;
 
 /**
  * Class AplEmail
@@ -10,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class AplEmail extends Model
 {
+    private $mediaServices;
     /**
      * @var string
      */
@@ -19,7 +22,7 @@ class AplEmail extends Model
      * @var array
      */
     protected $fillable = [
-        'recipient', 'cc', 'bcc', 'title', 'body', 'created_by', 'updated_by'
+        'from', 'recipient', 'group','cc', 'bcc', 'title', 'body', 'attachment', 'status', 'id_mailgun', 'created_by', 'updated_by'
     ];
 
     /**
@@ -38,4 +41,24 @@ class AplEmail extends Model
     public function getUpdatedAtAttribute($value){
         return date('Y-m-d H:i:s', strtotime($value));
     }
+
+    public function getAttachmentsMediaAttribute(){
+        $result = array();
+        //dd(  json_decode($value)  );
+        $attachments = json_decode($this->attachment);
+        if ( is_array( $attachments ) ) {
+            # code...
+            foreach( $attachments as $attachment ) {
+                #$result[] = $this->mediaServices->getMediaByFileName($attachment);
+                $result[] = Media::where('file_name', $attachment )->first();
+            }
+        }
+
+        return $result;
+    }
+
+    // public function attachments()
+    // {
+    //     return $this->hasMany(Media::class, 'attachment', 'file_name');
+    // }
 }

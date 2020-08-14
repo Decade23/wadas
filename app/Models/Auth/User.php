@@ -63,6 +63,11 @@ class User extends EloquentUser implements AuthenticatableContract
         return $query->where('type', $param);
     }
 
+    public function scopeRole($query, $param)
+    {
+        return $query->roles[0]->slug = $param;
+    }
+
     public function scopeActivation($query, $param)
     {
         //return $query->where('type', $param);

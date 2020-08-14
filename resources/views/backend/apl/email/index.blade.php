@@ -49,11 +49,10 @@
                 <tr>
                     <th>#</th>
                     <th>Title</th>
-                    <th>Receipents</th>
+                    <th>From</th>
+                    <th>ID Mailgun</th>
                     <th>@lang('auth.index_created_by')</th>
-                    <th>@lang('auth.index_updated_by')</th>
                     <th>@lang('auth.index_created_at')</th>
-                    <th>@lang('auth.index_updated_at')</th>
                     <th width="100">@lang('global.action')</th>
                 </tr>
                 </thead>
@@ -120,13 +119,13 @@
                     // },
                     {data: 'title', name: 'title'},
 
-                    {data: 'recipient', name: 'recipient'},
+                    {data: 'from', name: 'from'},
+
+                    {data: 'id_mailgun', name: 'id_mailgun'},
 
                     {data: 'created_by', name: 'created_by', visible: true},
-                    {data: 'updated_by', name: 'updated_by', visible: true},
 
                     {data: 'created_at', name: 'created_at', visible: true},
-                    {data: 'updated_at', name: 'updated_at', visible: true},
 
                     {
                         data: 'action', name: 'action', orderable: false, searchable: false,
@@ -139,7 +138,7 @@
                     {
                         extend: 'colvis',
                         text: '<i class="fa fa-columns"></i> Columns',
-                        columns: '0, 1, 2, 3, 4, 5, 6, 7'
+                        columns: '0, 1, 2, 3, 4, 5, 6'
                     }
                 ],
                 select: {

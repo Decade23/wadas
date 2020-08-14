@@ -54,9 +54,25 @@ Route::group([
         Route::get('ajax/tagify', 'AplEmailController@tagify')
             ->name('apl_email.ajax.tagify')->middleware('sentinel.permission:apl_email.show');
 
+        # for tagIfy Group
+        Route::get('ajax/tagify/group', 'AplEmailController@tagifyGroup')
+            ->name('apl_email.ajax.tagify_group')->middleware('sentinel.permission:apl_email.show');
+
         # for select2 email config
         Route::get('ajax/select2/config', 'AplEmailController@select2Config')
             ->name('apl_email.ajax.select2_config')->middleware('sentinel.permission:apl_email.show');
+
+        # for image upload
+        Route::post('upload/image', 'AplEmailController@imageUpload')
+            ->name('apl_email.upload.image')->middleware('sentinel.permission:apl_email.create');
+
+        # retrieve image create upload
+        Route::post('upload/image/create/retrieve', 'AplEmailController@retrieveImageCreateUpload')
+            ->name('apl_email.retrieve_create.image')->middleware('sentinel.permission:apl_email.show');
+
+        # delete image upload
+        Route::delete('upload/image/delete', 'AplEmailController@deleteImageUpload')
+            ->name('apl_email.delete.image')->middleware('sentinel.permission:apl_email.destroy');
     });
 
 });

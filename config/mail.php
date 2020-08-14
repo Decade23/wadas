@@ -97,4 +97,14 @@ return [
         ],
     ],
 
+    'mailgun' => [
+        'domain'                    => env('MAILGUN_DOMAIN',''),
+        'private_api_key'           => env('MAILGUN_PRIVATE_API_KEY',''),
+        'public_validation_key'     => env('MAILGUN_PUBLIC_VALIDATION_KEY',''),
+        'http_webhook_signing_key'  => env('MAILGUN_HTPP_WEBHOOK_SIGNING_KEY',''),
+        'support_pin'               => env('MAILGUN_SUPPORT_PIN',''),
+        'url'                       => env('MAILGUN_URL',''),
+        'url_with_api'              => env('MAILGUN_URL_API',''),
+    ]
+
 ];

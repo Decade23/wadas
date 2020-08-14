@@ -10,8 +10,18 @@ namespace App\Services\Backend\Apl\Email;
 
 
 use App\Models\Apl\AplEmail;
+use App\Models\Auth\Role;
 use App\Models\Auth\User;
+use App\Models\Media;
+use App\Services\Backend\Config\Email\EmailServiceContract;
+use App\Services\Backend\Media\MediaServicesContract;
+use App\Traits\Email\EmailMailGunTrait;
+use App\Traits\Email\EmailTrait;
+use App\Traits\fileUploadTrait;
+use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
 
 /**
@@ -20,16 +30,20 @@ use Yajra\DataTables\Facades\DataTables;
  */
 class AplEmailService implements AplEmailServiceContract
 {
+    use EmailMailGunTrait, fileUploadTrait;
     /**
      * @var AplEmail
      */
-    private $model;
+    private $model, $productFolder, $configEmail;
     /**
      * AplEmailService constructor.
      */
-    public function __construct(AplEmail $aplEmail)
+    public function __construct(AplEmail $aplEmail, MediaServicesContract $mediaServicesContract, EmailServiceContract $emailServiceContract)
     {
         $this->model = $aplEmail;
+        $this->productFolder = 'email';
+        $this->media = $mediaServicesContract;
+        $this->configEmail = $emailServiceContract;
     }
 
     /**
@@ -39,7 +53,20 @@ class AplEmailService implements AplEmailServiceContract
     public function getById(int $id)
     {
         // TODO: Implement getById() method.
+        return $this->model->find($id);
     }
+
+    public function getByAttachmentId(int $id)
+    {
+        // TODO: Implement getByAttachmentId() method.
+        $dataDB = $this->getById($id);
+        if ( isset( $dataDB->attachment ) )
+        {
+            //$file = implode(',', json_decode($dataDB->attachment) );
+            return json_decode($dataDB->attachment);
+        }
+    }
+
 
     /**
      * @param $request
@@ -80,7 +107,7 @@ class AplEmailService implements AplEmailServiceContract
                                 <i class="flaticon-delete kt-font-danger"></i>
                     </a>';
                 }
-                return $btnShow . $btnDelete;
+                return $btnShow;
             })
             ->rawColumns(['action'])
             ->make(true);
@@ -94,7 +121,7 @@ class AplEmailService implements AplEmailServiceContract
     {
         // TODO: Implement queryDataTable() method.
         $select = [
-            'id', 'recipient', 'title', 'created_by', 'updated_by', 'created_at', 'updated_at'
+            'id', 'from', 'id_mailgun', 'recipient', 'title', 'created_by', 'updated_by', 'created_at', 'updated_at'
         ];
 
         $dataDb = $this->model::select($select);
@@ -128,6 +155,7 @@ class AplEmailService implements AplEmailServiceContract
     public function tagify($request)
     {
         // TODO: Implement tagify() method.
+
         try {
             $perPage    = 10;
             $page       = $request->page ?? 1;
@@ -136,7 +164,12 @@ class AplEmailService implements AplEmailServiceContract
                 return $page;
             });
 
-            $dataDb = User::select(['id', 'email as text'])->where('email', 'LIKE', '%' . $request->term . '%')->Type('customer')->orderBy('id', 'desc')->paginate($perPage);
+            $dataDb = User::select(['id', 'email', 'name'])
+                ->where('email', 'LIKE', '%' . $request->term . '%')
+                ->orWhere('name', 'LIKE', '%' . $request->term . '%')
+                //->Role('member')
+                ->orderBy('id', 'desc')
+                ->paginate($perPage);
 
             return $dataDb;
         } catch (\Exception $exception) {
@@ -146,5 +179,128 @@ class AplEmailService implements AplEmailServiceContract
         }
     }
 
+    public function tagifyGroup($request)
+    {
+        // TODO: Implement tagify() method.
 
+        try {
+            $perPage    = 10;
+            $page       = $request->page ?? 1;
+
+            Paginator::currentPageResolver(function() use($page) {
+                return $page;
+            });
+
+            $dataDb = Role::select(['id', 'slug', 'name'])
+                ->where('name', 'LIKE', '%' . $request->term . '%')
+                ->orWhere('slug', 'LIKE', '%' . $request->term . '%')
+                //->Role('member')
+                ->orderBy('id', 'desc')
+                ->paginate($perPage);
+
+            return $dataDb;
+        } catch (\Exception $exception) {
+
+            // dd($exception->getMessage());
+            return $exception->getCode();
+        }
+    }
+
+    public function store($request)
+    {
+        // TODO: Implement store() method.
+        DB::beginTransaction();
+        try {
+            #retrieve User
+            $userDB = Sentinel::getUser()->email;
+
+            #get from by id
+            $from = $this->configEmail->getById($request->from)->name;
+
+            #convert recipient to array
+            $recipient_array = $this->convertRecipientToString($request->recipient);
+            $group_array     = $this->convertRecipientToString($request->group);
+            $cc_array        = $this->convertRecipientToString($request->cc);
+            $bcc_array       = $this->convertRecipientToString($request->bcc);
+
+            //$attachment_email = $this->getAttachmentFile($request->document);
+            //dd( $request->all() );
+            //dd( var_dump(  $recipient_array) );
+
+            #Store Email
+            $emailDB = $this->model;
+            $emailDB->from      = $from;
+            $emailDB->recipient = $recipient_array;
+            $emailDB->group     = $group_array;
+            $emailDB->cc        = $cc_array;
+            $emailDB->bcc       = $bcc_array;
+            $emailDB->title      = $request->subject;
+            $emailDB->body      = $request->body_email;
+            $emailDB->attachment      = json_encode( $request->document );
+            $emailDB->created_by = $userDB;
+            $emailDB->updated_by = $userDB;
+
+            $emailDB->save();
+
+            # insert file attachment
+            if ( is_array( $request->document ) ) {
+                foreach ( $request->document as $file_name ) {
+                    $path   = 'public/'. $this->uploadPath .'/'. $this->productFolder . '/'. $file_name;
+                    $url    = Storage::disk('s3')->url($path);
+                    $files[] = [
+                        'type'  => 'attachment_email',
+                        'model' => 'AplEmail',
+                        'url'   => $url,
+                        'path'  => $path,
+                        'file_name' => $file_name
+                    ];
+                }
+                $attach = $this->saveFileAttachment($files, $emailDB->id);
+            }
+
+            #send Email
+            //dd($attach);
+            $sendMail = $this->send_email($emailDB);
+
+            DB::commit();
+
+            return $emailDB;
+
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            dd($exception);
+            dd($exception->getMessage() . ' ' . $exception->getLine()  . ' ' . $exception->getCode());
+            return $exception->getCode();
+        }
+    }
+
+    private function saveFileAttachment($request, $productId)
+    {
+        #delete existing file
+        $this->destroyImages($productId);
+
+        $imagesDb = [];
+        #insert new media into db
+        foreach ($request as $image) {
+            $imagesDb[] = Media::create([
+                'type'      => $image['type'],
+                'item_id'   => $productId,
+                'url'       => $image['url'],
+                'model'     => $image['model'],
+                'path'      => $image['path'],
+                'file_name'  => $image['file_name'],
+                'created_by'  => Sentinel::getUser()->email,
+                'updated_by'  => Sentinel::getUser()->email
+            ]);
+        }
+
+        return $imagesDb;
+    }
+
+    private function destroyImages($productId)
+    {
+        //Media::where('item_id', $productId)->delete();
+        return $this->media->deleteMediaByItemId($productId);
+
+    }
 }

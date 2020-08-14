@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Backend\Aplikasi;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Backend\Apl\Email\emailRequest;
 use App\Services\Backend\Apl\Email\AplEmailServiceContract;
 use App\Services\Backend\Config\Email\EmailServiceContract;
+use App\Services\Backend\Media\MediaServicesContract;
 use App\Traits\redirectTo;
 use Illuminate\Http\Request;
 
@@ -22,7 +24,7 @@ class AplEmailController extends Controller
     /**
      * @var AplEmailServiceContract|string
      */
-    private $service, $module;
+    private $service, $module, $pageTitle, $productFolder;
     /**
      * EmailController constructor.
      */
@@ -30,6 +32,8 @@ class AplEmailController extends Controller
     {
         $this->service = $aplEmailServiceContract;
         $this->module = 'backend.apl.email.';
+        $this->pageTitle = 'Apl Email';
+        $this->productFolder = 'email';
     }
 
     /**
@@ -56,12 +60,12 @@ class AplEmailController extends Controller
      * @param configEmailRequest $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(configEmailRequest $request)
+    public function store(emailRequest $request)
     {
-
+//        dd($request->all());
         #if success insert into DB
         if  (is_object($this->service->store($request))) {
-            return $this->redirectSuccessCreate(route('apl_email.index'),'Success Created.');
+            return $this->redirectSuccessCreate(route('apl_email.index'),'Success Send Email.');
         }
 
         #if fails insert into DB
@@ -74,8 +78,14 @@ class AplEmailController extends Controller
      */
     public function show($id)
     {
-        $data['pageTitle'] = 'Show Email';
-        $data['dataDb'] = $this->service->getById($id);
+        $data['pageTitle']              = 'Show Email';
+        $data['dataDb']['compose']      = $this->service->getById($id);
+        #$data['dataDb']['attachments']  = $this->service->getByAttachmentId($id);
+        //$data = (object) $data['dataDb']; #convert array to object with cast
+
+        //$data['attachment'] = implode(',', json_encode( $data['dataDb']->attachment ) );
+        //dd( $data['dataDb']['compose']->attachments_media );
+        // dd( $this->service->getByAttachmentId($id) );
 
         return view($this->module. 'show', $data);
     }
@@ -118,6 +128,16 @@ class AplEmailController extends Controller
         abort('404', 'Uups');
     }
 
+    public function tagifyGroup(Request $request)
+    {
+
+        if ($request->ajax()) {
+            return $this->service->tagifyGroup($request);
+        }
+
+        abort('404', 'Uups');
+    }
+
     public function select2Config(Request $request, EmailServiceContract $emailServiceContract)
     {
         if ($request->ajax()) {
@@ -125,5 +145,21 @@ class AplEmailController extends Controller
         }
 
         abort('404', 'Uups');
+    }
+
+    public function imageUpload(Request $request, MediaServicesContract $mediaServicesContract)
+    {
+        return $mediaServicesContract->storeMedia($request, $this->productFolder,'');
+    }
+
+    public function retrieveImageCreateUpload(Request $request, MediaServicesContract $mediaServicesContract)
+    {
+        # retrieve image
+        return $mediaServicesContract->retrieveUploadCreateFiles($request, $this->productFolder);
+    }
+
+    public function deleteImageUpload(Request $request, MediaServicesContract $mediaServicesContract)
+    {
+        return $mediaServicesContract->deleteMediaFromProvider($request->name,$this->productFolder);
     }
 }

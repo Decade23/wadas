@@ -17,22 +17,22 @@
             </div>
         </div>
 
-        <form class="kt-form kt-form--label-right" method="POST" action="{{ route('sales.store') }}" enctype="multipart/form-data">
+        <form class="kt-form kt-form--label-right" method="POST" action="{{ route('apl_email.store') }}" enctype="multipart/form-data">
             {!! csrf_field() !!}
 
             <div class="kt-portlet__body">
                 <ul class="nav nav-tabs nav-tabs-line" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active" data-toggle="tab" href="#" data-target="#productPanel">Order</a>
+                        <a class="nav-link active" data-toggle="tab" href="#" data-target="#productPanel">Compose</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#image">Proof Of Payment (Image)</a>
+                        <a class="nav-link" data-toggle="tab" href="#image">Attachment</a>
                     </li>
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane active" id="productPanel" role="tabpanel">
                         <div class="row">
-                            <div class="col-lg-12">
+                            <div class="col-lg-6">
                                 <div class="form-group @if($errors->has('from')) validated @endif">
                                     <label @if($errors->has('from')) class="text-danger" @endif>From<span style="color: red">*</span></label>
                                     <select name="from" id="from" class="form-control @if($errors->has('from')) is-invalid @endif kt-select2">
@@ -42,11 +42,52 @@
                                 </div>
                             </div>
 
+                            <div class="col-lg-6">
+                                <div class="form-group @if($errors->has('group')) validated @endif">
+                                    <label @if($errors->has('group')) class="text-danger" @endif>Blast To By Group<span style="color: red">*</span></label>
+                                    <input type="text" name="group" id="group" placeholder="Enter Group" value="{{ old('group') }}" autofocus>
+                                    <span class="form-text text-muted">Example: Type <b>Member</b></span>
+                                    {!! $errors->first('group', '<div class="invalid-feedback">:message</div>') !!}
+                                </div>
+                            </div>
+
                             <div class="col-lg-12">
                                 <div class="form-group @if($errors->has('recipient')) validated @endif">
                                     <label @if($errors->has('recipient')) class="text-danger" @endif>To<span style="color: red">*</span></label>
-                                    <input type="text" name="recipient" id="recipient" placeholder="Enter Email" value="{{ old('recipient') }}" autofocus>
+                                    <input type="text" name="recipient" id="recipient" placeholder="Enter Email To" value="{{ old('recipient') }}" autofocus>
                                     {!! $errors->first('recipient', '<div class="invalid-feedback">:message</div>') !!}
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="form-group @if($errors->has('cc')) validated @endif">
+                                    <label @if($errors->has('cc')) class="text-danger" @endif>CC</label>
+                                    <input type="text" name="cc" id="cc" placeholder="Enter Email CC" value="{{ old('cc') }}" autofocus>
+                                    {!! $errors->first('cc', '<div class="invalid-feedback">:message</div>') !!}
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="form-group @if($errors->has('bcc')) validated @endif">
+                                    <label @if($errors->has('bcc')) class="text-danger" @endif>BCC</label>
+                                    <input type="text" name="bcc" id="bcc" placeholder="Enter Email BCC" value="{{ old('bcc') }}" autofocus>
+                                    {!! $errors->first('bcc', '<div class="invalid-feedback">:message</div>') !!}
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12">
+                                <div class="form-group @if($errors->has('subject')) validated @endif">
+                                    <label @if($errors->has('subject')) class="text-danger" @endif>Subject<span style="color: red">*</span></label>
+                                    <input type="text" name="subject" id="subject" class="form-control @if($errors->has('subject')) is-invalid @endif" placeholder="Enter Subject" value="{{ old('subject') }}">
+                                    {!! $errors->first('subject', '<div class="invalid-feedback">:message</div>') !!}
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12">
+                                <div class="form-group @if($errors->has('body_email')) validated @endif">
+                                    <label @if($errors->has('body_email')) class="text-danger" @endif>Body Email<span style="color: red">*</span></label>
+                                    <textarea name="body_email" id="body_email" cols="24" rows="10" class="form-control @if($errors->has('body_email')) is-invalid @endif">{!! old('body_email') !!}</textarea>
+                                    {!! $errors->first('body_email', '<div class="invalid-feedback">:message</div>') !!}
                                 </div>
                             </div>
 
@@ -91,75 +132,79 @@
 @stop
 
 @push('css')
-    <link href="{{ url('themes/eci/css/pages/inbox/inbox.css') }}" rel="stylesheet" type="text/css" />
+{{--    <link href="{{ url('themes/eci/css/pages/inbox/inbox.css') }}" rel="stylesheet" type="text/css" />--}}
 @endpush
 
 @push('scripts')
     <script src="{{ url('plugins/autonumeric/autoNumeric.js') }}"></script>
-    <script src="{{ url('themes/eci/js/pages/custom/inbox/inbox.js') }}"></script>
+{{--    <script src="{{ url('themes/eci/js/pages/custom/inbox/inbox.js') }}"></script>--}}
 {{--    <script src="{{ url('themes/eci/js/pages/crud/forms/widgets/tagify.js') }}"></script>--}}
     <script>
         $(function () {
-
+            $('#body_email').summernote();
             // tagify recipient
             //$('#recipient').tagify();
-            var bccEl = document.querySelector('input[id=recipient]');;
-            var tagifyBcc = new Tagify(bccEl, {
+            var bccEl = document.querySelector('input[id=recipient]');
+            var cc = document.querySelector('input[id=cc]');
+            var bcc = document.querySelector('input[id=bcc]');
+            var blastGroup = document.querySelector('input[id=group]');
+            var tagifyTo = new Tagify(bccEl, {
                 delimiters: ", ", // add new tags when a comma or a space character is entered
                 maxTags: 10,
                 blacklist: ["fuck", "shit", "pussy"],
                 keepInvalidTags: true, // do not remove invalid tags (but keep them marked as invalid)
-                whitelist: [
-                    {
-                    value: 'Chris Muller',
-                    email: 'chris.muller@wix.com',
-                    initials: '',
-                    initialsState: '',
-                    pic: './assets/media/users/100_11.jpg',
-                    class: 'tagify__tag--primary'
-                }, {
-                    value: 'Nick Bold',
-                    email: 'nick.seo@gmail.com',
-                    initials: 'SS',
-                    initialsState: 'warning',
-                    pic: ''
-                }, {
-                    value: 'Alon Silko',
-                    email: 'alon@keenthemes.com',
-                    initials: '',
-                    initialsState: '',
-                    pic: './assets/media/users/100_6.jpg'
-                }, {
-                    value: 'Sam Seanic',
-                    email: 'sam.senic@loop.com',
-                    initials: '',
-                    initialsState: '',
-                    pic: './assets/media/users/100_8.jpg'
-                }, {
-                    value: 'Sara Loran',
-                    email: 'sara.loran@tilda.com',
-                    initials: '',
-                    initialsState: '',
-                    pic: './assets/media/users/100_9.jpg'
-                }, {
-                    value: 'Eric Davok',
-                    email: 'davok@mix.com',
-                    initials: '',
-                    initialsState: '',
-                    pic: './assets/media/users/100_13.jpg'
-                }, {
-                    value: 'Sam Seanic',
-                    email: 'sam.senic@loop.com',
-                    initials: '',
-                    initialsState: '',
-                    pic: './assets/media/users/100_13.jpg'
-                }, {
-                    value: 'Lina Nilson',
-                    email: 'lina.nilson@loop.com',
-                    initials: 'LN',
-                    initialsState: 'danger',
-                    pic: './assets/media/users/100_15.jpg'
-                }],
+                whitelist:[],
+                // [
+                //     {
+                //     value: 'Chris Muller',
+                //     email: 'chris.muller@wix.com',
+                //     initials: '',
+                //     initialsState: '',
+                //     pic: './assets/media/users/100_11.jpg',
+                //     class: 'tagify__tag--primary'
+                // }, {
+                //     value: 'Nick Bold',
+                //     email: 'nick.seo@gmail.com',
+                //     initials: 'SS',
+                //     initialsState: 'warning',
+                //     pic: ''
+                // }, {
+                //     value: 'Alon Silko',
+                //     email: 'alon@keenthemes.com',
+                //     initials: '',
+                //     initialsState: '',
+                //     pic: './assets/media/users/100_6.jpg'
+                // }, {
+                //     value: 'Sam Seanic',
+                //     email: 'sam.senic@loop.com',
+                //     initials: '',
+                //     initialsState: '',
+                //     pic: './assets/media/users/100_8.jpg'
+                // }, {
+                //     value: 'Sara Loran',
+                //     email: 'sara.loran@tilda.com',
+                //     initials: '',
+                //     initialsState: '',
+                //     pic: './assets/media/users/100_9.jpg'
+                // }, {
+                //     value: 'Eric Davok',
+                //     email: 'davok@mix.com',
+                //     initials: '',
+                //     initialsState: '',
+                //     pic: './assets/media/users/100_13.jpg'
+                // }, {
+                //     value: 'Sam Seanic',
+                //     email: 'sam.senic@loop.com',
+                //     initials: '',
+                //     initialsState: '',
+                //     pic: './assets/media/users/100_13.jpg'
+                // }, {
+                //     value: 'Lina Nilson',
+                //     email: 'lina.nilson@loop.com',
+                //     initials: 'LN',
+                //     initialsState: 'danger',
+                //     pic: './assets/media/users/100_15.jpg'
+                // }],
                 templates: {
                     dropdownItem: function(tagData) {
                         try {
@@ -190,6 +235,285 @@
                     maxItems: 5
                 }
             });
+
+            // tagify cc
+            var tagifyCC = new Tagify(cc, {
+                delimiters: ", ", // add new tags when a comma or a space character is entered
+                maxTags: 10,
+                blacklist: ["fuck", "shit", "pussy"],
+                keepInvalidTags: true, // do not remove invalid tags (but keep them marked as invalid)
+                whitelist:[],
+                templates: {
+                    dropdownItem: function(tagData) {
+                        try {
+                            var html = '';
+
+                            html += '<div class="tagify__dropdown__item">';
+                            html += '   <div class="d-flex align-items-center">';
+                            html += '       <span class="symbol sumbol-' + (tagData.initialsState ? tagData.initialsState : '') + ' mr-2" style="background-image: url(\''+ (tagData.pic ? tagData.pic : '') + '\')">';
+                            html += '           <span class="symbol-label">' + (tagData.initials ? tagData.initials : '') + '</span>';
+                            html += '       </span>';
+                            html += '       <div class="d-flex flex-column">';
+                            html += '           <a href="#" class="text-dark-75 text-hover-primary font-weight-bold">'+ (tagData.value ? tagData.value : '') + '</a>';
+                            html += '           <span class="text-muted font-weight-bold">' + (tagData.email ? tagData.email : '') + '</span>';
+                            html += '       </div>';
+                            html += '   </div>';
+                            html += '</div>';
+
+                            return html;
+                        } catch (err) {}
+                    }
+                },
+                transformTag: function(tagData) {
+                    tagData.class = 'tagify__tag tagify__tag--primary';
+                },
+                dropdown: {
+                    classname: "color-blue",
+                    enabled: 1,
+                    maxItems: 5
+                }
+            });
+
+            // tagify bcc
+            var tagifyBCC = new Tagify(bcc, {
+                delimiters: ", ", // add new tags when a comma or a space character is entered
+                maxTags: 10,
+                blacklist: ["fuck", "shit", "pussy"],
+                keepInvalidTags: true, // do not remove invalid tags (but keep them marked as invalid)
+                whitelist:[],
+                templates: {
+                    dropdownItem: function(tagData) {
+                        try {
+                            var html = '';
+
+                            html += '<div class="tagify__dropdown__item">';
+                            html += '   <div class="d-flex align-items-center">';
+                            html += '       <span class="symbol sumbol-' + (tagData.initialsState ? tagData.initialsState : '') + ' mr-2" style="background-image: url(\''+ (tagData.pic ? tagData.pic : '') + '\')">';
+                            html += '           <span class="symbol-label">' + (tagData.initials ? tagData.initials : '') + '</span>';
+                            html += '       </span>';
+                            html += '       <div class="d-flex flex-column">';
+                            html += '           <a href="#" class="text-dark-75 text-hover-primary font-weight-bold">'+ (tagData.value ? tagData.value : '') + '</a>';
+                            html += '           <span class="text-muted font-weight-bold">' + (tagData.email ? tagData.email : '') + '</span>';
+                            html += '       </div>';
+                            html += '   </div>';
+                            html += '</div>';
+
+                            return html;
+                        } catch (err) {}
+                    }
+                },
+                transformTag: function(tagData) {
+                    tagData.class = 'tagify__tag tagify__tag--primary';
+                },
+                dropdown: {
+                    classname: "color-blue",
+                    enabled: 1,
+                    maxItems: 5
+                }
+            });
+
+            // tagify to user
+            tagifyTo.on('input', onInput);
+
+            // tagify cc user
+            tagifyCC.on('input', onInputCC);
+
+            // tagify bcc user
+            tagifyBCC.on('input', onInputBCC);
+
+            function onInput(e)
+            {
+                // console.log(e);
+                // console.log(e.detail.value);
+                var value_ = e.detail.value;
+                tagifyTo.settings.whitelist.length = 0; // reset the whitelist.
+
+                // ajax
+                var uri = '{!! route("apl_email.ajax.tagify") !!}';
+                // controller = new AbortController();
+                // controller && controller.abort();
+
+                $.ajax({
+                    url: uri,
+                    method: 'GET',
+                    data: { 'term': value_ },
+                    //cache: false,
+                    success:function(val)
+                    {
+                        //console.log(val);
+                        let values = [];
+
+                        $.each(val.data, function(v, d) {
+                            //var client += '{value: '+ d.name + ',' + 'email:' + d.text + '},';
+                            var client = {value: d.email, email: d.name};
+                            values.push(client);
+                            //console.log(d);
+
+                        });
+
+                        // values = values.toString();
+                        // let keys = "[" + values + "]";
+                        // keys = JSON.stringify(keys);
+                        // console.log(keys);
+                        // tagifyTo.settings.whitelist = keys;
+                        values = JSON.stringify(values);
+                        values = JSON.parse(values);
+                        tagifyTo.settings.whitelist = values;
+
+                    }
+                });
+
+            }
+
+            function onInputCC(e)
+            {
+                // console.log(e);
+                // console.log(e.detail.value);
+                var value_ = e.detail.value;
+                tagifyCC.settings.whitelist.length = 0; // reset the whitelist.
+
+                // ajax
+                var uri = '{!! route("apl_email.ajax.tagify") !!}';
+                // controller = new AbortController();
+                // controller && controller.abort();
+
+                $.ajax({
+                    url: uri,
+                    method: 'GET',
+                    data: { 'term': value_ },
+                    //cache: false,
+                    success:function(val)
+                    {
+                        //console.log(val);
+                        let values = [];
+
+                        $.each(val.data, function(v, d) {
+                            //var client += '{value: '+ d.name + ',' + 'email:' + d.text + '},';
+                            var client = {value: d.email, email: d.name};
+                            values.push(client);
+                            //console.log(d);
+
+                        });
+
+                        values = JSON.stringify(values);
+                        values = JSON.parse(values);
+                        tagifyCC.settings.whitelist = values;
+                    }
+                });
+
+            }
+
+            function onInputBCC(e)
+            {
+                // console.log(e);
+                // console.log(e.detail.value);
+                var value_ = e.detail.value;
+                tagifyBCC.settings.whitelist.length = 0; // reset the whitelist.
+
+                // ajax
+                var uri = '{!! route("apl_email.ajax.tagify") !!}';
+                // controller = new AbortController();
+                // controller && controller.abort();
+
+                $.ajax({
+                    url: uri,
+                    method: 'GET',
+                    data: { 'term': value_ },
+                    //cache: false,
+                    success:function(val)
+                    {
+                        //console.log(val);
+                        let values = [];
+
+                        $.each(val.data, function(v, d) {
+                            //var client += '{value: '+ d.name + ',' + 'email:' + d.text + '},';
+                            var client = {value: d.email, email: d.name};
+                            values.push(client);
+                            //console.log(d);
+
+                        });
+
+                        values = JSON.stringify(values);
+                        values = JSON.parse(values);
+                        tagifyBCC.settings.whitelist = values;
+
+                    }
+                });
+
+            }
+
+            // tagify to group
+            var tagIfyGroup = new Tagify(blastGroup,{
+                delimiters: ", ", // add new tags when a comma or a space character is entered
+                maxTags: 10,
+                blacklist: ["fuck", "shit", "pussy"],
+                keepInvalidTags: true, // do not remove invalid tags (but keep them marked as invalid)
+                whitelist:[],
+                templates: {
+                    dropdownItem: function(tagData) {
+                        try {
+                            var html = '';
+
+                            html += '<div class="tagify__dropdown__item">';
+                            html += '   <div class="d-flex align-items-center">';
+                            html += '       <span class="symbol sumbol-' + (tagData.initialsState ? tagData.initialsState : '') + ' mr-2" style="background-image: url(\''+ (tagData.pic ? tagData.pic : '') + '\')">';
+                            html += '           <span class="symbol-label">' + (tagData.initials ? tagData.initials : '') + '</span>';
+                            html += '       </span>';
+                            html += '       <div class="d-flex flex-column">';
+                            html += '           <a href="#" class="text-dark-75 text-hover-primary font-weight-bold">'+ (tagData.value ? tagData.value : '') + '</a>';
+                            html += '           <span class="text-muted font-weight-bold">' + (tagData.email ? tagData.email : '') + '</span>';
+                            html += '       </div>';
+                            html += '   </div>';
+                            html += '</div>';
+
+                            return html;
+                        } catch (err) {}
+                    }
+                },
+                transformTag: function(tagData) {
+                    tagData.class = 'tagify__tag tagify__tag--primary';
+                },
+                dropdown: {
+                    classname: "color-blue",
+                    enabled: 1,
+                    maxItems: 5
+                }
+            });
+
+            tagIfyGroup.on('input', loadRecipientGroup);
+
+            function loadRecipientGroup(e)
+            {
+                var value_ = e.detail.value;
+                tagIfyGroup.settings.whitelist.length = 0; // reset the whitelist.
+
+                // ajax
+                var uri = '{!! route("apl_email.ajax.tagify_group") !!}';
+
+                $.ajax({
+                    url: uri,
+                    method: 'GET',
+                    data: {'term': value_},
+                    //cache: false,
+                    success: function (val) {
+                        //console.log(val);
+                        let values = [];
+
+                        $.each(val.data, function (v, d) {
+                            //var client += '{value: '+ d.name + ',' + 'email:' + d.text + '},';
+                            var client = {value: d.slug, email: d.name};
+                            values.push(client);
+                            // console.log(d);
+
+                        });
+
+                        values = JSON.stringify(values);
+                        values = JSON.parse(values);
+                        tagIfyGroup.settings.whitelist = values;
+
+                    }
+                });
+            }
 
             $('#from').select2({
                 placeholder: "Search Email Sender",
@@ -222,12 +546,12 @@
 
             var uploadedDocumentMap = new Array();
             $("#file").dropzone({
-                url: '{!! route('sales.upload.image') !!}',
+                url: '{!! route('apl_email.upload.image') !!}',
                 paramName: "file",
                 maxFiles: 10,
                 maxFilesize: 10,
                 addRemoveLinks: !0,
-                acceptedFiles: "image/*",
+                acceptedFiles: "image/*, application/*",
                 headers: {
                     'X-CSRF-TOKEN': "{{ csrf_token() }}"
                 },
@@ -304,7 +628,7 @@
                 }
 
                 $.ajax({
-                    url:"{{ route('sales.retrieve_create.image') }}",
+                    url:"{{ route('apl_email.retrieve_create.image') }}",
                     method: 'POST',
                     data: data,
                     //cache: false,
@@ -331,7 +655,7 @@
                 @endif
 
                 $.ajax({
-                    url:"{{ route('sales.retrieve_create.image') }}",
+                    url:"{{ route('apl_email.retrieve_create.image') }}",
                     method: 'POST',
                     data: data,
                     //cache: false,
@@ -348,7 +672,7 @@
                 var name = $(this).attr('id');
 
                 $.ajax({
-                    url:"{{ route('sales.delete.image') }}",
+                    url:"{{ route('apl_email.delete.image') }}",
                     data:{name : name},
                     method: 'DELETE',
                     //cache: false,
