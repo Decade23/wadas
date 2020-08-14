@@ -179,6 +179,7 @@ trait EmailMailGunTrait
         ));
 
         $response = curl_exec($curl);
+        dd($params);
 
         curl_close($curl);
         $result = json_decode($response);
