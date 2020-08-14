@@ -83,8 +83,7 @@ class AplEmailService implements AplEmailServiceContract
                 $btnDelete = '';
 
                 if (Sentinel::inRole('root') || Sentinel::hasAccess(['apl_email.show'])) {
-                    $btnShow = '<a href="'.route('apl_email.show', $dataDb->id).'" 
-                                    title="'.trans('global.show').'">
+                    $btnShow = '<a href="'.route('apl_email.show', $dataDb->id).'" >
                                 <span class="label label-primary label-sm">
                                     <i class="fa fa-arrows-alt"></i>
                                 </span>
