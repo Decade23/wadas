@@ -184,8 +184,7 @@ trait EmailMailGunTrait
         $result = json_decode($response);
 
         #when theren't error update into AplEmail
-        dd($result);
-        if ( $result->message == 'Queued. Thank you.' ) {
+        if ( $result != null && $result->message == 'Queued. Thank you.' ) {
             # update status mail
             $updateEmail =  AplEmail::find($emailDB->id);
             $dataUpdate = [
