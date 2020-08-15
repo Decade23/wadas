@@ -188,6 +188,7 @@ trait EmailMailGunTrait
 
         curl_close($curl);
         $result = json_decode($response);
+        dd( $response );
 
         #when theren't error update into AplEmail
         if ( $result != null && $result->message == 'Queued. Thank you.' ) {
