@@ -148,6 +148,10 @@ trait EmailMailGunTrait
                 foreach ($attachment as $file) {
                     $path   = config('filesystems.disks.s3.url'). 'public/'. $this->uploadPath .'/'. $this->productFolder . '/'. $file;
                     $params['attachment['.$no++.']'] = new \CURLFile( $path );
+//                    $params['attachment'][] = [
+//                        'filePath'  => $path,
+//                        'filename'  => $file
+//                    ];
                 }
             }
         }
@@ -157,6 +161,7 @@ trait EmailMailGunTrait
 
     private function config_curl($params, $emailDB)
     {
+        #dd($params);
         $curl = curl_init();
         //dd( $this->getAccessMailgun() );
         curl_setopt_array($curl, array(
@@ -174,12 +179,12 @@ trait EmailMailGunTrait
             CURLOPT_POSTFIELDS => $params,
             CURLOPT_HTTPHEADER => array(
                     "Accept: application/json",
+                    "Content-Type: multipart/form-data",
 //                //"Authorization: Basic YXBpOjJhOWRhNWM4YzQ1MzExZmU4YjMzNGJjMmZiMGVlMjExLWE4M2E4N2E5LWU2MmY5NGFh"
             ),
         ));
 
         $response = curl_exec($curl);
-        dd($params);
 
         curl_close($curl);
         $result = json_decode($response);
