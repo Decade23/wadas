@@ -147,7 +147,8 @@ trait EmailMailGunTrait
                 $no = 1;
                 foreach ($attachment as $file) {
                     $path   = config('filesystems.disks.s3.url'). 'public/'. $this->uploadPath .'/'. $this->productFolder . '/'. $file;
-                    $params['attachment['.$no++.']'] = new \CURLFile( $path );
+                    #$params['attachment['.$no++.']'] = new \CURLFile( $path );
+                    $params['attachment['.$no++.']'] = curl_file_create( $path );
 //                    $params['attachment'][] = [
 //                        'filePath'  => $path,
 //                        'filename'  => $file
