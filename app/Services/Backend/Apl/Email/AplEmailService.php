@@ -268,6 +268,7 @@ class AplEmailService implements AplEmailServiceContract
 
         } catch (\Exception $exception) {
             DB::rollBack();
+
             dd($exception);
             dd($exception->getMessage() . ' ' . $exception->getLine()  . ' ' . $exception->getCode());
             return $exception->getCode();

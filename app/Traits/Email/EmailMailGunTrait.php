@@ -161,7 +161,7 @@ trait EmailMailGunTrait
 
     private function config_curl($params, $emailDB)
     {
-        #dd($params);
+        dd($params);
         $curl = curl_init();
         //dd( $this->getAccessMailgun() );
         curl_setopt_array($curl, array(
