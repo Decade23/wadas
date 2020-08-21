@@ -128,8 +128,12 @@ class UserService implements UserServiceContract
 
         DB::beginTransaction();
         try {
-
-            $oldRole = Sentinel::findRoleById( $user->roles[0]->id ?? null );
+            #if user have role
+            $oldRole = false;
+            if ( $user->roles->count() > 0 )
+            {
+                $oldRole = Sentinel::findRoleById( $user->roles[0]->id ?? null ); //return true
+            }
 
             $credentials = [
                 'name'       => $request->name,
