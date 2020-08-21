@@ -132,7 +132,7 @@ class UserService implements UserServiceContract
             $oldRole = false;
             if ( $user->roles->count() > 0 )
             {
-                $oldRole = Sentinel::findRoleById( $user->roles[0]->id ?? null ); //return true
+                $oldRole = Sentinel::findRoleById( $user->roles[0]->id ?? null ); //return true with id
             }
 
             $credentials = [
