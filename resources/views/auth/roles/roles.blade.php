@@ -22,6 +22,7 @@
             <tbody>
                 @include('auth.roles.module.dashboard')
                 @include('auth.roles.module.users')
+                @include('auth.roles.module.member')
                 @include('auth.roles.module.roles')
                 @include('auth.roles.module.products.product')
                 @include('auth.roles.module.products.product_group')

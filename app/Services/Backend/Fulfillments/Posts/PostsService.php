@@ -10,19 +10,93 @@ namespace App\Services\Backend\Fulfillments\Posts;
 
 
 use App\Models\Fulfillments\Posts;
+use App\Models\Media;
+use App\Services\Backend\Media\MediaServicesContract;
+use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
 
 class PostsService implements PostsServiceContract
 {
 
-    private $model;
+    private $model, $media, $uploadPath;
     /**
      * PostsService constructor.
      */
-    public function __construct(Posts $posts)
+    public function __construct(Posts $posts, MediaServicesContract $mediaServicesContract)
     {
         $this->model = $posts;
+        $this->media = $mediaServicesContract;
+        $this->uploadPath = 'cms_posts';
     }
+
+    public function getById($id)
+    {
+        // TODO: Implement getById() method.
+        return $this->model->find($id);
+    }
+
+    public function store($request)
+    {
+        // TODO: Implement store() method.
+        $userDb = Sentinel::getUser()->email;
+        DB::beginTransaction();
+        try {
+            # insert to product groups
+            $insert = $this->model;
+            $insert->fill($request->all());
+            $insert->slug = Str::slug($request->name, '-');
+
+            if ($request->has('product'))
+            {
+                $insert->product_id = $request->product;
+            }
+
+            $insert->counter    = 0; //default counter is 0
+            $insert->written_by = $userDb;
+            $insert->save();
+
+            #insert media (image)
+            if (is_array($request->document)) {
+                foreach ($request->document as $file_name) {
+                    $path   = 'public/'. $this->uploadPath .'/'. 'media'. '/'. $file_name;
+                    $url    = Storage::disk('s3')->url($path);
+                    $files[] = [
+                        'type'  => 'image',
+                        'model' => 'Product',
+                        'url'   => $url,
+                        'path'  => $path,
+                        'file_name' => $file_name
+                    ];
+                }
+                $this->saveMedia($files, $insert->id);
+            }
+
+            # commit to insert to DB
+            DB::commit();
+
+            # return to controller
+            return $insert;
+
+        } catch (\Exception $exception) {
+            #rollback to begin (not insert to DB)
+            DB::rollBack();
+            #Dump
+            dd($exception);
+            //dd('Message: '.$exception->getMessage() . ' Line: ' . $exception->getLine()  . ' Code: ' . $exception->getCode());
+
+            #return getCode Error
+            return $exception->getCode();
+        }
+    }
+
+    public function update($id, $request)
+    {
+        // TODO: Implement update() method.
+    }
+
 
     public function datatable($request)
     {
@@ -48,7 +122,7 @@ class PostsService implements PostsServiceContract
                 $btnDelete = '';
 
                 if (Sentinel::inRole('root') || Sentinel::hasAccess(['post.show'])) {
-                    $btnShow = '<a href="'.route('posts.show', $dataDb->id).'" id="tooltip" data-tooltip-custom="tooltip" title="'.trans('global.show').'">
+                    $btnShow = '<a href="'.route('posts.show', $dataDb->id).'" >
                             <span class="label label-primary label-sm">
                                 <i class="fa fa-arrows-alt"></i>
                                 </span>
@@ -56,8 +130,7 @@ class PostsService implements PostsServiceContract
                 }
 
                 if (Sentinel::inRole('root') || Sentinel::hasAccess(['post.edit'])) {
-                    $btnEdit = '<a href="'.route('posts.edit', $dataDb->id).'"
-                            data-tooltip-custom="tooltip" title="'.trans('global.update').'" >
+                    $btnEdit = '<a href="'.route('posts.edit', $dataDb->id).'" >
                             <i class="flaticon-edit kt-font-brand"></i>
                             </a>
                             ';
@@ -68,9 +141,6 @@ class PostsService implements PostsServiceContract
                                 data-message="'.trans('auth.delete_confirmation', ['name' => $dataDb->name]).'"
                                 data-href="'.route('posts.destroy', $dataDb->id).'"
                                 data-method="DELETE"
-                                title="'.trans('global.delete').'"
-                                data-original-title="'.trans('global.delete').'"
-                                data-title="'.trans('global.delete').'"
                                 data-title-modal="Are u sure for delete this?"
                                 data-toggle="modal"
                                 data-target="#delete">
@@ -96,5 +166,63 @@ class PostsService implements PostsServiceContract
         return $dataDb;
     }
 
+    private function saveMedia($request, $productId)
+    {
+        #delete existing file
+        $this->destroyMedia($productId);
 
+        $imagesDb = [];
+        #insert new media into db
+        foreach ($request as $image) {
+            $imagesDb[] = Media::create([
+                'type'      => $image['type'],
+                'item_id'   => $productId,
+                'url'       => $image['url'],
+                'model'     => $image['model'],
+                'path'      => $image['path'],
+                'file_name'  => $image['file_name'],
+                'created_by'  => Sentinel::getUser()->email,
+                'updated_by'  => Sentinel::getUser()->email
+            ]);
+        }
+
+        return $imagesDb;
+    }
+
+    private function destroyMedia($productId)
+    {
+        //Media::where('item_id', $productId)->delete();
+        return $this->media->deleteMediaByItemId($productId);
+
+    }
+
+    private function updateMedia($request, $productId)
+    {
+
+        #check if file is same
+        $imagesDb = [];
+        #insert new media into db
+
+        foreach ($request as $image) {
+            #if file not same with the old one
+            $fileDb = $this->media->getMediaByFileName($image['file_name']);
+            if ( !isset($fileDb->file_name) ) {
+                $imagesDb[] = Media::create([
+                    'type'      => $image['type'],
+                    'item_id'   => $productId,
+                    'url'       => $image['url'],
+                    'model'     => $image['model'],
+                    'path'      => $image['path'],
+                    'file_name'  => $image['file_name'],
+                    'created_by'  => Sentinel::getUser()->email,
+                    'updated_by'  => Sentinel::getUser()->email
+                ]);
+            } else if ($fileDb->file_name != $image['file_name']) {
+                # if file exist in db then delete it
+                $this->media->deleteMediaByFileName($fileDb->file_name);
+            }
+        }
+
+        return $imagesDb;
+    }
 }

@@ -11,6 +11,12 @@ namespace App\Services\Backend\Fulfillments\Posts;
 
 interface PostsServiceContract
 {
+    public function getById($id);
+
+    public function store($request);
+
+    public function update($id, $request);
+
     public function datatable($request);
 
     public function queryCmsPosts($request);

@@ -65,7 +65,7 @@
                             <div class="form-group @if($errors->has('password')) validated @endif">
                                 <label @if($errors->has('password')) class="text-danger" @endif>Password<span style="color: red">*</span></label>
                                 <input type="password" name="password" id="password" class="form-control @if($errors->has('password')) is-invalid @endif" placeholder="Enter Password" value="{{ old('password') }}">
-                                <span class="form-text text-muted">Password (at least 8 characters long</span>
+                                <span class="form-text text-muted">Password (at least 8 characters long)</span>
                                 {!! $errors->first('password', '<div class="invalid-feedback">:message</div>') !!}
                             </div>
                         </div>

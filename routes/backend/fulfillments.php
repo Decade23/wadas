@@ -50,6 +50,22 @@ Route::group([
         Route::get('ajax/select2', 'PostsController@select2')
             ->name('posts.ajax.select2')->middleware('sentinel.permission:post.show');
 
+        # for image upload
+        Route::post('upload/image', 'PostsController@imageUpload')
+            ->name('posts.upload.image')->middleware('sentinel.permission:posts.create');
+
+        # retrieve image upload
+        Route::post('upload/image/retrieve', 'PostsController@retrieveImageUpload')
+            ->name('posts.retrieve.image')->middleware('sentinel.permission:posts.show');
+
+        # retrieve image create upload
+        Route::post('upload/image/create/retrieve', 'PostsController@retrieveImageCreateUpload')
+            ->name('posts.retrieve_create.image')->middleware('sentinel.permission:posts.show');
+
+        # delete image upload
+        Route::delete('upload/image/delete', 'PostsController@deleteImageUpload')
+            ->name('posts.delete.image')->middleware('sentinel.permission:posts.destroy');
+
     });
 
 });

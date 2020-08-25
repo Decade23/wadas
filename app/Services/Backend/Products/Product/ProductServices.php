@@ -242,7 +242,7 @@ class ProductServices implements ProductServicesContract
             return $page;
         });
 
-        $dataDb = $this->model::select(['id', 'name as text', 'name', 'type','time_period', 'price'])->with(['groups'])->where('name', 'LIKE', '%' . $request->term . '%')->orderBy('created_at', 'DESC')->orderBy('name')->paginate($perPage);
+        $dataDb = $this->model::select(['id', DB::raw("concat(name, ' (', type, ')') as text"), 'name', 'type','time_period', 'price'])->with(['groups'])->where('name', 'LIKE', '%' . $request->term . '%')->orderBy('created_at', 'DESC')->orderBy('name')->paginate($perPage);
 
         return $dataDb;
     }
