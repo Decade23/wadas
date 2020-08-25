@@ -37,10 +37,13 @@ class MemberServices implements MemberServicesContract
             );
 
             $dataDb = $this->model::select('id', DB::raw('email as text'), 'name', 'phone')
-                ->with(['address' => function ($query){
-                    $query->with('subdistrict');
-                }])
-                ->where('type', 'customer')
+                ->with([
+                    'address' => function ($query){
+                        $query->with('subdistrict');
+                    }
+                ])
+                ->role('member') // search by slug
+                //->where('type', 'customer') # search by type of table users
                 ->where('email', 'LIKE', '%'.$request->term.'%')
                 ->orderBy('email')->paginate($perPage);
 
