@@ -105,6 +105,13 @@ return [
         'support_pin'               => env('MAILGUN_SUPPORT_PIN',''),
         'url'                       => env('MAILGUN_URL',''),
         'url_with_api'              => env('MAILGUN_URL_API',''),
+        'sending_key'               => env('MAILGUN_SENDING_KEY',''),
+    ],
+
+    'ses' => [
+        'key'           => env('AWS_SES_ACCESS_KEY_ID', ''),
+        'secret'        => env('AWS_SES_SECRET_ACCESS_KEY', ''),
+        'region'        => env('AWS_SES_REGION', 'ap-southeast-1'),
     ]
 
 ];

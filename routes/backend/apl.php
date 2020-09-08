@@ -17,6 +17,12 @@ Route::group([
         'middleware' => 'prevent.back.history'
     ], function () {
 
+        //test route
+        Route::get('test/ses',function() {
+            return \App\Traits\Email\EmailSesTrait::sendEmailSES();
+        })->name('apl_email.ses')->middleware('sentinel.permission:apl_email.show');
+        //end test
+
         Route::get('inbox','AplEmailController@index')
             ->name('apl_email.index')->middleware('sentinel.permission:apl_email.show');
 
