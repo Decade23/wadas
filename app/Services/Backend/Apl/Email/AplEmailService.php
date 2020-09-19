@@ -16,6 +16,7 @@ use App\Models\Media;
 use App\Services\Backend\Config\Email\EmailServiceContract;
 use App\Services\Backend\Media\MediaServicesContract;
 use App\Traits\Email\EmailMailGunTrait;
+use App\Traits\Email\EmailSesTrait;
 use App\Traits\Email\EmailTrait;
 use App\Traits\fileUploadTrait;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
@@ -30,7 +31,7 @@ use Yajra\DataTables\Facades\DataTables;
  */
 class AplEmailService implements AplEmailServiceContract
 {
-    use EmailMailGunTrait, fileUploadTrait;
+    use EmailMailGunTrait, fileUploadTrait, EmailSesTrait;
     /**
      * @var AplEmail
      */
@@ -259,8 +260,8 @@ class AplEmailService implements AplEmailServiceContract
             }
 
             #send Email
-            //dd($attach);
-            $sendMail = $this->send_email($emailDB);
+            $this->send_email_ses($emailDB);
+            #$sendMail = $this->send_email($emailDB);
 
             DB::commit();
 

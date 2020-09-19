@@ -62,7 +62,7 @@ class AplEmailController extends Controller
      */
     public function store(emailRequest $request)
     {
-//        dd($request->all());
+        #dd($request->all());
         #if success insert into DB
         if  (is_object($this->service->store($request))) {
             return $this->redirectSuccessCreate(route('apl_email.index'),'Success Send Email.');

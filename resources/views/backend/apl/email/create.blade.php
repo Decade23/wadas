@@ -25,7 +25,7 @@
                     <li class="nav-item">
                         <a class="nav-link active" data-toggle="tab" href="#" data-target="#productPanel">Compose</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" style="display: none;">
                         <a class="nav-link" data-toggle="tab" href="#image">Attachment</a>
                     </li>
                 </ul>

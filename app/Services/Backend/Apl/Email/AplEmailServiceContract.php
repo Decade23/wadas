@@ -21,8 +21,16 @@ interface AplEmailServiceContract
      */
     public function getById(int $id);
 
+    /**
+     * @param int $id
+     * @return mixed
+     */
     public function getByAttachmentId(int $id);
 
+    /**
+     * @param $request
+     * @return mixed
+     */
     public function store($request);
 
     /**
@@ -43,7 +51,15 @@ interface AplEmailServiceContract
      */
     public function queryDataTable($request);
 
+    /**
+     * @param $request
+     * @return mixed
+     */
     public function tagify($request);
 
+    /**
+     * @param $request
+     * @return mixed
+     */
     public function tagifyGroup($request);
 }

@@ -71,8 +71,12 @@ class User extends EloquentUser implements AuthenticatableContract
         });
     }
 
-    public function scopeActivation($query, $param)
+    public function scopeActivation($query)
     {
-        //return $query->where('type', $param);
+        if ( $query->activations->isNotEmpty() )
+        {
+            return $query->activations[0]->completed;
+        }
+        return false;
     }
 }

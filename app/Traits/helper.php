@@ -55,11 +55,13 @@ trait helper
         if ( is_array( $role ) ) {
             # retrieve user
             $userDB = Sentinel::getUserRepository()->with('roles')->get();
+
             $tempUser = [];
 
             #loop group
             foreach ($role as $to) {
                 #loop user
+                #chunk user for reduce memory
                 foreach ($userDB as $user) {
                     #loop role
                     foreach ($user->roles as $role) {
@@ -74,7 +76,53 @@ trait helper
                     }
                 }
             }
-            return json_decode(json_encode($tempUser));
+
+            return collect( json_decode(json_encode($tempUser)) );
+            #return collect($tempUser);
+        }
+    }
+
+    public function getUserByRoleChunk(array $role)
+    {
+        if ( is_array( $role ) ) {
+            # retrieve user
+            $userDB = Sentinel::getUserRepository()->with('roles')->get()->chunk(100);
+
+            $tempUser = [];
+
+            #loop group
+            foreach ($role as $to) {
+                #loop user
+                #chunk user for reduce memory
+                foreach ($userDB as $user) {
+                    #loop chunk
+                    foreach ( $user as $userChunk )
+                    {
+                        #loop role
+                        foreach ($userChunk->roles as $role) {
+                            #save user by group into array/object
+                            if ( $userChunk->activations->isNotEmpty() )
+                            {
+                                #only user active
+                                if ( $userChunk->activations[0]->completed == 1 )
+                                {
+                                    if ($role->slug == $to)
+                                    {
+                                        #insert into array/object
+                                        $tempUser[] = [
+                                            'email' => $userChunk->email,
+                                            'role' => $role->slug
+                                        ];
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                }
+            }
+            return collect( json_decode(json_encode($tempUser)) );
+            #return collect($tempUser);
         }
     }
 
