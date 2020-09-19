@@ -50,7 +50,7 @@
                     <th>#</th>
                     <th>Title</th>
                     <th>From</th>
-                    <th>ID Mailgun</th>
+                    <th>ID / Status Sending</th>
                     <th>@lang('auth.index_created_by')</th>
                     <th>@lang('auth.index_created_at')</th>
                     <th width="100">@lang('global.action')</th>
