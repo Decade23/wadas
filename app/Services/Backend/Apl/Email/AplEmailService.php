@@ -31,7 +31,7 @@ use Yajra\DataTables\Facades\DataTables;
  */
 class AplEmailService implements AplEmailServiceContract
 {
-    use EmailMailGunTrait, fileUploadTrait, EmailSesTrait;
+    use fileUploadTrait, EmailSesTrait;
     /**
      * @var AplEmail
      */
