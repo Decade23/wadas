@@ -235,4 +235,32 @@ trait EmailSesTrait
             return $e->getMessage() . "The email was not sent. Error message: ". $e->getAwsErrorMessage();
         }
     }
+
+    public function convertRecipientToString($request)
+    {
+        if (isset($request)) {
+            $recipient_json = json_decode($request);
+            $result = array();
+
+            foreach ($recipient_json as $to) {
+                //return $to->value;
+                $result[] = $to->value;
+            }
+
+            return json_encode($result);
+        }
+    }
+
+    public function getAttachmentFile($request)
+    {
+        if (is_array($request)) {
+            $result = array();
+
+            foreach ($request as $doc) {
+                $result[] = $this->mediaServicesContract->getMediaByFileName($doc);
+            }
+
+            return $result;
+        }
+    }
 }
