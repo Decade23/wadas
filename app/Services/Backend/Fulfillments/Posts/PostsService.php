@@ -73,6 +73,7 @@ class PostsService implements PostsServiceContract
             $insert = $this->model;
             $insert->fill($request->all());
             $insert->slug = Str::slug($request->name, '-');
+            $insert->visibility = $request->visibility;
 
             if ($request->has('product'))
             {
