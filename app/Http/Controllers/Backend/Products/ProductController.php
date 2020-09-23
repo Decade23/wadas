@@ -72,6 +72,10 @@ class ProductController extends Controller
         return $this->redirectFailed(route('product.index'),'Error! Unsuccessfully. Fail to created.');
     }
 
+    /**
+     * @param $id
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function edit($id)
     {
         $data['dataDb'] = $this->service->getById($id);
@@ -79,6 +83,11 @@ class ProductController extends Controller
         return view($this->module. 'edit', $data);
     }
 
+    /**
+     * @param productUpdateRequest $request
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function update(productUpdateRequest $request, $id)
     {
         #if success update into DB
@@ -142,6 +151,11 @@ class ProductController extends Controller
         return $mediaServicesContract->retrieveUploadFiles($request, $this->productFolder);
     }
 
+    /**
+     * @param Request $request
+     * @param MediaServicesContract $mediaServicesContract
+     * @return mixed
+     */
     public function retrieveImageCreateUpload(Request $request, MediaServicesContract $mediaServicesContract)
     {
         # retrieve image
@@ -158,6 +172,10 @@ class ProductController extends Controller
         return $mediaServicesContract->deleteMediaFromProvider($request->name,$this->productFolder);
     }
 
+    /**
+     * @param Request $request
+     * @return mixed
+     */
     public function select2(Request $request)
     {
         if ($request->ajax())

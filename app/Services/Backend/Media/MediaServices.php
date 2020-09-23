@@ -13,9 +13,17 @@ use App\Models\Media;
 use App\Traits\fileUploadTrait;
 use Illuminate\Support\Facades\Storage;
 
+/**
+ * Class MediaServices
+ * @package App\Services\Backend\Media
+ */
 class MediaServices implements MediaServicesContract
 {
     use fileUploadTrait;
+
+    /**
+     * @var Media
+     */
     protected $model;
 
     /**
@@ -26,12 +34,22 @@ class MediaServices implements MediaServicesContract
         $this->model = $media;
     }
 
+    /**
+     * @param $fileName
+     * @return mixed
+     */
     public function getMediaByFileName($fileName)
     {
         // TODO: Implement getMediaByFileName() method.
         return $this->model::where('file_name', $fileName)->first();
     }
 
+    /**
+     * @param $request
+     * @param string $folderName
+     * @param string $deleteUrl
+     * @return array|mixed
+     */
     public function storeMedia($request, $folderName = 'media', $deleteUrl = '')
     {
         // TODO: Implement storeMedia() method.
@@ -54,12 +72,21 @@ class MediaServices implements MediaServicesContract
 //        ]);
     }
 
+    /**
+     * @param $imageUrl
+     * @param $item_id
+     * @return mixed|void
+     */
     public function deleteMedia($imageUrl, $item_id)
     {
         // TODO: Implement deleteMedia() method.
         #destroy media from provider
     }
 
+    /**
+     * @param $item_id
+     * @return mixed
+     */
     public function deleteMediaByItemId($item_id)
     {
         // TODO: Implement deleteMediaByItemId() method.
@@ -80,6 +107,11 @@ class MediaServices implements MediaServicesContract
     }
 
 
+    /**
+     * @param $request
+     * @param $folder
+     * @return mixed|string
+     */
     public function retrieveUploadFiles($request, $folder)
     {
         // TODO: Implement retrieveUploadFiles() method.
@@ -151,6 +183,11 @@ class MediaServices implements MediaServicesContract
         //return 'not array '. $request->fileNames;
     }
 
+    /**
+     * @param $request
+     * @param $folder
+     * @return string
+     */
     public function retrieveUploadCreateFiles($request, $folder)
     {
         // TODO: Implement retrieveUploadCreateFiles() method.
@@ -217,6 +254,11 @@ class MediaServices implements MediaServicesContract
         //return 'not array '. $request->fileNames;
     }
 
+    /**
+     * @param $file
+     * @param $folder
+     * @return bool|mixed
+     */
     public function deleteMediaFromProvider($file, $folder)
     {
         // TODO: Implement deleteMediaFromProvider() method.
@@ -234,6 +276,10 @@ class MediaServices implements MediaServicesContract
         return Storage::disk('s3')->delete($path);
     }
 
+    /**
+     * @param $bytes
+     * @return mixed|string
+     */
     public static function bytesToHuman($bytes)
     {
         // TODO: Implement bytesToHuman() method.
@@ -247,6 +293,10 @@ class MediaServices implements MediaServicesContract
 
     }
 
+    /**
+     * @param $fileName
+     * @return mixed
+     */
     public function deleteMediaByFileName($fileName)
     {
         // TODO: Implement deleteMediaByFileName() method.
@@ -267,6 +317,10 @@ class MediaServices implements MediaServicesContract
         return $dataDb->delete();
     }
 
+    /**
+     * @param $fileName
+     * @return mixed
+     */
     public function deleteMediaOnlyDB($fileName)
     {
         // TODO: Implement deleteMediaOnlyDB() method.

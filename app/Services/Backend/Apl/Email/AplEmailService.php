@@ -57,6 +57,10 @@ class AplEmailService implements AplEmailServiceContract
         return $this->model->find($id);
     }
 
+    /**
+     * @param int $id
+     * @return mixed
+     */
     public function getByAttachmentId(int $id)
     {
         // TODO: Implement getByAttachmentId() method.
@@ -153,6 +157,10 @@ class AplEmailService implements AplEmailServiceContract
         }
     }
 
+    /**
+     * @param $request
+     * @return int|mixed
+     */
     public function tagify($request)
     {
         // TODO: Implement tagify() method.
@@ -180,6 +188,10 @@ class AplEmailService implements AplEmailServiceContract
         }
     }
 
+    /**
+     * @param $request
+     * @return int|mixed
+     */
     public function tagifyGroup($request)
     {
         // TODO: Implement tagify() method.
@@ -207,6 +219,11 @@ class AplEmailService implements AplEmailServiceContract
         }
     }
 
+    /**
+     * @param $request
+     * @return AplEmail|int|mixed
+     * @throws \Exception
+     */
     public function store($request)
     {
         // TODO: Implement store() method.
@@ -276,6 +293,11 @@ class AplEmailService implements AplEmailServiceContract
         }
     }
 
+    /**
+     * @param $request
+     * @param $productId
+     * @return array
+     */
     private function saveFileAttachment($request, $productId)
     {
         #delete existing file
@@ -299,6 +321,10 @@ class AplEmailService implements AplEmailServiceContract
         return $imagesDb;
     }
 
+    /**
+     * @param $productId
+     * @return mixed
+     */
     private function destroyImages($productId)
     {
         //Media::where('item_id', $productId)->delete();

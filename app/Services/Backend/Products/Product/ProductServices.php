@@ -21,8 +21,21 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
 
+/**
+ * Class ProductServices
+ * @package App\Services\Backend\Products\Product
+ */
 class ProductServices implements ProductServicesContract
 {
+    /**
+     * @var Product
+     */
+    /**
+     * @var Product|MediaServicesContract
+     */
+    /**
+     * @var Product|MediaServicesContract|string
+     */
     private $model, $media, $productFolder;
     use fileUploadTrait;
 
@@ -36,17 +49,29 @@ class ProductServices implements ProductServicesContract
         $this->productFolder = 'media';
     }
 
+    /**
+     * @return mixed|void
+     */
     public function get()
     {
         // TODO: Implement get() method.
     }
 
+    /**
+     * @param int $id
+     * @return mixed
+     */
     public function getById($id)
     {
         // TODO: Implement getById() method.
         return $this->model::find($id);
     }
 
+    /**
+     * @param $request
+     * @return Product|int|mixed
+     * @throws \Exception
+     */
     public function store($request)
     {
         // TODO: Implement store() method.
@@ -100,6 +125,12 @@ class ProductServices implements ProductServicesContract
         }
     }
 
+    /**
+     * @param int $id
+     * @param $request
+     * @return int|mixed
+     * @throws \Exception
+     */
     public function update(int $id, $request)
     {
         // TODO: Implement update() method.
@@ -154,6 +185,10 @@ class ProductServices implements ProductServicesContract
         }
     }
 
+    /**
+     * @param int $id
+     * @return mixed
+     */
     public function destroy(int $id)
     {
         // TODO: Implement destroy() method.
@@ -162,11 +197,20 @@ class ProductServices implements ProductServicesContract
         return $product->delete();
     }
 
+    /**
+     * @param array $id
+     * @return mixed|void
+     */
     public function destroyBulk(array $id)
     {
         // TODO: Implement destroyBulk() method.
     }
 
+    /**
+     * @param $request
+     * @return \Illuminate\Http\JsonResponse|mixed
+     * @throws \Exception
+     */
     public function datatable($request)
     {
         // TODO: Implement datatable() method.
@@ -232,6 +276,10 @@ class ProductServices implements ProductServicesContract
             ->make(true);
     }
 
+    /**
+     * @param $request
+     * @return mixed
+     */
     public function select2($request)
     {
         // TODO: Implement select2() method.
@@ -247,6 +295,10 @@ class ProductServices implements ProductServicesContract
         return $dataDb;
     }
 
+    /**
+     * @param $request
+     * @return mixed
+     */
     public function queryProducts($request)
     {
         // TODO: Implement queryProducts() method.
@@ -260,6 +312,11 @@ class ProductServices implements ProductServicesContract
         return $dataDb;
     }
 
+    /**
+     * @param $request
+     * @param $productId
+     * @return array
+     */
     private function saveProductImages($request, $productId)
     {
         #delete existing file
@@ -283,6 +340,10 @@ class ProductServices implements ProductServicesContract
         return $imagesDb;
     }
 
+    /**
+     * @param $productId
+     * @return mixed
+     */
     private function destroyImages($productId)
     {
         //Media::where('item_id', $productId)->delete();
@@ -290,6 +351,11 @@ class ProductServices implements ProductServicesContract
 
     }
 
+    /**
+     * @param $request
+     * @param $productId
+     * @return array
+     */
     private function updateProductImages($request, $productId)
     {
 

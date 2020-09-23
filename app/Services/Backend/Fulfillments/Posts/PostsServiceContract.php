@@ -15,7 +15,7 @@ interface PostsServiceContract
 
     public function store($request);
 
-    public function update($id, $request);
+    public function update(int $id, $request);
 
     public function datatable($request);
 

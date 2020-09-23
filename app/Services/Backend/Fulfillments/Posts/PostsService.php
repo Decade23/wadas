@@ -12,16 +12,32 @@ namespace App\Services\Backend\Fulfillments\Posts;
 use App\Models\Fulfillments\Posts;
 use App\Models\Media;
 use App\Services\Backend\Media\MediaServicesContract;
+use App\Traits\fileUploadTrait;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
 
+/**
+ * Class PostsService
+ * @package App\Services\Backend\Fulfillments\Posts
+ */
 class PostsService implements PostsServiceContract
 {
 
-    private $model, $media, $uploadPath;
+    /**
+     * @var Posts
+     */
+    /**
+     * @var Posts|MediaServicesContract
+     */
+    /**
+     * @var Posts|MediaServicesContract|string
+     */
+    private $model, $media, $productFolder;
+    use fileUploadTrait;
+
     /**
      * PostsService constructor.
      */
@@ -29,15 +45,24 @@ class PostsService implements PostsServiceContract
     {
         $this->model = $posts;
         $this->media = $mediaServicesContract;
-        $this->uploadPath = 'cms_posts';
+        $this->productFolder = 'cms_posts';
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function getById($id)
     {
         // TODO: Implement getById() method.
         return $this->model->find($id);
     }
 
+    /**
+     * @param $request
+     * @return Posts|MediaServicesContract|int|mixed|string
+     * @throws \Exception
+     */
     public function store($request)
     {
         // TODO: Implement store() method.
@@ -61,17 +86,80 @@ class PostsService implements PostsServiceContract
             #insert media (image)
             if (is_array($request->document)) {
                 foreach ($request->document as $file_name) {
-                    $path   = 'public/'. $this->uploadPath .'/'. 'media'. '/'. $file_name;
+                    $path   = 'public/'. $this->uploadPath .'/'.  $this->productFolder . '/'. $file_name;
                     $url    = Storage::disk('s3')->url($path);
                     $files[] = [
                         'type'  => 'image',
-                        'model' => 'Product',
+                        'model' => 'Posts',
                         'url'   => $url,
                         'path'  => $path,
                         'file_name' => $file_name
                     ];
                 }
                 $this->saveMedia($files, $insert->id);
+            }
+
+            # commit to insert to DB
+            DB::commit();
+
+            # return to controller
+            return $insert;
+
+        } catch (\Exception $exception) {
+            #rollback to begin (not insert to DB)
+            DB::rollBack();
+            #Dump
+            #dd($exception);
+            //dd('Message: '.$exception->getMessage() . ' Line: ' . $exception->getLine()  . ' Code: ' . $exception->getCode());
+
+            #return getCode Error
+            return $exception->getCode();
+        }
+    }
+
+    /**
+     * @param int $id
+     * @param $request
+     * @return int|mixed
+     * @throws \Exception
+     */
+    public function update(int $id, $request)
+    {
+        // TODO: Implement update() method.
+        //dd($request->all());
+        # retrieve
+        $userDb = Sentinel::getUser()->email;
+
+        DB::beginTransaction();
+        try {
+            # insert to product groups
+            $insert = $this->model::find($id);
+            $insert->fill($request->all());
+            $insert->slug = Str::slug($request->name, '-');
+            $insert->visibility = $request->visibility;
+
+            if ($request->has('product'))
+            {
+                $insert->product_id = $request->product;
+            }
+
+            $insert->updated_by = $userDb;
+            $insert->save();
+
+            #insert media (image)
+            if (is_array($request->document)) {
+                foreach ($request->document as $file_name) {
+                    $path   = 'public/'. $this->uploadPath .'/'.  $this->productFolder . '/'. $file_name;
+                    $url    = Storage::disk('s3')->url($path);
+                    $files[] = [
+                        'type'  => 'image',
+                        'model' => 'Posts',
+                        'url'   => $url,
+                        'path'  => $path,
+                        'file_name' => $file_name
+                    ];
+                }
+                $this->updateMedia($files, $insert->id);
             }
 
             # commit to insert to DB
@@ -92,12 +180,24 @@ class PostsService implements PostsServiceContract
         }
     }
 
-    public function update($id, $request)
+    /**
+     * @param int $id
+     * @return mixed
+     */
+    public function destroy(int $id)
     {
-        // TODO: Implement update() method.
+        // TODO: Implement destroy() method.
+        $post = $this->model->find($id);
+        $this->media->deleteMediaByItemId($id);
+        return $post->delete();
     }
 
 
+    /**
+     * @param $request
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
+     */
     public function datatable($request)
     {
         // TODO: Implement datatable() method.
@@ -153,6 +253,10 @@ class PostsService implements PostsServiceContract
             ->make(true);
     }
 
+    /**
+     * @param $request
+     * @return mixed
+     */
     public function queryCmsPosts($request)
     {
         // TODO: Implement queryCmsPosts() method.
@@ -166,6 +270,11 @@ class PostsService implements PostsServiceContract
         return $dataDb;
     }
 
+    /**
+     * @param $request
+     * @param $productId
+     * @return array
+     */
     private function saveMedia($request, $productId)
     {
         #delete existing file
@@ -189,6 +298,10 @@ class PostsService implements PostsServiceContract
         return $imagesDb;
     }
 
+    /**
+     * @param $productId
+     * @return mixed
+     */
     private function destroyMedia($productId)
     {
         //Media::where('item_id', $productId)->delete();
@@ -196,6 +309,11 @@ class PostsService implements PostsServiceContract
 
     }
 
+    /**
+     * @param $request
+     * @param $productId
+     * @return array
+     */
     private function updateMedia($request, $productId)
     {
 
