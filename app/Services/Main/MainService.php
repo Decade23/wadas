@@ -9,17 +9,22 @@
 namespace App\Services\Main;
 
 
+use App\Services\Backend\Fulfillments\Posts\PostsServiceContract;
+use App\Services\Frontend\Fulfillments\Posts\PostsFrontEndServiceContract;
+
 /**
  * Class MainService
  * @package App\Services\Main
  */
 class MainService implements MainServiceContract
 {
+    private $serviceBlog;
     /**
      * MainService constructor.
      */
-    public function __construct()
+    public function __construct(PostsFrontEndServiceContract $postsFrontEndServiceContract)
     {
+        $this->serviceBlog = $postsFrontEndServiceContract;
     }
 
     public function news()
@@ -71,5 +76,13 @@ class MainService implements MainServiceContract
     {
         // TODO: Implement anyData() method.
     }
+
+    public function blog()
+    {
+        // TODO: Implement blog() method.
+        #return $postsFrontEndServiceContract->get();
+        return $this->serviceBlog->get();
+    }
+
 
 }

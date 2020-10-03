@@ -17,9 +17,12 @@
                     <div style="background: url('frontend/images/world-map.png') no-repeat center center; background-size: 100%;">
                         <address>
                             <strong>Headquarters:</strong><br>
-                            Perum Diamond Golden Cinere Blok G/11<br>
-                            RT 001 RW 013 Grogol Limo <br>
-                            Kota Depok Jawa Barat <br>
+                            KOMPLEK CIBOLERANG INDAH <br>
+                            Jl. Margajaya Timur III No. 5 <br>
+                            Kel. Margahayu Utara <br>
+                            Kec. Babakan Ciparay <br>
+                            Kota Bandung <br>
+                            Jawa Barat - Indonesia 40224 <br>
                         </address>
 {{--                        <abbr title="Phone Number"><strong>Phone:</strong></abbr> (91) 8547 632521<br>--}}
 {{--                        <abbr title="Fax"><strong>Fax:</strong></abbr> (91) 11 4752 1433<br>--}}

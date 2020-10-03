@@ -49,6 +49,16 @@ class PostsService implements PostsServiceContract
     }
 
     /**
+     * @return mixed|void
+     */
+    public function get()
+    {
+        // TODO: Implement get() method.
+        return $this->model->get();
+    }
+
+
+    /**
      * @param $id
      * @return mixed
      */

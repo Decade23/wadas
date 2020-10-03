@@ -7,6 +7,7 @@
         </div>
     </div>
     <div class="container clear-bottommargin clearfix">
+
         <div class="row">
 
             <div class="col-lg-3 col-md-6 bottommargin">

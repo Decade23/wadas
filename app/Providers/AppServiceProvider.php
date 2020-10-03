@@ -28,8 +28,11 @@ use App\Services\Backend\Products\ProductGroup\ProductGroupServices;
 use App\Services\Backend\Products\ProductGroup\ProductGroupServicesContract;
 use App\Services\Backend\Sales\SalesService;
 use App\Services\Backend\Sales\SalesServiceContract;
+use App\Services\Frontend\Fulfillments\Posts\PostsFrontEndService;
+use App\Services\Frontend\Fulfillments\Posts\PostsFrontEndServiceContract;
 use App\Services\Main\MainService;
 use App\Services\Main\MainServiceContract;
+
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
@@ -111,6 +114,14 @@ class AppServiceProvider extends ServiceProvider
             AplEmailServiceContract::class,
             AplEmailService::class
         );
+
+        #Frontend
+        $this->app->bind(
+            PostsFrontEndServiceContract::class,
+            PostsFrontEndService::class
+        );
+
+        #End Frontend
     }
 
     /**

@@ -28,7 +28,7 @@ class Posts extends Model
      */
     protected $fillable = [
         'name', 'slug', 'short_content', 'content', 'mobile_content', 'written_by', 'product_id', 'counter',
-        'created_at', 'updated_at'
+        'created_at', 'updated_at', 'visibility'
     ];
 
     /**

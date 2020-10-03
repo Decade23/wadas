@@ -9,10 +9,26 @@
 namespace App\Services\Main;
 
 
+/**
+ * Interface MainServiceContract
+ * @package App\Services\Main
+ */
 interface MainServiceContract
 {
+    /**
+     * @param $request
+     * @return mixed
+     */
     public function anyData($request);
 
+    /**
+     * @return mixed
+     */
+    public function blog();
+
+    /**
+     * @return mixed
+     */
     public function news();
 
 }

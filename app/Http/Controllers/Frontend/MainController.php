@@ -29,6 +29,8 @@ class MainController extends Controller
         $data['titlePage'] = $this->titlePage;
         $data['tagLine'] = 'Strategic Agility Business Improvement Change Agent';
         $data['data']   = $this->service->news();
+        $data['dataDb']['blog'] = $this->service->blog();
+        #dd($data);
 
         return view('frontend.main.index', $data);
     }
