@@ -14,7 +14,7 @@
 
                     <p><strong>ECI</strong> Bisnis Manajemen.</p>
 
-                    <div style="background: url('frontend/images/world-map.png') no-repeat center center; background-size: 100%;">
+                    <div style="background: url({{ asset('frontend/images/world-map.png') }}) no-repeat center center; background-size: 100%;">
                         <address>
                             <strong>Headquarters:</strong><br>
                             KOMPLEK CIBOLERANG INDAH <br>
@@ -173,7 +173,7 @@
 
     <div class="container clearfix">
         <div class="col_full col_last text-center">
-            Copyrights &copy; {{ date('Y') }} All Rights Reserved by {{ $titlePage }}.<br>
+            Copyrights &copy; {{ date('Y') }} All Rights Reserved by {{ $footer_title_page ?? config('app.name') }}.<br>
 {{--            <div class="copyright-links"><a href="#">Terms of Use</a> / <a href="#">Privacy Policy</a></div>--}}
             <div class="copyright-links"><a href="{{ route('front_main.disclaimer') }}">Disclaimer</a> <span class="middot">&middot;</span> <i class="icon-envelope2"></i> ecibisnismanajemen@gmail.com <span class="middot">&middot;</span> <i class="icon-headphones"></i> Contact Us: +62 811-2231-147 (Muzakkir)</div>
         </div>

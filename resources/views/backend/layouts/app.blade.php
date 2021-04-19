@@ -27,6 +27,7 @@
 
     <link href="{{ url('themes/eci/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ url('themes/eci/css/style.bundle.css') }}" rel="stylesheet" type="text/css" />
+{{--    <link href="{{ url('themes/eci/css/style/style.bundle.css') }}" rel="stylesheet" type="text/css" />--}}
     <!--end::Global Theme Styles -->
 
     <!--begin::Layout Skins(used by all pages) -->
@@ -36,6 +37,10 @@
     <link href="{{ url('themes/eci/css/skins/brand/dark.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ url('themes/eci/css/skins/aside/dark.css') }}" rel="stylesheet" type="text/css" />
     <!--end::Layout Skins -->
+
+    <!--begin::Layout Custom -->
+    <link href="{{ url('themes/eci/css/custom/eci-style.css') }}" rel="stylesheet" type="text/css" />
+    <!--end::Layout Custom -->
 
     <link rel="shortcut icon" href="https://keenthemes.com/metronic/themes/metronic/theme/default/demo1/dist/assets/media/logos/favicon.ico" />
 

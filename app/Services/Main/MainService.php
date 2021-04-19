@@ -80,8 +80,7 @@ class MainService implements MainServiceContract
     public function blog()
     {
         // TODO: Implement blog() method.
-        #return $postsFrontEndServiceContract->get();
-        return $this->serviceBlog->get();
+        return $this->serviceBlog->getFourLatest();
     }
 
 

@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => 'Expert Club Indonesia Bisnis Manajemen',//env('APP_NAME', 'Expert Club Indonesia Bisnis Manajemen'),
 
     /*
     |--------------------------------------------------------------------------

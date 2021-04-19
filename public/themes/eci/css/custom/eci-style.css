@@ -1,0 +1,21 @@
+/*
+ * Created By Dedi Fardiyanto
+ * Copyright (c) 2021, Inc - All Rights Reserved
+ * @Filename eci-style.css
+ * @LastModified 13/03/2021, 03:16
+ */
+
+.eci-form-control {
+    border-top-style: hidden;
+    border-right-style: hidden;
+    border-left-style: hidden;
+    border-bottom-style: groove;
+}
+
+.eci-form-control:focus {
+    outline: none;
+}
+
+.eci-bg-exam {
+    background-color: #f7f8fa;
+}

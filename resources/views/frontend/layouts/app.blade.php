@@ -2,21 +2,7 @@
 <html dir="ltr" lang="en-US">
 <head>
 
-    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <meta name="author" content="DediF" />
-    <meta name="keywords" content="eci, eci bisnis manajemen, expert club indonesia, expert, club, indoensia, consulting, bisnis" />
-    <meta name="description" content="Expert Club  Indonesia" />
-
-    <meta property="og:site_name" content="ECI Bisnis Manajemen">
-    <meta property="og:url" content="{{ request()->fullUrl() }}"/>
-    <meta property="og:title" content="Expert Club Indonesia"/>
-    <meta property="og:description" content="Training & Consultant Center"/>
-    <meta property="og:image" itemprop="image"  content="{{ asset('eci/logo/eci_logo_no_bg.png') }}"/>
-    <meta property="og:image:width" content="300">
-    <meta property="og:image:height" content="300">
-    <meta name=”robots” content="index, follow">
-
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    @include('frontend.layouts.menus.seo')
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -24,28 +10,28 @@
     <!-- Stylesheets
     ============================================= -->
     <link href="https://fonts.googleapis.com/css?family=Lato:300,400,400i,700|Raleway:300,400,500,600,700|Crete+Round:400i" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" href="frontend/css/bootstrap.css" type="text/css" />
+    <link rel="stylesheet" href="{{ asset('frontend/css/bootstrap.css') }}" type="text/css" />
 
-    <link rel="stylesheet" href="frontend/style.css" type="text/css" />
+    <link rel="stylesheet" href="{{ asset('frontend/style.css') }}" type="text/css" />
 
-    <link rel="stylesheet" href="frontend/css/swiper.css" type="text/css" />
+    <link rel="stylesheet" href="{{ asset('frontend/css/swiper.css') }}" type="text/css" />
 
-    <link rel="stylesheet" href="frontend/css/dark.css" type="text/css" />
+    <link rel="stylesheet" href="{{ asset('frontend/css/dark.css') }}" type="text/css" />
 
-    <link rel="stylesheet" href="frontend/css/font-icons.css" type="text/css" />
+    <link rel="stylesheet" href="{{ asset('frontend/css/font-icons.css') }}" type="text/css" />
 
-    <link rel="stylesheet" href="frontend/css/animate.css" type="text/css" />
-    <link rel="stylesheet" href="frontend/css/magnific-popup.css" type="text/css" />
+    <link rel="stylesheet" href="{{ asset('frontend/css/animate.css') }}" type="text/css" />
+    <link rel="stylesheet" href="{{ asset('frontend/css/magnific-popup.css') }}" type="text/css" />
 
-    <link rel="stylesheet" href="frontend/css/responsive.css" type="text/css" />
+    <link rel="stylesheet" href="{{ asset('frontend/css/responsive.css') }}" type="text/css" />
     @stack('css')
 
     <!-- Favicon -->
-    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
 
     <!-- Document Title
     ============================================= -->
-    <title>Expert Club Indonesia</title>
+    <title>{{ $page_title ?? 'Expert Club Indonesia Bisnis Manajemen' }}</title>
     <meta name="google-site-verification" content="JNAA_jhJoatZjJr4ccO_FTjZSNuLTu_dgUwrVbLZXNA" />
 </head>
 
@@ -68,8 +54,8 @@
                 <!-- Logo
                 ============================================= -->
                 <div id="logo">
-                    <a href="{{ route('front_main.index') }}" class="standard-logo" data-dark-logo="eci/logo/eci_logo_no_bg.png"><img src="eci/logo/eci_logo_no_bg.png" alt="ECI Logo"></a>
-                    <a href="{{ route('front_main.index') }}" class="retina-logo" data-dark-logo="eci/logo/eci_logo_no_bg.png"><img src="eci/logo/eci_logo_no_bg.png" alt="ECI Logo"></a>
+                    <a href="{{ route('front_main.index') }}" class="standard-logo" data-dark-logo="{{ asset('eci/logo/eci_logo_no_bg.png') }}"><img src="{{ asset('eci/logo/eci_logo_no_bg.png') }}" alt="ECI Logo"></a>
+                    <a href="{{ route('front_main.index') }}" class="retina-logo" data-dark-logo="{{ asset('eci/logo/eci_logo_no_bg.png') }}"><img src="{{ asset('eci/logo/eci_logo_no_bg.png') }}" alt="ECI Logo"></a>
                 </div><!-- #logo end -->
 
                 <!-- Primary Navigation
@@ -121,6 +107,7 @@
         <div class="content-wrap">
 
             @yield('body')
+            @yield('body_vue')
 
         </div>
 
@@ -142,12 +129,12 @@
 
 <!-- External JavaScripts
 ============================================= -->
-<script src="frontend/js/jquery.js"></script>
-<script src="frontend/js/plugins.js"></script>
+<script src="{{ asset('frontend/js/jquery.js') }}"></script>
+<script src="{{ asset('frontend/js/plugins.js') }}"></script>
 
 <!-- Footer Scripts
 ============================================= -->
-<script src="frontend/js/functions.js"></script>
+<script src="{{ asset('frontend/js/functions.js') }}"></script>
 
 <!-- The core Firebase JS SDK is always required and must be listed first -->
 <script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-app.js"></script>

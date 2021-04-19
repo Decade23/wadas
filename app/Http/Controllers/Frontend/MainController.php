@@ -26,6 +26,7 @@ class MainController extends Controller
 
     public function index()
     {
+        $data['seo_og_site_name'] = $this->titlePage;
         $data['titlePage'] = $this->titlePage;
         $data['tagLine'] = 'Strategic Agility Business Improvement Change Agent';
         $data['data']   = $this->service->news();
@@ -37,6 +38,7 @@ class MainController extends Controller
 
     public function disclaimer()
     {
+        $data['seo_og_site_name'] = $this->titlePage;
         $data['titlePage'] = $this->titlePage;
         $data['tagLine'] = 'Disclaimer';
 

@@ -79,4 +79,9 @@ class User extends EloquentUser implements AuthenticatableContract
         }
         return false;
     }
+
+    public function scopeByEmail($query, $email)
+    {
+        return $query->where('email', $email);
+    }
 }

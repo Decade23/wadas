@@ -81,4 +81,51 @@ Route::group([
             ->name('apl_email.delete.image')->middleware('sentinel.permission:apl_email.destroy');
     });
 
+    Route::group([
+        'prefix' => 'exams',
+        'middleware' => 'prevent.back.history'
+    ], function () {
+
+        Route::get('inbox','ExamController@index')
+            ->name('exam.index')->middleware('sentinel.permission:exam.show');
+
+        Route::get('create','ExamController@create')
+            ->name('exam.create')->middleware('sentinel.permission:exam.create');
+
+        Route::post('store', 'ExamController@store')
+            ->name('exam.store')->middleware('sentinel.permission:exam.create');
+
+        Route::get('{id}/show', 'ExamController@show')
+            ->name('exam.show')->middleware('sentinel.permission:exam.show');
+
+        Route::get('{id}/edit', 'ExamController@edit')
+            ->name('exam.edit')->middleware('sentinel.permission:exam.edit');
+
+        Route::put('{id}/update', 'ExamController@update')
+            ->name('exam.update')->middleware('sentinel.permission:exam.edit');
+
+        Route::delete('{id}/destroy', 'ExamController@destroy')
+            ->name('exam.destroy')->middleware('sentinel.permission:exam.destroy');
+
+        #bulk destroy
+        Route::delete('destroy/bulk', 'ExamController@destroyBulk')
+            ->name('exam.destroy.bulk')->middleware('sentinel.permission:exam.destroy');
+
+        # for DataTables
+        Route::get('ajax/data', 'ExamController@datatable')
+            ->name('exam.ajax.data')->middleware('sentinel.permission:exam.show');
+
+        # for image upload
+        Route::post('upload/image', 'ExamController@imageUpload')
+            ->name('exam.upload.image')->middleware('sentinel.permission:exam.create');
+
+        # retrieve image create upload
+        Route::post('upload/image/create/retrieve', 'ExamController@retrieveImageCreateUpload')
+            ->name('exam.retrieve_create.image')->middleware('sentinel.permission:exam.show');
+
+        # delete image upload
+        Route::delete('upload/image/delete', 'ExamController@deleteImageUpload')
+            ->name('exam.delete.image')->middleware('sentinel.permission:exam.destroy');
+    });
+
 });

@@ -10,78 +10,53 @@
 
         <div class="row">
 
-            <div class="col-lg-3 col-md-6 bottommargin">
-                <div class="ipost clearfix">
-                    <div class="entry-image">
-                        <a href="#"><img class="image_fade" src="frontend/images/magazine/thumb/1.jpg" alt="Image"></a>
-                    </div>
-                    <div class="entry-title">
-                        <h3><a href="blog-single.html">Bloomberg smart cities; change-makers economic security</a></h3>
-                    </div>
-                    <ul class="entry-meta clearfix">
-                        <li><i class="icon-calendar3"></i> 13th Jun 2014</li>
-                        <li><a href="blog-single.html#comments"><i class="icon-comments"></i> 53</a></li>
-                    </ul>
+            <!-- checking if has posts -->
+            @if( isset( $dataDb['blog'] ) && $dataDb['blog']->count() > 0 )
+                <!-- looping the posts -->
+                @foreach( $dataDb['blog'] as $post )
+                    <!-- checking if post has permit to publish -->
+                    @if( $post->visibility == 'publish' )
+                        <!-- show the post for 4 row -->
+                        <div class="col-lg-3 col-md-6 bottommargin">
+                            <div class="ipost clearfix">
+                                <!-- checking if post has media -->
+                                @if( isset( $post->media ) && $post->media->count() > 0 )
+                                    <div class="entry-image">
+                                        <a href="{{ route('front_cms_posts.show',$post->slug) }}"><img class="image_fade" src="{{ url($post->media[0]->url ) }}" alt="Image"></a>
+                                    </div>
+                                @endif
+
+                                <div class="entry-title">
+                                    <h3><a href="{{ route('front_cms_posts.show',$post->slug) }}">{{ ucwords( $post->name ) }}</a></h3>
+                                </div>
+                                <ul class="entry-meta clearfix">
+                                    <li><i class="icon-calendar3"></i> {{ $post->post_date }}</li>
+        {{--                        comment column count    <li><a href="blog-single.html#comments"><i class="icon-comments"></i> 53</a></li>--}}
+                                </ul>
+                                <div class="entry-content">
+                                    <p>{{ $post->short_content }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    @else
+                        <!-- checking if post don't have permit to publish -->
+                        <div class="col-lg-12 col-md-12 bottommargin">
+                            <div class="entry-content">
+                                <p>No Posts Available.</p>
+                            </div>
+                        </div>
+                    @endif
+                    <!-- end checking if post has permit -->
+                @endforeach
+                <!-- end looping the posts -->
+            @else
+            <!-- end checking if has posts -->
+                <div class="col-lg-12 col-md-12 bottommargin">
                     <div class="entry-content">
-                        <p>Prevention effect, advocate dialogue rural development lifting people up community civil society. Catalyst, grantees leverage.</p>
+                        <p>No Posts Available.</p>
                     </div>
                 </div>
-            </div>
-
-            <div class="col-lg-3 col-md-6 bottommargin">
-                <div class="ipost clearfix">
-                    <div class="entry-image">
-                        <a href="#"><img class="image_fade" src="frontend/images/magazine/thumb/2.jpg" alt="Image"></a>
-                    </div>
-                    <div class="entry-title">
-                        <h3><a href="blog-single.html">Medicine new approaches communities, outcomes partnership</a></h3>
-                    </div>
-                    <ul class="entry-meta clearfix">
-                        <li><i class="icon-calendar3"></i> 24th Feb 2014</li>
-                        <li><a href="blog-single.html#comments"><i class="icon-comments"></i> 17</a></li>
-                    </ul>
-                    <div class="entry-content">
-                        <p>Cross-agency coordination clean water rural, promising development turmoil inclusive education transformative community.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-3 col-md-6 bottommargin">
-                <div class="ipost clearfix">
-                    <div class="entry-image">
-                        <a href="#"><img class="image_fade" src="frontend/images/magazine/thumb/3.jpg" alt="Image"></a>
-                    </div>
-                    <div class="entry-title">
-                        <h3><a href="blog-single.html">Significant altruism planned giving insurmountable challenges liberal</a></h3>
-                    </div>
-                    <ul class="entry-meta clearfix">
-                        <li><i class="icon-calendar3"></i> 30th Dec 2014</li>
-                        <li><a href="blog-single.html#comments"><i class="icon-comments"></i> 13</a></li>
-                    </ul>
-                    <div class="entry-content">
-                        <p>Micro-finance; vaccines peaceful contribution citizens of change generosity. Measures design thinking accelerate progress medical initiative.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-3 col-md-6 bottommargin">
-                <div class="ipost clearfix">
-                    <div class="entry-image">
-                        <a href="#"><img class="image_fade" src="frontend/images/magazine/thumb/4.jpg" alt="Image"></a>
-                    </div>
-                    <div class="entry-title">
-                        <h3><a href="blog-single.html">Compassion conflict resolution, progressive; tackle</a></h3>
-                    </div>
-                    <ul class="entry-meta clearfix">
-                        <li><i class="icon-calendar3"></i> 15th Jan 2014</li>
-                        <li><a href="blog-single.html#comments"><i class="icon-comments"></i> 54</a></li>
-                    </ul>
-                    <div class="entry-content">
-                        <p>Community health workers best practices, effectiveness meaningful work The Elders fairness. Our ambitions local solutions globalization.</p>
-                    </div>
-                </div>
-            </div>
-
+            @endif
         </div>
     </div>
 </section>

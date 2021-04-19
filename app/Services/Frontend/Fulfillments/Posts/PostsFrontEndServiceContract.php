@@ -19,4 +19,23 @@ interface PostsFrontEndServiceContract
      * @return mixed
      */
     public function get();
+
+    /**
+     * @param $slug
+     * @return mixed
+     */
+    public function getBySlug($slug);
+
+    /**
+     * @return mixed
+     */
+    public function getFourLatest();
+
+    /**
+     * @param $email
+     * @return mixed
+     */
+    public function getDataVisitor($email);
+
+    public function storeCommentPost($request);
 }

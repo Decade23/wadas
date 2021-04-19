@@ -10,6 +10,8 @@ use App\Services\Auth\User\UserService;
 use App\Services\Auth\User\UserServiceContract;
 use App\Services\Backend\Apl\Email\AplEmailService;
 use App\Services\Backend\Apl\Email\AplEmailServiceContract;
+use App\Services\Backend\Apl\Exam\ExamService;
+use App\Services\Backend\Apl\Exam\ExamServiceContract;
 use App\Services\Backend\Config\Email\EmailService;
 use App\Services\Backend\Config\Email\EmailServiceContract;
 use App\Services\Backend\Fulfillments\Posts\PostsService;
@@ -113,6 +115,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             AplEmailServiceContract::class,
             AplEmailService::class
+        );
+
+        $this->app->bind(
+            ExamServiceContract::class,
+            ExamService::class
         );
 
         #Frontend
