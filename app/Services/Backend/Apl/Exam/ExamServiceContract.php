@@ -38,4 +38,10 @@ interface ExamServiceContract
      * @return mixed
      */
     public function queryDataTable($request);
+
+
+    /**
+     * @return object
+     */
+    public function iterateAnswer() :object;
 }

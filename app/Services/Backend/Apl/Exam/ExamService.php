@@ -10,8 +10,11 @@ namespace App\Services\Backend\Apl\Exam;
 
 
 use App\Models\Apl\Exams\Exam;
+use App\Models\Apl\Exams\ExamAnswer;
+use App\Models\Apl\Exams\ExamQuestion;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
 
 /**
@@ -37,6 +40,7 @@ class ExamService implements ExamServiceContract
     public function getById(int $id)
     {
         // TODO: Implement getById() method.
+        return $this->model->find($id)->with(['examSingleDetails','singleProduct'])->first();
     }
 
     /**
@@ -44,7 +48,57 @@ class ExamService implements ExamServiceContract
      */
     public function store($request)
     {
+        # retrieve
+        $userDb = Sentinel::getUser()->email;
+
         // TODO: Implement store() method.
+        DB::beginTransaction();
+        try {
+            #insert into Exam
+            $exam  = new Exam();
+            $exam->product_id = $request->product;
+            $exam->title = $request->title;
+            $exam->slug = Str::slug($request->title,'-');
+            $exam->desc = $request->desc;
+            $exam->price = $request->price;
+            $exam->written_by = $userDb;
+            $exam->visibility = $request->visibility;
+            $exam->save();
+
+            #insert into exam question
+            $exam_question = new ExamQuestion();
+            $exam_question->exam_id = $exam->id;
+            $exam_question->question = $request->question;
+            $exam_question->answer = $request->answer['check'];
+            $exam_question->written_by = $userDb;
+            $exam_question->visibility = $request->visibility;
+            $exam_question->save();
+
+            #iterate answer
+            #insert into exam answer
+            foreach ( $request->answer['txt'] as $i => $v ) {
+
+                $exam_answer = new ExamAnswer();
+                $exam_answer->exam_question_id = $exam_question->id;
+                $exam_answer->answer_type = $i;
+                $exam_answer->answer_desc = $v;
+                $exam_answer->written_by = $userDb;
+                $exam_answer->visibility = $request->visibility;
+                $exam_answer->save();
+
+            }
+
+            #commit to DB
+            DB::commit();
+
+            #if success return obj of exam
+            return $exam;
+
+        } catch (\Exception $exception) {
+            report($exception);
+            #dd($exception);
+            return $exception->getMessage(). ' '. $exception->getLine(). ' '.$exception->getFile(). ' '.$exception->getCode();
+        }
     }
 
     /**
@@ -84,7 +138,7 @@ class ExamService implements ExamServiceContract
                                 <i class="flaticon-delete kt-font-danger"></i>
                     </a>';
                 }
-                return $btnShow;
+                return $btnShow. $btnEdit;
             })
             ->rawColumns(['action'])
             ->make(true);
@@ -105,9 +159,17 @@ class ExamService implements ExamServiceContract
         $dataDb = $this->model::select($select)->with(['products','examDetails'])
             //->WithProduct()
             //->WithExamQuestionAndAnswer()
-            //->groupBy('exams.title')
+//            ->groupBy('exams.title')
             ->orderBy('exams.created_at','DESC');
 
         return $dataDb;
     }
+
+    public function iterateAnswer(): object
+    {
+        // TODO: Implement iterateAnswer() method.
+
+    }
+
+
 }

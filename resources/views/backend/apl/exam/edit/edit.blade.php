@@ -17,7 +17,7 @@
             </div>
         </div>
 
-        <form class="kt-form kt-form--label-right" method="POST" action="{{ route('exam.store') }}" enctype="multipart/form-data">
+        <form class="kt-form kt-form--label-right" method="POST" action="{{ route('exam.update', $dataDb->id) }}" enctype="multipart/form-data">
             {!! csrf_field() !!}
 
             <div class="kt-portlet__body">
@@ -30,8 +30,8 @@
                     </li>
                 </ul>
                 <div class="tab-content">
-                    @include('backend.apl.exam.create._form_title')
-{{--                    @include('backend.apl.exam.create._form_question_single')--}}
+                    @include('backend.apl.exam.edit._form_title')
+{{--                    @include('backend.apl.exam.edit._form_question_single')--}}
                 </div>
                 <div class="kt-portlet__foot">
                     <div class="kt-form__actions">
@@ -45,7 +45,7 @@
                                 </div>
                             </div>
                             <div class="col-lg-6 kt-align-right">
-                                <button type="submit" class="btn btn-primary submit">@lang('global.save')</button>
+                                <button type="submit" class="btn btn-primary submit">@lang('global.update')</button>
                             </div>
                         </div>
                     </div>
@@ -56,13 +56,13 @@
 @stop
 
 @push('css')
-{{--    <link href="{{ url('themes/eci/css/pages/inbox/inbox.css') }}" rel="stylesheet" type="text/css" />--}}
+    {{--    <link href="{{ url('themes/eci/css/pages/inbox/inbox.css') }}" rel="stylesheet" type="text/css" />--}}
 @endpush
 
 @push('scripts')
     <script src="{{ url('plugins/autonumeric/autoNumeric.js') }}"></script>
-{{--    <script src="{{ url('themes/eci/js/pages/custom/inbox/inbox.js') }}"></script>--}}
-{{--    <script src="{{ url('themes/eci/js/pages/crud/forms/widgets/tagify.js') }}"></script>--}}
+    {{--    <script src="{{ url('themes/eci/js/pages/custom/inbox/inbox.js') }}"></script>--}}
+    {{--    <script src="{{ url('themes/eci/js/pages/crud/forms/widgets/tagify.js') }}"></script>--}}
     <script>
         $(function () {
             $('#visibility').select2({

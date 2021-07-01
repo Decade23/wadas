@@ -10,8 +10,13 @@ class Exam extends Model
     protected $table = 'exams';
 
     protected $fillable = [
-      'id', 'product_id', 'title', 'slug', 'desc', 'written_by', 'updated_by', 'visibility', 'created_at', 'updated_at'
+      'id', 'product_id', 'title', 'price', 'slug', 'desc', 'written_by', 'updated_by', 'visibility', 'created_at', 'updated_at'
     ];
+
+    public function setPriceAttribute($value)
+    {
+        $this->attributes['price'] = preg_replace('/[^0-9-.]+/', '', $value);
+    }
 
     public function getCreatedAtAttribute($value)
     {
@@ -26,8 +31,16 @@ class Exam extends Model
         return $this->hasMany(ExamQuestion::class, 'exam_id','id');
     }
 
+    public function examSingleDetails() {
+        return $this->hasOne(ExamQuestion::class, 'exam_id','id')->orderBy('created_at', 'ASC');
+    }
+
     public function products() {
-        return $this->hasMany(Product::class,'product_id','id');
+        return $this->hasMany(Product::class,'id','product_id');
+    }
+
+    public function singleProduct() {
+        return $this->hasOne(Product::class,'id','product_id');
     }
 
     public function scopeWithProduct($query) {

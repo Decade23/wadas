@@ -22,7 +22,7 @@ class ExamQuestion extends Model
     }
 
     public function examAnswer() {
-        return $this->hasMany(ExamAnswer::class,'exam_question_id','id')
+        return $this->hasMany(ExamAnswer::class,'exam_question_id','id');
     }
 
     public function scopeByVisibility($query, $visibility)

@@ -86,7 +86,7 @@ Route::group([
         'middleware' => 'prevent.back.history'
     ], function () {
 
-        Route::get('inbox','ExamController@index')
+        Route::get('','ExamController@index')
             ->name('exam.index')->middleware('sentinel.permission:exam.show');
 
         Route::get('create','ExamController@create')

@@ -49,4 +49,22 @@ class ExamController extends Controller
 
         return view($this->module. 'create', $data);
     }
+
+    public function store(Request $request) {
+
+        if ( is_object( $this->service->store($request) ) ) {
+            return $this->redirectSuccessCreate( route('exam.index'), 'Question Created!' );
+        }
+
+        return $this->redirectFailed( route('exam.create'), 'Question No Created Yet!' );
+
+    }
+
+    public function edit($id) {
+
+        $data['pageTitle'] = 'Edit Exam';
+        $data['dataDb'] = $this->service->getById($id);
+
+        return view($this->module. 'edit.edit', $data);
+    }
 }
