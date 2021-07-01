@@ -19,7 +19,7 @@
     </div>
 
     <div class="heading-block bottommargin-lg center">
-        <h4>Our Activity</h4>
+        <h5>Our Activity</h5>
     </div>
 
     <div id="portfolio"
