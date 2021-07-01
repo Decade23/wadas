@@ -7,16 +7,33 @@
         </div>
     </div>
 
-    <div id="portfolio" class="portfolio portfolio-nomargin grid-container portfolio-notitle portfolio-full grid-container clearfix">
+    <div class="container">
+        <div class="col_full">
+            <div class="masonry-thumbs grid-2" data-big="1" data-lightbox="gallery">
+                <a href="frontend/assets/images/schedule_july21.jpeg" data-lightbox="gallery-item">
+                    <img class="image_fade" src="frontend/assets/images/schedule_july21.jpeg" alt="Training July 2021">
+                </a>
+            </div>
+        </div>
 
+    </div>
+
+    <div class="heading-block bottommargin-lg center">
+        <h4>Our Activity</h4>
+    </div>
+
+    <div id="portfolio"
+         class="portfolio portfolio-nomargin grid-container portfolio-notitle portfolio-full grid-container clearfix">
         <article class="portfolio-item pf-media pf-icons">
             <div class="portfolio-image">
                 <a href="portfolio-single.html">
-                    <img src="frontend/images/training/IMG20190406101455.jpg" width="1440px" height="1080" alt="Training ECI">
+                    <img src="frontend/images/training/IMG20190406101455.jpg" width="1440px" height="1080"
+                         alt="Training ECI">
                 </a>
                 <div class="portfolio-overlay">
-                    <a href="frontend/images/training/IMG20190406101455.jpg" class="left-icon" data-lightbox="image"><i class="icon-line-plus"></i></a>
-{{--                    <a href="portfolio-single.html" class="right-icon"><i class="icon-line-ellipsis"></i></a>--}}
+                    <a href="frontend/images/training/IMG20190406101455.jpg" class="left-icon" data-lightbox="image"><i
+                            class="icon-line-plus"></i></a>
+                    {{--                    <a href="portfolio-single.html" class="right-icon"><i class="icon-line-ellipsis"></i></a>--}}
                 </div>
             </div>
             <div class="portfolio-desc">
@@ -28,10 +45,12 @@
         <article class="portfolio-item pf-illustrations">
             <div class="portfolio-image">
                 <a href="#">
-                    <img src="frontend/images/training/IMG20190721121951.jpg" width="1440px" height="1080" alt="Training ECI">
+                    <img src="frontend/images/training/IMG20190721121951.jpg" width="1440px" height="1080"
+                         alt="Training ECI">
                 </a>
                 <div class="portfolio-overlay">
-                    <a href="frontend/images/training/IMG20190721121951.jpg" class="left-icon" data-lightbox="image"><i class="icon-line-plus"></i></a>
+                    <a href="frontend/images/training/IMG20190721121951.jpg" class="left-icon" data-lightbox="image"><i
+                            class="icon-line-plus"></i></a>
                 </div>
             </div>
             <div class="portfolio-desc">
@@ -43,10 +62,12 @@
         <article class="portfolio-item pf-illustrations">
             <div class="portfolio-image">
                 <a href="#">
-                    <img src="frontend/images/training/IMG20190915120007.jpg" width="1440px" height="1080" alt="Training ECI">
+                    <img src="frontend/images/training/IMG20190915120007.jpg" width="1440px" height="1080"
+                         alt="Training ECI">
                 </a>
                 <div class="portfolio-overlay">
-                    <a href="frontend/images/training/IMG20190915120007.jpg" class="left-icon" data-lightbox="image"><i class="icon-line-plus"></i></a>
+                    <a href="frontend/images/training/IMG20190915120007.jpg" class="left-icon" data-lightbox="image"><i
+                            class="icon-line-plus"></i></a>
                 </div>
             </div>
             <div class="portfolio-desc">
@@ -58,10 +79,11 @@
         <article class="portfolio-item pf-illustrations">
             <div class="portfolio-image">
                 <a href="#">
-                    <img src="frontend/images/training/IMG20190406090223.jpg"  alt="Training ECI">
+                    <img src="frontend/images/training/IMG20190406090223.jpg" alt="Training ECI">
                 </a>
                 <div class="portfolio-overlay">
-                    <a href="frontend/images/training/IMG20190406090223.jpg" width="1440px" height="1080" class="left-icon" data-lightbox="image"><i class="icon-line-plus"></i></a>
+                    <a href="frontend/images/training/IMG20190406090223.jpg" width="1440px" height="1080"
+                       class="left-icon" data-lightbox="image"><i class="icon-line-plus"></i></a>
                 </div>
             </div>
             <div class="portfolio-desc">
@@ -70,7 +92,8 @@
             </div>
         </article>
 
-        <!-- video
+
+    <!-- video
         <article class="portfolio-item pf-graphics pf-uielements">
             <div class="portfolio-image">
                 <a href="#">
@@ -130,7 +153,8 @@
                             </ul>
                         </div>
                         <div class="pricing-action">
-                            <a href="https://api.whatsapp.com/send?phone=+628112231147&text=Hello%2C%20Mau%20Tanya%20Training%20Dan%20Consultant?" target="_blank" class="btn btn-danger btn-block btn-lg">Send Messages</a>
+                            <a href="https://api.whatsapp.com/send?phone=+628112231147&text=Hello%2C%20Mau%20Tanya%20Training%20Dan%20Consultant?"
+                               target="_blank" class="btn btn-danger btn-block btn-lg">Send Messages</a>
                         </div>
                     </div>
                 </div>
@@ -149,14 +173,15 @@
                             </ul>
                         </div>
                         <div class="pricing-action">
-                            <a href="https://api.whatsapp.com/send?phone=+628112231147&text=Hello%2C%20Mau%20Tanya%20Training%20Dan%20Consultant?" target="_blank" class="btn btn-danger btn-block btn-lg">Send Messages</a>
+                            <a href="https://api.whatsapp.com/send?phone=+628112231147&text=Hello%2C%20Mau%20Tanya%20Training%20Dan%20Consultant?"
+                               target="_blank" class="btn btn-danger btn-block btn-lg">Send Messages</a>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-md-12">
-                    <p><code>*</code>for a while training and consultant needs through whatsapp or call.<br />
-                    <b>Contact Person: +62 811-2231-147 (Muzakkir)</b>
+                    <p><code>*</code>for a while training and consultant needs through whatsapp or call.<br/>
+                        <b>Contact Person: +62 811-2231-147 (Muzakkir)</b>
                     </p>
                 </div>
 
