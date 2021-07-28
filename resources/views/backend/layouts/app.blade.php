@@ -8,7 +8,7 @@
 <head>
     <meta charset="utf-8"/>
 
-    <title>ECI Console</title>
+    <title>WADAS Console</title>
     <meta name="description" content="Updates and statistics">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -44,25 +44,6 @@
 
     <link rel="shortcut icon" href="https://keenthemes.com/metronic/themes/metronic/theme/default/demo1/dist/assets/media/logos/favicon.ico" />
 
-    <!-- Hotjar Tracking Code for keenthemes.com -->
-{{--    <script>--}}
-{{--        (function(h,o,t,j,a,r){--}}
-{{--            h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};--}}
-{{--            h._hjSettings={hjid:1070954,hjsv:6};--}}
-{{--            a=o.getElementsByTagName('head')[0];--}}
-{{--            r=o.createElement('script');r.async=1;--}}
-{{--            r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;--}}
-{{--            a.appendChild(r);--}}
-{{--        })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');--}}
-{{--    </script>--}}
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-{{--    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-37564768-1"></script>--}}
-{{--    <script>--}}
-{{--        window.dataLayer = window.dataLayer || [];--}}
-{{--        function gtag(){dataLayer.push(arguments);}--}}
-{{--        gtag('js', new Date());--}}
-{{--        gtag('config', 'UA-37564768-1');--}}
-{{--    </script>    --}}
     @stack('css')
 </head>
 <!-- end::Head -->
@@ -76,7 +57,7 @@
     <div class="kt-header-mobile__logo">
         <a href="#">
 {{--            <img alt="Logo" src="{{ asset('themes/eci/media/logos/logo-light.png') }}">--}}
-            <span style="color: #9de0f6;">ECI Console</span>
+            <span style="color: #9de0f6;">WADAS Console</span>
 {{--        {{ url('themes/eci/media/logos/logo-light.png') }}    --}}
         </a>
     </div>
@@ -104,7 +85,7 @@
                 <div class="kt-aside__brand-logo">
                     <a href="#">
 {{--                        <img alt="Logo" src="{{url('themes/eci/media/logos/logo-light.png')}}" >--}}
-                        <span style="color: #9de0f6;">ECI Console</span>
+                        <span style="color: #9de0f6;">WADAS Console</span>
 {{--                     {{url('themes/eci/media/logos/logo-light.png')}}   --}}
                     </a>
                 </div>
@@ -215,7 +196,7 @@
                 <div class="kt-footer  kt-grid__item kt-grid kt-grid--desktop kt-grid--ver-desktop" id="kt_footer">
                     <div class="kt-container  kt-container--fluid ">
                         <div class="kt-footer__copyright">
-                            {{ date('Y') }}&nbsp;&copy;&nbsp;<a href="http://keenthemes.com/metronic" target="_blank" class="kt-link">ECI</a>
+                            {{ date('Y') }}&nbsp;&copy;&nbsp;<a href="http://keenthemes.com/metronic" target="_blank" class="kt-link">WADAS</a>
                         </div>
                             {{-- footer --}}
 {{--                        <div class="kt-footer__menu">--}}

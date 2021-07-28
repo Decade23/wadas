@@ -8,14 +8,10 @@
 
 
 Route::group([
-    //'prefix' => 'main',
     'middleware' => 'prevent.back.history'
 ], function () {
 
-    Route::get('', 'MainController@index')
-        ->name('front_main.index');
-
-    Route::get('disclaimer', 'MainController@disclaimer')
-        ->name('front_main.disclaimer');
-
+    Route::get('', function() {
+        return redirect()->route('main.index');
+    });
 });

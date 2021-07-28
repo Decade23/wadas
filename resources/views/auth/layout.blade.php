@@ -42,25 +42,6 @@
     {{--  favicon  --}}
     <link rel="shortcut icon" href="https://keenthemes.com/metronic/themes/metronic/theme/default/demo1/dist/assets/media/logos/favicon.ico" />
 
-    <!-- Hotjar Tracking Code for keenthemes.com -->
-{{--    <script>--}}
-{{--        (function(h,o,t,j,a,r){--}}
-{{--            h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};--}}
-{{--            h._hjSettings={hjid:1070954,hjsv:6};--}}
-{{--            a=o.getElementsByTagName('head')[0];--}}
-{{--            r=o.createElement('script');r.async=1;--}}
-{{--            r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;--}}
-{{--            a.appendChild(r);--}}
-{{--        })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');--}}
-{{--    </script>--}}
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-{{--    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-37564768-1"></script>--}}
-{{--    <script>--}}
-{{--        window.dataLayer = window.dataLayer || [];--}}
-{{--        function gtag(){dataLayer.push(arguments);}--}}
-{{--        gtag('js', new Date());--}}
-{{--        gtag('config', 'UA-37564768-1');--}}
-{{--    </script>--}}
     @stack('css')
 </head>
 <!-- end::Head -->
@@ -76,65 +57,10 @@
                 <div class="kt-login__container">
                     <div class="kt-login__logo">
                         <a href="#">
-                            <img src="{{url('eci/logo/eci_logo.jpeg')}}" style="height: 100px; width: 150px;" >
+                            <img src="http://wadas.co.id/wp-content/uploads/2020/12/cropped-wds-highress-trs-1024x1024-1-100x100.png" style="height: 100px; width: 150px;" >
                         </a>
                     </div>
                     @yield('body_content')
-{{--                    <div class="kt-login__signup">--}}
-{{--                        <div class="kt-login__head">--}}
-{{--                            <h3 class="kt-login__title">Sign Up</h3>--}}
-{{--                            <div class="kt-login__desc">Enter your details to create your account:</div>--}}
-{{--                        </div>--}}
-{{--                        <form class="kt-form" action="#">--}}
-{{--                            <div class="input-group">--}}
-{{--                                <input class="form-control" type="text" placeholder="Fullname" name="fullname">--}}
-{{--                            </div>--}}
-{{--                            <div class="input-group">--}}
-{{--                                <input class="form-control" type="text" placeholder="Email" name="email" autocomplete="off">--}}
-{{--                            </div>--}}
-{{--                            <div class="input-group">--}}
-{{--                                <input class="form-control" type="password" placeholder="Password" name="password">--}}
-{{--                            </div>--}}
-{{--                            <div class="input-group">--}}
-{{--                                <input class="form-control" type="password" placeholder="Confirm Password" name="rpassword">--}}
-{{--                            </div>--}}
-{{--                            <div class="row kt-login__extra">--}}
-{{--                                <div class="col kt-align-left">--}}
-{{--                                    <label class="kt-checkbox">--}}
-{{--                                        <input type="checkbox" name="agree">I Agree the <a href="#" class="kt-link kt-login__link kt-font-bold">terms and conditions</a>.--}}
-{{--                                        <span></span>--}}
-{{--                                    </label>--}}
-{{--                                    <span class="form-text text-muted"></span>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                            <div class="kt-login__actions">--}}
-{{--                                <button id="kt_login_signup_submit" class="btn btn-brand btn-elevate kt-login__btn-primary">Sign Up</button>&nbsp;&nbsp;--}}
-{{--                                <button id="kt_login_signup_cancel" class="btn btn-light btn-elevate kt-login__btn-secondary">Cancel</button>--}}
-{{--                            </div>--}}
-{{--                        </form>--}}
-{{--                    </div>--}}
-{{--                    <div class="kt-login__forgot">--}}
-{{--                        <div class="kt-login__head">--}}
-{{--                            <h3 class="kt-login__title">Forgotten Password ?</h3>--}}
-{{--                            <div class="kt-login__desc">Enter your email to reset your password:</div>--}}
-{{--                        </div>--}}
-{{--                        <form class="kt-form" action="#">--}}
-{{--                            <div class="input-group">--}}
-{{--                                <input class="form-control" type="text" placeholder="Email" name="email" id="kt_email" autocomplete="off">--}}
-{{--                            </div>--}}
-{{--                            <div class="kt-login__actions">--}}
-{{--                                <button id="kt_login_forgot_submit" class="btn btn-brand btn-elevate kt-login__btn-primary">Request</button>&nbsp;&nbsp;--}}
-{{--                                <button id="kt_login_forgot_cancel" class="btn btn-light btn-elevate kt-login__btn-secondary">Cancel</button>--}}
-{{--                            </div>--}}
-{{--                        </form>--}}
-{{--                    </div>--}}
-{{--                    <div class="kt-login__account">--}}
-{{--					<span class="kt-login__account-msg">--}}
-{{--						Don't have an account yet ?--}}
-{{--					</span>--}}
-{{--                        &nbsp;&nbsp;--}}
-{{--                        <a href="javascript:;" id="kt_login_signup" class="kt-login__account-link">Sign Up!</a>--}}
-{{--                    </div>--}}
                 </div>
             </div>
         </div>

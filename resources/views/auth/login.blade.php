@@ -3,7 +3,7 @@
 @section('body_content')
     <div class="kt-login__signin">
         <div class="kt-login__head">
-            <h3 class="kt-login__title">Sign In To Console</h3>
+            <h3 class="kt-login__title">Log In To Console</h3>
         </div>
         <form class="kt-form" action="{{ route('login.process') }}" method="POST">
             {!! csrf_field() !!}
@@ -23,9 +23,6 @@
                                                     <span></span>
                                                 </label>
                                             </div>
-{{--                                            <div class="col kt-align-right">--}}
-{{--                                                <a href="javascript:;" id="kt_login_forgot" class="kt-login__link">Forget Password ?</a>--}}
-{{--                                            </div>--}}
                                         </div>
             <div class="kt-login__actions">
                 <button id="kt_login_signin_submit___" class="btn btn-brand btn-elevate kt-login__btn-primary" type="submit">Sign In</button>

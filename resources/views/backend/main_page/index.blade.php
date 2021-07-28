@@ -7,7 +7,7 @@
                 <div class="alert alert-light alert-elevate fade show" role="alert">
                     <div class="alert-icon"><i class="flaticon-laptop kt-font-success"></i></div>
                     <div class="alert-text">
-                        Welcome <code>{{ Sentinel::getUser()->name }}</code>. you are login into <b>ECI</b> at <code>{{ Sentinel::getUser()->last_login }}</code>
+                        Welcome <code>{{ Sentinel::getUser()->name }}</code>. you are login into <b>WADAS</b> at <code>{{ Sentinel::getUser()->last_login }}</code>
                     </div>
                 </div>
             </div>
