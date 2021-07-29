@@ -148,6 +148,95 @@ create index order_details_product_id_foreign
 create index order_details_product_type_index
     on order_details (product_group);
 
+-- auto-generated definition
+create table media
+(
+    id         int unsigned auto_increment
+        primary key,
+    item_id    int unsigned                                        null,
+    type       char(20) collate utf8mb4_unicode_ci default 'image' not null,
+    model      varchar(191) collate utf8mb4_unicode_ci             null,
+    url        varchar(191) collate utf8mb4_unicode_ci             not null,
+    path       varchar(191) collate utf8mb4_unicode_ci             not null,
+    file_name  varchar(191)                                        null,
+    created_by varchar(191)                                        null,
+    updated_by varchar(191)                                        null,
+    created_at timestamp                                           null,
+    updated_at timestamp                                           null
+);
+
+create index media_item_id_index
+    on media (item_id);
+
+create index media_model_index
+    on media (model);
+
+
+-- auto-generated definition
+create table user_products
+(
+    id                int unsigned auto_increment
+        primary key,
+    user_id           int unsigned not null,
+    product_id        int unsigned null,
+    pre_trading       tinyint      null,
+    membership_status varchar(45)  null,
+    follow_up_by      varchar(191) null,
+    start_at          date         null,
+    expired_at        date         null,
+    created_at        timestamp    null,
+    updated_at        timestamp    null,
+    constraint user_products_ibfk_1
+        foreign key (product_id) references products (id)
+            on update cascade on delete set null,
+    constraint user_products_ibfk_2
+        foreign key (user_id) references users (id)
+            on update cascade on delete cascade
+)
+    collate = utf8mb4_unicode_ci;
+
+create index user_products_product_id_foreign
+    on user_products (product_id);
+
+create index user_products_user_id_foreign
+    on user_products (user_id);
+
+
+
+-- auto-generated definition
+create table shipping
+(
+    id            int unsigned auto_increment
+        primary key,
+    tracking_code varchar(191)   null,
+    user_id       int unsigned   not null,
+    product_id    int unsigned   not null,
+    order_id      int unsigned   not null,
+    charge        decimal(12, 2) not null,
+    provider      varchar(191)   not null,
+    created_at    timestamp      null,
+    updated_at    timestamp      null,
+    constraint shipping_ibfk_1
+        foreign key (order_id) references orders (id)
+            on update cascade on delete cascade,
+    constraint shipping_ibfk_2
+        foreign key (product_id) references products (id)
+            on update cascade on delete cascade,
+    constraint shipping_ibfk_3
+        foreign key (user_id) references users (id)
+            on update cascade on delete cascade
+)
+    collate = utf8mb4_unicode_ci;
+
+create index shipping_order_id_foreign
+    on shipping (order_id);
+
+create index shipping_product_id_foreign
+    on shipping (product_id);
+
+create index shipping_user_id_foreign
+    on shipping (user_id);
+
 
 
 
