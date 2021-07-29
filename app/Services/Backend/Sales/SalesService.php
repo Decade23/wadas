@@ -67,7 +67,7 @@ class SalesService implements SalesServiceContract
             $userDb = $this->storeMemberBySales($request);
 
             #Save Member Address To User Address Table
-            $this->storeMemberAddress($userDb->id, $request->member);
+            //$this->storeMemberAddress($userDb->id, $request->member);
 
             $date  = date('ymd');
             $order = Orders::orderBy('id','desc')->first();

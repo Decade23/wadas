@@ -13,9 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//Route::get('/', function () {
-//    return view('welcome');
-//});
+Route::get('/', function () {
+    // login.form
+   return redirect('/console/login');
+});
 
 Route::get('no-access', function () {
     return 'no-access';

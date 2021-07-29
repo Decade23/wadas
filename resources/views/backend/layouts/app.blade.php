@@ -132,11 +132,11 @@
                         @include('backend.layouts.menus.sidebar.dashboard')
                         @include('backend.layouts.menus.sidebar.products')
                         @include('backend.layouts.menus.sidebar.sales')
-                        @include('backend.layouts.menus.sidebar.fulfillments')
-{{--                        @include('backend.layouts.menus.sidebar.others')--}}
-                        @include('backend.layouts.menus.sidebar.apl')
+                        {{-- @include('backend.layouts.menus.sidebar.fulfillments') --}}
+                       {{-- @include('backend.layouts.menus.sidebar.others') --}}
+                        {{-- @include('backend.layouts.menus.sidebar.apl') --}}
                         @include('backend.layouts.menus.sidebar.acl')
-                        @include('backend.layouts.menus.sidebar.config')
+                        {{-- @include('backend.layouts.menus.sidebar.config') --}}
                         {{-- end sidebar --}}
                     </ul>
                 </div>

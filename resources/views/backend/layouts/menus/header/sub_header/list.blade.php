@@ -2,7 +2,7 @@
     <div class="kt-container  kt-container--fluid ">
         <div class="kt-subheader__main">
 
-            <h3 class="kt-subheader__title">@if( isset($page_title) ) {{ $page_title }} @else {{ 'ECI Bisnis Manajemen' }} @endif</h3>
+            <h3 class="kt-subheader__title">@if( isset($page_title) ) {{ $page_title }} @else {{ 'WADAS' }} @endif</h3>
 
             <span class="kt-subheader__separator kt-subheader__separator--v"></span>
 

@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => 'Expert Club Indonesia Bisnis Manajemen',//env('APP_NAME', 'Expert Club Indonesia Bisnis Manajemen'),
+    'name' => env('APP_NAME', 'Wadas Assessment'),
 
     /*
     |--------------------------------------------------------------------------

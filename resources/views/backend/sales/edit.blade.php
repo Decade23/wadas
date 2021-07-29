@@ -106,7 +106,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-lg-12">
+                            {{-- <div class="col-lg-12">
                                 <div class="form-group @if($errors->has('member.address.address')) validated @endif">
                                     <label @if($errors->has('member.address.address')) class="text-danger" @endif>Address</label>
                                     <textarea name="member[address][address]" id="address" cols="24" rows="2" class="form-control @if($errors->has('member.address.address')) is-invalid @endif" placeholder="Enter Member Address ...*" readonly>{!! old('member.address.address', $dataDb->customer->address !== null ? $dataDb->customer->address->address : '') !!}</textarea>
@@ -138,7 +138,7 @@
                                     <input type="text" name="member[address][postal_code]" id="postalCode" class="form-control @if($errors->has('member.address.postal_code')) is-invalid @endif" placeholder="Postal Code" value="{{$dataDb->customer->address !== null ? $dataDb->customer->address->postal_code : ''}}" readonly>
                                     {!! $errors->first('member.address.postal_code', '<div class="invalid-feedback">:message</div>') !!}
                                 </div>
-                            </div>
+                            </div> --}}
 
                             <div class="col-lg-12">
                                 <hr class="divider-short">

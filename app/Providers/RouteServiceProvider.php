@@ -47,7 +47,7 @@ class RouteServiceProvider extends ServiceProvider
         $this->mapWebRoutes();
 
         # Register Map BackEnd And FrontEnd Routes
-        $this->mapFrontEndRoutes();
+        //$this->mapFrontEndRoutes();
         $this->mapBackEndRoutes();
 
         # Route To Auth Console
